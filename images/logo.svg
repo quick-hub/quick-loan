@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00456b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#003d5c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8941e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0);stop-opacity:0" />
+      <stop offset="50%" style="stop-color:rgba(255,255,255,0.3);stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:rgba(255,255,255,0);stop-opacity:0" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer Ring - Premium Border -->
+  <circle cx="150" cy="150" r="140" fill="none" stroke="url(#primaryGrad)" stroke-width="3" opacity="0.3"/>
+  
+  <!-- Main Circle Background -->
+  <circle cx="150" cy="150" r="125" fill="url(#primaryGrad)" opacity="0.95"/>
+  <circle cx="150" cy="150" r="125" fill="none" stroke="url(#accentGold)" stroke-width="4"/>
+  
+  <!-- Inner Decorative Ring -->
+  <circle cx="150" cy="150" r="110" fill="none" stroke="url(#accentGold)" stroke-width="1" opacity="0.4"/>
+  
+  <!-- Abstract Financial Symbol - Stylized QL with upward arrow -->
+  <g transform="translate(150, 120)">
+    <!-- Q Letter -->
+    <path d="M -35,-15 Q -35,-35 -15,-35 L 15,-35 Q 35,-35 35,-15 L 35,15 Q 35,35 15,35 L -5,35" 
+          fill="none" 
+          stroke="url(#accentGold)" 
+          stroke-width="8" 
+          stroke-linecap="round"/>
+    <line x1="15" y1="25" x2="35" y2="40" stroke="url(#accentGold)" stroke-width="8" stroke-linecap="round"/>
+    
+    <!-- Upward Arrow (Growth) integrated into design -->
+    <path d="M -25,10 L -25,-20 M -35,-10 L -25,-20 L -15,-10" 
+          fill="none" 
+          stroke="#ffffff" 
+          stroke-width="6" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"
+          opacity="0.9"/>
+  </g>
+  
+  <!-- QUICK LOAN Text -->
+  <text x="150" y="200" 
+        text-anchor="middle" 
+        font-family="'Times New Roman', serif" 
+        font-size="32" 
+        font-weight="bold" 
+        fill="url(#accentGold)"
+        letter-spacing="4">
+    QUICK LOAN
+  </text>
+  
+  <!-- Financial Services Subtitle -->
+  <text x="150" y="220" 
+        text-anchor="middle" 
+        font-family="Arial, sans-serif" 
+        font-size="12" 
+        font-weight="400" 
+        fill="#ffffff"
+        letter-spacing="2"
+        opacity="0.9">
+    FINANCIAL SERVICES
+  </text>
+  
+  <!-- Decorative Line Above Text -->
+  <line x1="70" y1="185" x2="230" y2="185" 
+        stroke="url(#accentGold)" 
+        stroke-width="1" 
+        opacity="0.5"/>
+  
+  <!-- Decorative Line Below Text -->
+  <line x1="85" y1="230" x2="215" y2="230" 
+        stroke="url(#accentGold)" 
+        stroke-width="1" 
+        opacity="0.5"/>
+  
+  <!-- Corner Accent Elements -->
+  <g opacity="0.3">
+    <circle cx="50" cy="50" r="3" fill="url(#accentGold)"/>
+    <circle cx="250" cy="50" r="3" fill="url(#accentGold)"/>
+    <circle cx="50" cy="250" r="3" fill="url(#accentGold)"/>
+    <circle cx="250" cy="250" r="3" fill="url(#accentGold)"/>
+  </g>
+  
+  <!-- Subtle Shimmer Effect -->
+  <rect x="100" y="100" width="100" height="100" fill="url(#shimmer)" opacity="0.2" transform="rotate(45 150 150)"/>
+</svg>

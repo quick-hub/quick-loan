@@ -1,0 +1,203 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="heroProfBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#003d5c;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#00456b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#005780;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="heroGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8941e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="heroAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:rgba(212,175,55,0);stop-opacity:0" />
+      <stop offset="50%" style="stop-color:rgba(212,175,55,0.3);stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:rgba(212,175,55,0);stop-opacity:0" />
+    </linearGradient>
+    <filter id="heroGlow">
+      <feGaussianBlur stdDeviation="10" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dx="0" dy="3" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="800" fill="url(#heroProfBg)"/>
+  
+  <!-- Sophisticated Grid Pattern -->
+  <g opacity="0.08">
+    <defs>
+      <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+        <path d="M 100 0 L 0 0 0 100" fill="none" stroke="white" stroke-width="1"/>
+      </pattern>
+    </defs>
+    <rect width="1200" height="800" fill="url(#grid)"/>
+  </g>
+  
+  <!-- Decorative Geometric Shapes -->
+  <g opacity="0.05">
+    <circle cx="100" cy="100" r="150" fill="white"/>
+    <circle cx="1100" cy="700" r="200" fill="white"/>
+    <circle cx="900" cy="150" r="100" fill="url(#heroGold)"/>
+  </g>
+  
+  <!-- Top Accent Line -->
+  <rect x="0" y="120" width="1200" height="2" fill="url(#heroAccent)"/>
+  
+  <!-- Main Content Container -->
+  <g transform="translate(600, 350)">
+    <!-- Central Logo Circle with Professional Styling -->
+    <g filter="url(#softShadow)">
+      <circle r="180" fill="white" opacity="0.95"/>
+      <circle r="180" fill="none" stroke="url(#heroGold)" stroke-width="4"/>
+      
+      <!-- Inner Decorative Ring -->
+      <circle r="165" fill="none" stroke="url(#heroGold)" stroke-width="1" opacity="0.3"/>
+      
+      <!-- Company Emblem - Stylized QL with Growth Arrow -->
+      <g transform="translate(0, -30)">
+        <!-- Q Letter -->
+        <path d="M -50,-20 Q -50,-50 -20,-50 L 20,-50 Q 50,-50 50,-20 L 50,20 Q 50,50 20,50 L -5,50" 
+              fill="none" 
+              stroke="url(#heroGold)" 
+              stroke-width="10" 
+              stroke-linecap="round"/>
+        <line x1="20" y1="35" x2="50" y2="60" stroke="url(#heroGold)" stroke-width="10" stroke-linecap="round"/>
+        
+        <!-- Integrated Upward Arrow -->
+        <path d="M -35,15 L -35,-30 M -50,-15 L -35,-30 L -20,-15" 
+              fill="none" 
+              stroke="#003d5c" 
+              stroke-width="8" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"/>
+      </g>
+      
+      <!-- Company Name -->
+      <text y="95" 
+            text-anchor="middle" 
+            font-family="'Times New Roman', serif" 
+            font-size="42" 
+            font-weight="bold" 
+            fill="url(#heroGold)"
+            letter-spacing="6">
+        QUICK LOAN
+      </text>
+      
+      <!-- Subtitle -->
+      <text y="120" 
+            text-anchor="middle" 
+            font-family="Arial, sans-serif" 
+            font-size="14" 
+            font-weight="400" 
+            fill="#003d5c"
+            letter-spacing="3">
+        FINANCIAL SERVICES
+      </text>
+      
+      <!-- Decorative Lines -->
+      <line x1="-120" y1="75" x2="120" y2="75" stroke="url(#heroGold)" stroke-width="1" opacity="0.4"/>
+      <line x1="-100" y1="135" x2="100" y2="135" stroke="url(#heroGold)" stroke-width="1" opacity="0.4"/>
+    </g>
+  </g>
+  
+  <!-- Professional Business Elements -->
+  
+  <!-- Left Side - Document/Contract Icon -->
+  <g transform="translate(200, 350)" opacity="0.6" filter="url(#softShadow)">
+    <rect x="-60" y="-80" width="120" height="160" rx="8" fill="white" stroke="#003d5c" stroke-width="3"/>
+    <line x1="-40" y1="-50" x2="40" y2="-50" stroke="url(#heroGold)" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-40" y1="-30" x2="40" y2="-30" stroke="#003d5c" stroke-width="2" opacity="0.5"/>
+    <line x1="-40" y1="-15" x2="40" y2="-15" stroke="#003d5c" stroke-width="2" opacity="0.5"/>
+    <line x1="-40" y1="0" x2="20" y2="0" stroke="#003d5c" stroke-width="2" opacity="0.5"/>
+    
+    <!-- Signature Line -->
+    <line x1="-40" y1="35" x2="40" y2="35" stroke="#003d5c" stroke-width="1" stroke-dasharray="3,3"/>
+    <path d="M -30,45 Q -20,35 -10,45 Q 0,55 10,45 Q 20,35 30,45" 
+          fill="none" stroke="url(#heroGold)" stroke-width="2"/>
+  </g>
+  
+  <!-- Right Side - Growth Chart -->
+  <g transform="translate(1000, 350)" opacity="0.6" filter="url(#softShadow)">
+    <rect x="-70" y="-70" width="140" height="140" rx="8" fill="white" stroke="#003d5c" stroke-width="3"/>
+    
+    <!-- Chart Bars -->
+    <rect x="-50" y="20" width="20" height="30" fill="#003d5c" opacity="0.4"/>
+    <rect x="-25" y="5" width="20" height="45" fill="#003d5c" opacity="0.5"/>
+    <rect x="0" y="-15" width="20" height="65" fill="#003d5c" opacity="0.6"/>
+    <rect x="25" y="-40" width="20" height="90" fill="url(#heroGold)"/>
+    
+    <!-- Trend Arrow -->
+    <path d="M -50,30 L -20,15 L 10,-10 L 40,-35" 
+          fill="none" 
+          stroke="url(#heroGold)" 
+          stroke-width="3" 
+          stroke-linecap="round"/>
+    <path d="M 30,-30 L 40,-35 L 35,-25" fill="url(#heroGold)"/>
+  </g>
+  
+  <!-- Bottom Text Banner -->
+  <g transform="translate(600, 650)">
+    <text y="0" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="36" 
+          font-weight="300" 
+          fill="white"
+          letter-spacing="4">
+      Fast • Secure • Reliable
+    </text>
+    
+    <text y="40" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="20" 
+          font-weight="400" 
+          fill="white"
+          letter-spacing="2"
+          opacity="0.8">
+      Your Trusted Partner in Financial Solutions
+    </text>
+  </g>
+  
+  <!-- Corner Decorative Elements - Professional Frame -->
+  <g opacity="0.4">
+    <!-- Top Left -->
+    <path d="M 50,50 L 150,50 M 50,50 L 50,150" stroke="url(#heroGold)" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Top Right -->
+    <path d="M 1050,50 L 1150,50 M 1150,50 L 1150,150" stroke="url(#heroGold)" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Bottom Left -->
+    <path d="M 50,650 L 50,750 M 50,750 L 150,750" stroke="url(#heroGold)" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Bottom Right -->
+    <path d="M 1150,650 L 1150,750 M 1050,750 L 1150,750" stroke="url(#heroGold)" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Subtle Premium Badges -->
+  <g transform="translate(150, 650)" opacity="0.7">
+    <circle r="40" fill="white" stroke="url(#heroGold)" stroke-width="2"/>
+    <text y="-8" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="url(#heroGold)">EST</text>
+    <text y="12" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#003d5c">2024</text>
+  </g>
+  
+  <g transform="translate(1050, 650)" opacity="0.7">
+    <circle r="40" fill="white" stroke="url(#heroGold)" stroke-width="2"/>
+    <text y="6" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="url(#heroGold)">A+</text>
+    <text y="25" text-anchor="middle" font-family="Arial" font-size="10" fill="#003d5c">RATED</text>
+  </g>
+</svg>

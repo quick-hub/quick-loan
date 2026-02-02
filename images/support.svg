@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
+  <defs>
+    <linearGradient id="suppProfBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="suppProfGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00456b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#003d5c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="suppGoldAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8941e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="suppProfShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dx="0" dy="4" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="500" height="500" fill="url(#suppProfBg)"/>
+  
+  <!-- Subtle Grid Pattern -->
+  <g opacity="0.05">
+    <line x1="0" y1="125" x2="500" y2="125" stroke="#00456b" stroke-width="1"/>
+    <line x1="0" y1="250" x2="500" y2="250" stroke="#00456b" stroke-width="1"/>
+    <line x1="0" y1="375" x2="500" y2="375" stroke="#00456b" stroke-width="1"/>
+    <line x1="125" y1="0" x2="125" y2="500" stroke="#00456b" stroke-width="1"/>
+    <line x1="250" y1="0" x2="250" y2="500" stroke="#00456b" stroke-width="1"/>
+    <line x1="375" y1="0" x2="375" y2="500" stroke="#00456b" stroke-width="1"/>
+  </g>
+  
+  <!-- Main Icon Container -->
+  <g filter="url(#suppProfShadow)">
+    <circle cx="250" cy="250" r="160" fill="white" stroke="url(#suppProfGrad)" stroke-width="3"/>
+  </g>
+  
+  <!-- Professional Customer Service Representative Icon -->
+  <g transform="translate(250, 250)">
+    <!-- Person's Head -->
+    <circle cx="0" cy="-40" r="35" fill="url(#suppProfGrad)"/>
+    <circle cx="0" cy="-40" r="32" fill="white"/>
+    <circle cx="0" cy="-40" r="28" fill="url(#suppProfGrad)" opacity="0.1"/>
+    
+    <!-- Person's Shoulders/Torso -->
+    <path d="M -45,-5 Q -45,10 -35,20 L -20,40 L 20,40 L 35,20 Q 45,10 45,-5 Z" 
+          fill="url(#suppProfGrad)"/>
+    <path d="M -40,0 Q -40,12 -32,20 L -18,38 L 18,38 L 32,20 Q 40,12 40,0 Z" 
+          fill="white"/>
+    <path d="M -38,2 Q -38,13 -30,21 L -17,36 L 17,36 L 30,21 Q 38,13 38,2 Z" 
+          fill="url(#suppProfGrad)" 
+          opacity="0.1"/>
+    
+    <!-- Professional Headset -->
+    <!-- Headband -->
+    <path d="M -30,-60 Q -30,-75 0,-75 Q 30,-75 30,-60" 
+          fill="none" 
+          stroke="url(#suppProfGrad)" 
+          stroke-width="6" 
+          stroke-linecap="round"/>
+    
+    <!-- Headband Padding -->
+    <path d="M -25,-62 Q -25,-73 0,-73 Q 25,-73 25,-62" 
+          fill="none" 
+          stroke="url(#suppGoldAccent)" 
+          stroke-width="3" 
+          stroke-linecap="round"
+          opacity="0.5"/>
+    
+    <!-- Left Earpiece -->
+    <g transform="translate(-30, -35)">
+      <ellipse rx="12" ry="18" fill="white" stroke="url(#suppProfGrad)" stroke-width="3"/>
+      <ellipse rx="8" ry="14" fill="url(#suppProfGrad)" opacity="0.2"/>
+      <circle cx="-3" cy="-5" r="3" fill="white" opacity="0.6"/>
+    </g>
+    
+    <!-- Right Earpiece -->
+    <g transform="translate(30, -35)">
+      <ellipse rx="12" ry="18" fill="white" stroke="url(#suppProfGrad)" stroke-width="3"/>
+      <ellipse rx="8" ry="14" fill="url(#suppProfGrad)" opacity="0.2"/>
+      <circle cx="3" cy="-5" r="3" fill="white" opacity="0.6"/>
+    </g>
+    
+    <!-- Microphone Boom -->
+    <path d="M -30,-25 Q -40,-15 -42,0 L -35,0" 
+          fill="none" 
+          stroke="url(#suppProfGrad)" 
+          stroke-width="5" 
+          stroke-linecap="round"/>
+    
+    <!-- Microphone -->
+    <g transform="translate(-30, 0)">
+      <ellipse rx="8" ry="6" fill="white" stroke="url(#suppProfGrad)" stroke-width="2"/>
+      <ellipse rx="5" ry="4" fill="url(#suppGoldAccent)" opacity="0.6"/>
+      <circle cx="-2" cy="-1" r="1.5" fill="white" opacity="0.8"/>
+    </g>
+    
+    <!-- Sound Waves from Microphone -->
+    <g opacity="0.4" stroke="url(#suppProfGrad)" fill="none" stroke-width="2" stroke-linecap="round">
+      <path d="M -20,-2 Q -18,0 -20,2"/>
+      <path d="M -15,-4 Q -12,0 -15,4"/>
+      <path d="M -10,-6 Q -6,0 -10,6"/>
+    </g>
+  </g>
+  
+  <!-- 24/7 Professional Badge -->
+  <g transform="translate(380, 140)">
+    <circle r="35" fill="url(#suppGoldAccent)"/>
+    <circle r="33" fill="white"/>
+    <circle r="31" fill="url(#suppGoldAccent)"/>
+    <text x="0" y="-5" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="18" 
+          font-weight="bold" 
+          fill="white">
+      24
+    </text>
+    <line x1="-15" y1="0" x2="15" y2="0" stroke="white" stroke-width="2"/>
+    <text x="0" y="15" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="18" 
+          font-weight="bold" 
+          fill="white">
+      7
+    </text>
+  </g>
+  
+  <!-- Star Rating -->
+  <g transform="translate(250, 420)">
+    <path d="M -60,0 L -55,10 L -45,12 L -52,18 L -50,28 L -60,23 L -70,28 L -68,18 L -75,12 L -65,10 Z" fill="url(#suppGoldAccent)"/>
+    <path d="M -30,0 L -25,10 L -15,12 L -22,18 L -20,28 L -30,23 L -40,28 L -38,18 L -45,12 L -35,10 Z" fill="url(#suppGoldAccent)"/>
+    <path d="M 0,0 L 5,10 L 15,12 L 8,18 L 10,28 L 0,23 L -10,28 L -8,18 L -15,12 L -5,10 Z" fill="url(#suppGoldAccent)"/>
+    <path d="M 30,0 L 35,10 L 45,12 L 38,18 L 40,28 L 30,23 L 20,28 L 22,18 L 15,12 L 25,10 Z" fill="url(#suppGoldAccent)"/>
+    <path d="M 60,0 L 65,10 L 75,12 L 68,18 L 70,28 L 60,23 L 50,28 L 52,18 L 45,12 L 55,10 Z" fill="url(#suppGoldAccent)"/>
+  </g>
+  
+  <!-- Bottom Text -->
+  <text x="250" y="465" 
+        text-anchor="middle" 
+        font-family="Arial, sans-serif" 
+        font-size="22" 
+        font-weight="600" 
+        fill="url(#suppProfGrad)"
+        letter-spacing="1">
+    DEDICATED SUPPORT
+  </text>
+  
+  <!-- Decorative Corner Elements -->
+  <g opacity="0.2">
+    <rect x="30" y="30" width="40" height="2" fill="url(#suppGoldAccent)"/>
+    <rect x="30" y="30" width="2" height="40" fill="url(#suppGoldAccent)"/>
+    
+    <rect x="430" y="30" width="40" height="2" fill="url(#suppGoldAccent)"/>
+    <rect x="468" y="30" width="2" height="40" fill="url(#suppGoldAccent)"/>
+    
+    <rect x="30" y="468" width="40" height="2" fill="url(#suppGoldAccent)"/>
+    <rect x="30" y="430" width="2" height="40" fill="url(#suppGoldAccent)"/>
+    
+    <rect x="430" y="468" width="40" height="2" fill="url(#suppGoldAccent)"/>
+    <rect x="468" y="430" width="2" height="40" fill="url(#suppGoldAccent)"/>
+  </g>
+</svg>

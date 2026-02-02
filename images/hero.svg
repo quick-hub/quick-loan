@@ -1,0 +1,227 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="simpleHeroBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0e5e9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="simpleNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#003d5c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00456b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="simpleGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8941e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="profDropShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
+      <feOffset dx="0" dy="3" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.25"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="800" fill="url(#simpleHeroBg)"/>
+  
+  <!-- Subtle Pattern -->
+  <g opacity="0.03">
+    <defs>
+      <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+        <circle cx="20" cy="20" r="2" fill="#003d5c"/>
+      </pattern>
+    </defs>
+    <rect width="1200" height="800" fill="url(#dots)"/>
+  </g>
+  
+  <!-- Left Side - Professional Business Scene -->
+  <g transform="translate(250, 400)">
+    <!-- Business Professional Silhouette -->
+    <g filter="url(#profDropShadow)">
+      <!-- Head -->
+      <circle cx="0" cy="-150" r="50" fill="url(#simpleNavy)"/>
+      
+      <!-- Shoulders and Suit -->
+      <path d="M -70,-100 L -80,-50 L -60,0 L -40,100 L 40,100 L 60,0 L 80,-50 L 70,-100 Z" 
+            fill="url(#simpleNavy)"/>
+      
+      <!-- Tie -->
+      <path d="M 0,-100 L -15,-70 L -10,0 L 0,50 L 10,0 L 15,-70 Z" 
+            fill="url(#simpleGold)" 
+            opacity="0.6"/>
+      
+      <!-- Briefcase -->
+      <g transform="translate(70, 20)">
+        <rect x="-35" y="-25" width="70" height="50" rx="5" 
+              fill="url(#simpleNavy)" 
+              stroke="url(#simpleGold)" 
+              stroke-width="2"/>
+        <rect x="-25" y="-30" width="50" height="10" rx="3" fill="url(#simpleGold)"/>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Center - Financial Documents Stack -->
+  <g transform="translate(600, 380)" filter="url(#profDropShadow)">
+    <!-- Document 1 (Back) -->
+    <g transform="rotate(-5)">
+      <rect x="-100" y="-130" width="200" height="260" rx="10" 
+            fill="white" 
+            stroke="url(#simpleNavy)" 
+            stroke-width="3"/>
+    </g>
+    
+    <!-- Document 2 (Middle) -->
+    <g transform="rotate(2)">
+      <rect x="-100" y="-130" width="200" height="260" rx="10" 
+            fill="white" 
+            stroke="url(#simpleNavy)" 
+            stroke-width="3"/>
+    </g>
+    
+    <!-- Document 3 (Front) -->
+    <rect x="-100" y="-130" width="200" height="260" rx="10" 
+          fill="white" 
+          stroke="url(#simpleNavy)" 
+          stroke-width="4"/>
+    
+    <!-- Document Content -->
+    <line x1="-70" y1="-90" x2="70" y2="-90" stroke="url(#simpleGold)" stroke-width="4"/>
+    <line x1="-70" y1="-65" x2="70" y2="-65" stroke="url(#simpleNavy)" stroke-width="2" opacity="0.3"/>
+    <line x1="-70" y1="-50" x2="70" y2="-50" stroke="url(#simpleNavy)" stroke-width="2" opacity="0.3"/>
+    <line x1="-70" y1="-35" x2="40" y2="-35" stroke="url(#simpleNavy)" stroke-width="2" opacity="0.3"/>
+    
+    <!-- Dollar Amount -->
+    <text x="0" y="10" 
+          text-anchor="middle" 
+          font-family="'Times New Roman', serif" 
+          font-size="48" 
+          font-weight="bold" 
+          fill="url(#simpleGold)">
+      $50,000
+    </text>
+    
+    <!-- Approval Stamp -->
+    <circle cx="50" cy="70" r="35" fill="none" stroke="url(#simpleGold)" stroke-width="3"/>
+    <text x="50" y="65" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="12" 
+          font-weight="bold" 
+          fill="url(#simpleGold)">
+      APPROVED
+    </text>
+    <text x="50" y="82" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="10" 
+          fill="url(#simpleGold)">
+      INSTANT
+    </text>
+  </g>
+  
+  <!-- Right Side - Success Indicators -->
+  <g transform="translate(950, 400)">
+    <!-- Growth Chart -->
+    <g filter="url(#profDropShadow)">
+      <rect x="-90" y="-120" width="180" height="180" rx="12" 
+            fill="white" 
+            stroke="url(#simpleNavy)" 
+            stroke-width="3"/>
+      
+      <!-- Chart Title -->
+      <text x="0" y="-85" 
+            text-anchor="middle" 
+            font-family="Arial, sans-serif" 
+            font-size="14" 
+            font-weight="bold" 
+            fill="url(#simpleNavy)">
+        LOAN APPROVAL
+      </text>
+      
+      <!-- Bars -->
+      <rect x="-70" y="10" width="28" height="30" fill="url(#simpleNavy)" opacity="0.3"/>
+      <rect x="-35" y="-5" width="28" height="45" fill="url(#simpleNavy)" opacity="0.5"/>
+      <rect x="0" y="-25" width="28" height="65" fill="url(#simpleNavy)" opacity="0.7"/>
+      <rect x="35" y="-60" width="28" height="100" fill="url(#simpleGold)"/>
+      
+      <!-- Upward Trend Line -->
+      <path d="M -70,20 L -35,5 L 0,-15 L 40,-50" 
+            fill="none" 
+            stroke="url(#simpleGold)" 
+            stroke-width="3" 
+            stroke-linecap="round"/>
+      <path d="M 30,-45 L 40,-50 L 35,-40" fill="url(#simpleGold)"/>
+    </g>
+    
+    <!-- Success Badge -->
+    <g transform="translate(0, 100)">
+      <circle r="45" fill="url(#simpleGold)"/>
+      <circle r="42" fill="white"/>
+      <path d="M -15,5 L -5,15 L 20,-15" 
+            fill="none" 
+            stroke="url(#simpleGold)" 
+            stroke-width="6" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"/>
+    </g>
+  </g>
+  
+  <!-- Bottom Premium Elements -->
+  <g transform="translate(600, 650)">
+    <!-- Clock Icon - Fast Processing -->
+    <g transform="translate(-200, 0)">
+      <circle r="35" fill="white" stroke="url(#simpleNavy)" stroke-width="3"/>
+      <line x1="0" y1="0" x2="0" y2="-20" stroke="url(#simpleNavy)" stroke-width="3" stroke-linecap="round"/>
+      <line x1="0" y1="0" x2="15" y2="0" stroke="url(#simpleGold)" stroke-width="3" stroke-linecap="round"/>
+      <circle r="4" fill="url(#simpleNavy)"/>
+      <text y="55" text-anchor="middle" font-family="Arial" font-size="14" fill="url(#simpleNavy)" font-weight="600">
+        INSTANT
+      </text>
+    </g>
+    
+    <!-- Shield Icon - Secure -->
+    <g transform="translate(0, 0)">
+      <path d="M 0,-30 L 25,-20 L 25,5 Q 25,20 0,35 Q -25,20 -25,5 L -25,-20 Z" 
+            fill="white" 
+            stroke="url(#simpleNavy)" 
+            stroke-width="3"/>
+      <path d="M -10,0 L -3,8 L 12,-10" 
+            fill="none" 
+            stroke="url(#simpleGold)" 
+            stroke-width="4" 
+            stroke-linecap="round"/>
+      <text y="55" text-anchor="middle" font-family="Arial" font-size="14" fill="url(#simpleNavy)" font-weight="600">
+        SECURE
+      </text>
+    </g>
+    
+    <!-- Star Icon - Premium -->
+    <g transform="translate(200, 0)">
+      <path d="M 0,-28 L 8,-8 L 30,-5 L 12,8 L 15,30 L 0,18 L -15,30 L -12,8 L -30,-5 L -8,-8 Z" 
+            fill="url(#simpleGold)"/>
+      <text y="55" text-anchor="middle" font-family="Arial" font-size="14" fill="url(#simpleNavy)" font-weight="600">
+        TRUSTED
+      </text>
+    </g>
+  </g>
+  
+  <!-- Corner Professional Accents -->
+  <g opacity="0.3">
+    <line x1="50" y1="50" x2="150" y2="50" stroke="url(#simpleGold)" stroke-width="3"/>
+    <line x1="50" y1="50" x2="50" y2="150" stroke="url(#simpleGold)" stroke-width="3"/>
+    
+    <line x1="1050" y1="50" x2="1150" y2="50" stroke="url(#simpleGold)" stroke-width="3"/>
+    <line x1="1150" y1="50" x2="1150" y2="150" stroke="url(#simpleGold)" stroke-width="3"/>
+    
+    <line x1="50" y1="650" x2="50" y2="750" stroke="url(#simpleGold)" stroke-width="3"/>
+    <line x1="50" y1="750" x2="150" y2="750" stroke="url(#simpleGold)" stroke-width="3"/>
+    
+    <line x1="1150" y1="650" x2="1150" y2="750" stroke="url(#simpleGold)" stroke-width="3"/>
+    <line x1="1050" y1="750" x2="1150" y2="750" stroke="url(#simpleGold)" stroke-width="3"/>
+  </g>
+</svg>

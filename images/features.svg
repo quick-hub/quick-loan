@@ -1,0 +1,337 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="featProfBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5f7fa;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="featNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#003d5c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00456b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="featGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8941e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="featShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dx="0" dy="3" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.15"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="900" fill="url(#featProfBg)"/>
+  
+  <!-- Header Section -->
+  <g transform="translate(600, 100)">
+    <text y="0" 
+          text-anchor="middle" 
+          font-family="'Times New Roman', serif" 
+          font-size="56" 
+          font-weight="bold" 
+          fill="url(#featNavy)"
+          letter-spacing="2">
+      Our Advantages
+    </text>
+    <line x1="-150" y1="20" x2="150" y2="20" stroke="url(#featGold)" stroke-width="3"/>
+    <text y="55" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="20" 
+          fill="url(#featNavy)"
+          opacity="0.7"
+          letter-spacing="1">
+      Professional Financial Services You Can Trust
+    </text>
+  </g>
+  
+  <!-- Feature Cards Grid -->
+  
+  <!-- Row 1 -->
+  
+  <!-- Speed Feature -->
+  <g transform="translate(200, 280)" filter="url(#featShadow)">
+    <rect width="280" height="240" rx="16" fill="white" stroke="url(#featNavy)" stroke-width="2"/>
+    
+    <!-- Icon -->
+    <g transform="translate(140, 70)">
+      <circle r="45" fill="none" stroke="url(#featNavy)" stroke-width="4"/>
+      <line x1="0" y1="0" x2="0" y2="-25" stroke="url(#featNavy)" stroke-width="4" stroke-linecap="round"/>
+      <line x1="0" y1="0" x2="20" y2="0" stroke="url(#featGold)" stroke-width="4" stroke-linecap="round"/>
+      <circle r="5" fill="url(#featNavy)"/>
+      
+      <!-- Speed indicators -->
+      <path d="M -60,-10 L -50,-10" stroke="url(#featGold)" stroke-width="2" opacity="0.5"/>
+      <path d="M -60,0 L -50,0" stroke="url(#featGold)" stroke-width="2" opacity="0.5"/>
+      <path d="M -60,10 L -50,10" stroke="url(#featGold)" stroke-width="2" opacity="0.5"/>
+    </g>
+    
+    <text x="140" y="160" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="24" 
+          font-weight="bold" 
+          fill="url(#featNavy)">
+      Lightning Fast
+    </text>
+    <text x="140" y="185" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="14" 
+          fill="url(#featNavy)"
+          opacity="0.7">
+      Approval in Minutes
+    </text>
+    <text x="140" y="210" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="14" 
+          fill="url(#featNavy)"
+          opacity="0.7">
+      Not Days
+    </text>
+  </g>
+  
+  <!-- Security Feature -->
+  <g transform="translate(540, 280)" filter="url(#featShadow)">
+    <rect width="280" height="240" rx="16" fill="white" stroke="url(#featNavy)" stroke-width="2"/>
+    
+    <!-- Icon -->
+    <g transform="translate(140, 70)">
+      <path d="M 0,-40 L 30,-25 L 30,10 Q 30,30 0,45 Q -30,30 -30,10 L -30,-25 Z" 
+            fill="white" 
+            stroke="url(#featNavy)" 
+            stroke-width="4"/>
+      <path d="M -12,0 L -4,10 L 15,-15" 
+            fill="none" 
+            stroke="url(#featGold)" 
+            stroke-width="5" 
+            stroke-linecap="round"/>
+    </g>
+    
+    <text x="140" y="160" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="24" 
+          font-weight="bold" 
+          fill="url(#featNavy)">
+      Bank-Grade
+    </text>
+    <text x="140" y="185" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="14" 
+          fill="url(#featNavy)"
+          opacity="0.7">
+      Military-Level
+    </text>
+    <text x="140" y="210" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="14" 
+          fill="url(#featNavy)"
+          opacity="0.7">
+      Encryption
+    </text>
+  </g>
+  
+  <!-- Rates Feature -->
+  <g transform="translate(880, 280)" filter="url(#featShadow)">
+    <rect width="280" height="240" rx="16" fill="white" stroke="url(#featNavy)" stroke-width="2"/>
+    
+    <!-- Icon -->
+    <g transform="translate(140, 70)">
+      <circle r="40" fill="url(#featGold)"/>
+      <text y="15" 
+            text-anchor="middle" 
+            font-family="'Times New Roman', serif" 
+            font-size="48" 
+            font-weight="bold" 
+            fill="white">
+        $
+      </text>
+    </g>
+    
+    <text x="140" y="160" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="24" 
+          font-weight="bold" 
+          fill="url(#featNavy)">
+      Best Rates
+    </text>
+    <text x="140" y="185" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="14" 
+          fill="url(#featNavy)"
+          opacity="0.7">
+      Starting at
+    </text>
+    <text x="140" y="210" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="18" 
+          font-weight="bold"
+          fill="url(#featGold)">
+      4.99% APR
+    </text>
+  </g>
+  
+  <!-- Row 2 -->
+  
+  <!-- 24/7 Feature -->
+  <g transform="translate(200, 580)" filter="url(#featShadow)">
+    <rect width="280" height="240" rx="16" fill="white" stroke="url(#featNavy)" stroke-width="2"/>
+    
+    <!-- Icon -->
+    <g transform="translate(140, 70)">
+      <circle r="40" fill="white" stroke="url(#featNavy)" stroke-width="4"/>
+      <text y="-8" 
+            text-anchor="middle" 
+            font-family="Arial, sans-serif" 
+            font-size="24" 
+            font-weight="bold" 
+            fill="url(#featNavy)">
+        24
+      </text>
+      <line x1="-20" y1="0" x2="20" y2="0" stroke="url(#featGold)" stroke-width="3"/>
+      <text y="20" 
+            text-anchor="middle" 
+            font-family="Arial, sans-serif" 
+            font-size="24" 
+            font-weight="bold" 
+            fill="url(#featNavy)">
+        7
+      </text>
+    </g>
+    
+    <text x="140" y="160" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="24" 
+          font-weight="bold" 
+          fill="url(#featNavy)">
+      Always Available
+    </text>
+    <text x="140" y="185" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="14" 
+          fill="url(#featNavy)"
+          opacity="0.7">
+      Apply Anytime
+    </text>
+    <text x="140" y="210" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="14" 
+          fill="url(#featNavy)"
+          opacity="0.7">
+      Anywhere
+    </text>
+  </g>
+  
+  <!-- Flexibility Feature -->
+  <g transform="translate(540, 580)" filter="url(#featShadow)">
+    <rect width="280" height="240" rx="16" fill="white" stroke="url(#featNavy)" stroke-width="2"/>
+    
+    <!-- Icon -->
+    <g transform="translate(140, 70)">
+      <path d="M -30,-20 L -30,20 M -30,-20 L 30,-20 M -30,20 L 30,20 M 30,-20 L 30,20" 
+            stroke="url(#featNavy)" 
+            stroke-width="4" 
+            stroke-linecap="round"/>
+      <path d="M -10,-20 L -10,20 M 10,-20 L 10,20" 
+            stroke="url(#featGold)" 
+            stroke-width="3" 
+            stroke-linecap="round"/>
+      
+      <!-- Arrows -->
+      <path d="M -35,-15 L -30,-20 L -35,-25" fill="none" stroke="url(#featGold)" stroke-width="2"/>
+      <path d="M 35,15 L 30,20 L 35,25" fill="none" stroke="url(#featGold)" stroke-width="2"/>
+    </g>
+    
+    <text x="140" y="160" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="24" 
+          font-weight="bold" 
+          fill="url(#featNavy)">
+      Flexible Terms
+    </text>
+    <text x="140" y="185" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="14" 
+          fill="url(#featNavy)"
+          opacity="0.7">
+      6 Months to
+    </text>
+    <text x="140" y="210" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="14" 
+          fill="url(#featNavy)"
+          opacity="0.7">
+      7 Years
+    </text>
+  </g>
+  
+  <!-- Support Feature -->
+  <g transform="translate(880, 580)" filter="url(#featShadow)">
+    <rect width="280" height="240" rx="16" fill="white" stroke="url(#featNavy)" stroke-width="2"/>
+    
+    <!-- Icon -->
+    <g transform="translate(140, 70)">
+      <!-- Headset -->
+      <path d="M -25,-10 Q -25,-30 0,-30 Q 25,-30 25,-10" 
+            fill="none" 
+            stroke="url(#featNavy)" 
+            stroke-width="5" 
+            stroke-linecap="round"/>
+      <ellipse cx="-25" cy="0" rx="8" ry="12" fill="url(#featNavy)"/>
+      <ellipse cx="25" cy="0" rx="8" ry="12" fill="url(#featNavy)"/>
+      <path d="M -25,8 Q -30,15 -30,22 L -20,22" 
+            fill="none" 
+            stroke="url(#featGold)" 
+            stroke-width="4" 
+            stroke-linecap="round"/>
+      <circle cx="-15" cy="22" r="5" fill="url(#featGold)"/>
+    </g>
+    
+    <text x="140" y="160" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="24" 
+          font-weight="bold" 
+          fill="url(#featNavy)">
+      Expert Support
+    </text>
+    <text x="140" y="185" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="14" 
+          fill="url(#featNavy)"
+          opacity="0.7">
+      Dedicated Team
+    </text>
+    <text x="140" y="210" 
+          text-anchor="middle" 
+          font-family="Arial, sans-serif" 
+          font-size="14" 
+          fill="url(#featNavy)"
+          opacity="0.7">
+      Ready to Help
+    </text>
+  </g>
+  
+  <!-- Bottom Accent -->
+  <line x1="300" y1="870" x2="900" y2="870" stroke="url(#featGold)" stroke-width="2" opacity="0.5"/>
+</svg>

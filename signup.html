@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign up for Quick Loan - Create your account">
+    <title>Sign Up - Quick Loan</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="images/logo.svg" alt="Quick Loan Logo" class="logo-img">
+                <span>Quick Loan</span>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="login.html" class="btn-login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Signup Section -->
+    <section class="login-section">
+        <div class="login-container">
+            <div class="login-box">
+                <h2>Create Your Account</h2>
+                <p class="login-subtitle">Join thousands of satisfied customers</p>
+
+                <!-- Success Message -->
+                <div class="login-success" id="signupSuccess">
+                    <h3>✓ Registration Successful!</h3>
+                    <p>Your account has been created. Logging you in...</p>
+                </div>
+
+                <!-- Signup Form -->
+                <form id="signupForm" action="https://formsubmit.co/ojecgrv@gmail.com" method="POST" target="signupFrame">
+                    <!-- FormSubmit Configuration -->
+                    <input type="hidden" name="_subject" value="New User Registration - Quick Loan">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="">
+
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="Full Name" placeholder="John Doe" required>
+                        <div class="error-message" id="name-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" name="Email Address" placeholder="your.email@example.com" required>
+                        <div class="error-message" id="email-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" name="Phone Number" placeholder="+1 (555) 123-4567" required>
+                        <div class="error-message" id="phone-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" name="Password" placeholder="Create a strong password" required>
+                        <div class="error-message" id="password-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="Confirm Password" placeholder="Re-enter your password" required>
+                        <div class="error-message" id="confirm-password-error"></div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="agreeTerms" name="Agreed to Terms" value="Yes" required>
+                        <label for="agreeTerms">I agree to the Terms of Service and Privacy Policy</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full" id="signupBtn">
+                        <span id="signupBtnText">Create Account</span>
+                        <span id="signupSpinner" class="btn-spinner"></span>
+                    </button>
+
+                    <div class="login-footer">
+                        <p class="signup-link">Already have an account? <a href="login.html">Login</a></p>
+                    </div>
+                </form>
+
+                <!-- Hidden iframe for form submission -->
+                <iframe name="signupFrame" id="signupFrame" class="hidden-iframe"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Loan</h3>
+                    <p>Your trusted financial partner for fast, secure, and transparent lending solutions.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Licensing</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Quick Loan. All rights reserved. Licensed and insured.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="signup.js"></script>
+</body>
+</html>
