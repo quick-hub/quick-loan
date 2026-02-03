@@ -1,65 +1,19 @@
 /**
  * Signup Form Handler with Authentication
+ * Redirects to index.html after successful registration
  */
 
-// Initialize signup form
 document.addEventListener('DOMContentLoaded', function() {
+    initSignupPage();
+});
+
+// Initialize signup page
+function initSignupPage() {
     const signupForm = document.getElementById('signupForm');
-    const signupBtn = document.getElementById('signupBtn');
-    const signupBtnText = document.getElementById('signupBtnText');
-    const signupSpinner = document.getElementById('signupSpinner');
-    const signupSuccess = document.getElementById('signupSuccess');
     const signupFrame = document.getElementById('signupFrame');
 
     if (signupForm) {
-        signupForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Validate form
-            if (!validateSignupForm()) {
-                return;
-            }
-
-            // Get form data
-            const formData = {
-                fullName: document.getElementById('fullName').value.trim(),
-                email: document.getElementById('signupEmail').value.trim(),
-                phone: document.getElementById('phoneNumber').value.trim(),
-                password: document.getElementById('signupPassword').value
-            };
-
-            // Show loading state
-            signupBtnText.style.display = 'none';
-            signupSpinner.style.display = 'inline-block';
-            signupBtn.disabled = true;
-
-            // Submit form to backend
-            signupForm.submit();
-
-            // Save user credentials to localStorage (simulate registration)
-            setTimeout(function() {
-                // Store user data
-                localStorage.setItem('quickloan_user', JSON.stringify({
-                    name: formData.fullName,
-                    email: formData.email,
-                    phone: formData.phone,
-                    registeredAt: new Date().toISOString()
-                }));
-
-                // Set authentication token
-                localStorage.setItem('quickloan_auth', 'true');
-                localStorage.setItem('quickloan_password', btoa(formData.password)); // Simple encoding
-
-                // Show success message
-                signupForm.style.display = 'none';
-                signupSuccess.style.display = 'block';
-
-                // Redirect to application page after 2 seconds
-                setTimeout(function() {
-                    window.location.href = 'apply.html';
-                }, 2000);
-            }, 1000);
-        });
+        signupForm.addEventListener('submit', handleSignupSubmit);
     }
 
     // Handle iframe load
@@ -68,7 +22,78 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Registration information submitted successfully');
         });
     }
-});
+
+    // Initialize mobile menu
+    initMobileMenu();
+}
+
+// Handle signup form submission
+function handleSignupSubmit(e) {
+    e.preventDefault();
+
+    // Validate form
+    if (!validateSignupForm()) {
+        return;
+    }
+
+    // Get form data
+    const formData = {
+        fullName: document.getElementById('fullName').value.trim(),
+        email: document.getElementById('signupEmail').value.trim(),
+        phone: document.getElementById('phoneNumber').value.trim(),
+        password: document.getElementById('signupPassword').value
+    };
+
+    // Show loading state
+    showLoadingState();
+
+    // Submit form to backend
+    document.getElementById('signupForm').submit();
+
+    // Process registration
+    setTimeout(function() {
+        processRegistration(formData);
+    }, 1000);
+}
+
+// Show loading state
+function showLoadingState() {
+    const signupBtn = document.getElementById('signupBtn');
+    const signupBtnText = document.getElementById('signupBtnText');
+    const signupSpinner = document.getElementById('signupSpinner');
+
+    signupBtnText.classList.add('hidden');
+    signupSpinner.classList.add('visible');
+    signupBtn.disabled = true;
+}
+
+// Process registration - Redirect to index.html
+function processRegistration(formData) {
+    const signupForm = document.getElementById('signupForm');
+    const signupSuccess = document.getElementById('signupSuccess');
+
+    // Store user data
+    localStorage.setItem('quickloan_user', JSON.stringify({
+        name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        registeredAt: new Date().toISOString()
+    }));
+
+    // Set authentication token
+    localStorage.setItem('quickloan_auth', 'true');
+    localStorage.setItem('quickloan_password', btoa(formData.password));
+    localStorage.setItem('quickloan_last_login', new Date().toISOString());
+
+    // Show success message
+    signupForm.classList.add('hidden');
+    signupSuccess.classList.add('visible');
+
+    // Redirect to index.html (home page)
+    setTimeout(function() {
+        window.location.href = 'index.html';
+    }, 2000);
+}
 
 // Validate signup form
 function validateSignupForm() {
@@ -149,36 +174,40 @@ function validateSignupForm() {
     return isValid;
 }
 
-// Helper function to show error
+// Show error message
 function showError(element, message) {
     element.textContent = message;
-    element.style.display = 'block';
+    element.classList.add('visible');
 }
 
-// Helper function to clear all errors
+// Clear all error messages
 function clearErrors() {
     const errors = document.querySelectorAll('.error-message');
     errors.forEach(error => {
         error.textContent = '';
-        error.style.display = 'none';
+        error.classList.remove('visible');
     });
 }
 
 // Mobile menu toggle
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('navMenu');
+function initMobileMenu() {
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
 
-if (hamburger) {
-    hamburger.addEventListener('click', function() {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
+    if (hamburger) {
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+    }
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', function() {
+            if (hamburger && navMenu) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
     });
 }
-
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-menu a').forEach(link => {
-    link.addEventListener('click', function() {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-    });
-});
