@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const ADMIN_USER_KEY = 'quickloan_admin_username';
 
     if (localStorage.getItem(ADMIN_LOGIN_KEY) !== 'true') {
-        window.location.href = 'admin.html';
+        window.location.href = 'admin-login.html';
         return;
     }
 
@@ -391,3 +391,4 @@ window.addEventListener('click', function(e) {
         closeEditAccountModal();
     }
 });
+
