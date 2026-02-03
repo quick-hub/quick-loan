@@ -1,265 +1,378 @@
 /**
- * Index Page Handler - Dynamic Home Page
- * Modifies content on the same page based on authentication status
+ * Index Page Handler – Dynamic Home Page
+ * 
+ * Logged OUT  → page renders exactly as the static index.html (no DOM changes).
+ * Logged IN   → every public-marketing section between .hero and footer is
+ *               removed and replaced with a single, cohesive dashboard:
+ *                 • Personalised hero
+ *                 • Account-overview stats
+ *                 • Quick-action buttons
+ *                 • Loan calculator (full amortisation math)
+ *                 • Recent-activity feed
+ *               Nothing in index.html, styles.css, or main.js needs to change.
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    checkAndUpdatePageContent();
+document.addEventListener('DOMContentLoaded', function () {
+    const isAuthenticated = localStorage.getItem('quickloan_auth') === 'true';
+    const user            = JSON.parse(localStorage.getItem('quickloan_user') || '{}');
+
+    if (isAuthenticated && user.name) {
+        transformToDashboard(user);
+    }
+    // else: static public page – do nothing
 });
 
-// Check authentication and update page content
-function checkAndUpdatePageContent() {
-    const isAuthenticated = localStorage.getItem('quickloan_auth') === 'true';
-    const user = JSON.parse(localStorage.getItem('quickloan_user') || '{}');
-    
-    if (isAuthenticated && user.name) {
-        // User is logged in - transform the page
-        transformPageForAuthenticatedUser(user);
-    } else {
-        // User is not logged in - keep default public page
-        ensurePublicPageState();
-    }
+/* ─────────────────────────────────────────────
+   ORCHESTRATOR
+   ───────────────────────────────────────────── */
+function transformToDashboard(user) {
+    updateNav(user);
+    updateHero(user);
+    replaceBodySections();   // removes public sections, injects dashboard HTML
+    loadUserStats();         // fills stat numbers from localStorage
+    initCalculator();        // wires up the slider-based loan calculator
 }
 
-// Transform page for authenticated user
-function transformPageForAuthenticatedUser(user) {
-    // Update navigation
-    updateNavigationForAuth(user);
-    
-    // Update hero section
-    updateHeroForAuth(user);
-    
-    // Add dashboard statistics section
-    addDashboardStatsSection();
-    
-    // Add loan calculator
-    addLoanCalculatorSection();
+/* ─────────────────────────────────────────────
+   1. NAVIGATION  –  Login  →  Logout
+   ───────────────────────────────────────────── */
+function updateNav() {
+    const loginBtn = document.querySelector('.nav-menu .btn-login');
+    if (!loginBtn) return;
+
+    loginBtn.textContent = 'Logout';
+    loginBtn.href        = '#';
+    loginBtn.id          = 'logoutBtn';
+    loginBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (confirm('Are you sure you want to logout?')) {
+            localStorage.removeItem('quickloan_auth');
+            localStorage.removeItem('quickloan_last_login');
+            window.location.reload();
+        }
+    });
 }
 
-// Update navigation for authenticated users
-function updateNavigationForAuth(user) {
-    const navMenu = document.querySelector('.nav-menu');
-    if (!navMenu) return;
-    
-    // Replace Login button with Logout
-    const loginBtn = navMenu.querySelector('.btn-login');
-    if (loginBtn) {
-        loginBtn.textContent = 'Logout';
-        loginBtn.href = '#';
-        loginBtn.id = 'logoutBtn';
-        
-        // Setup logout handler
-        loginBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            handleLogout();
-        });
-    }
-}
-
-// Update hero section for authenticated users
-function updateHeroForAuth(user) {
+/* ─────────────────────────────────────────────
+   2. HERO  –  personalised welcome
+   ───────────────────────────────────────────── */
+function updateHero(user) {
     const heroContent = document.querySelector('.hero-content');
     if (!heroContent) return;
-    
+
     const firstName = user.name ? user.name.split(' ')[0] : 'User';
-    
-    // Update hero heading and text
+
     const h1 = heroContent.querySelector('h1');
-    const p = heroContent.querySelector('p');
-    
-    if (h1) h1.textContent = `Welcome Back, ${firstName}!`;
-    if (p) p.textContent = 'Manage your loans and explore new financial opportunities.';
-    
-    // Update hero buttons
+    const p  = heroContent.querySelector('p');
+    if (h1) h1.textContent = 'Welcome Back, ' + firstName + '!';
+    if (p)  p.textContent  = 'Manage your loans, check your status, or start a new application.';
+
     const heroButtons = heroContent.querySelector('.hero-buttons');
     if (heroButtons) {
-        heroButtons.innerHTML = `
-            <a href="apply.html" class="btn btn-primary btn-large">Apply for New Loan</a>
-            <a href="#loan-calculator" class="btn btn-secondary btn-large">Loan Calculator</a>
-        `;
+        heroButtons.innerHTML =
+            '<a href="apply.html"        class="btn btn-primary   btn-large">Apply for New Loan</a>' +
+            '<a href="#loan-calculator"   class="btn btn-secondary btn-large">Loan Calculator</a>';
     }
 }
 
-// Add dashboard statistics section
-function addDashboardStatsSection() {
-    const hero = document.querySelector('.hero');
-    if (!hero) return;
-    
-    // Check if dashboard stats already exist
-    if (document.querySelector('.dashboard-stats')) return;
-    
-    const dashboardSection = document.createElement('section');
-    dashboardSection.className = 'dashboard-stats';
-    dashboardSection.innerHTML = `
-        <div class="container">
-            <h2 class="section-title">Your Account Overview</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">💼</div>
-                    <div class="stat-number" id="userActiveLoans">0</div>
-                    <div class="stat-label">Active Applications</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">✓</div>
-                    <div class="stat-number" id="userApprovedLoans">0</div>
-                    <div class="stat-label">Approved Loans</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📊</div>
-                    <div class="stat-number" id="userTotalBorrowed">$0</div>
-                    <div class="stat-label">Total Borrowed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⭐</div>
-                    <div class="stat-number" id="userCreditScore">Good</div>
-                    <div class="stat-label">Credit Rating</div>
-                </div>
-            </div>
+/* ─────────────────────────────────────────────
+   3. SWAP BODY  –  remove public, inject dashboard
+   ───────────────────────────────────────────── */
+function replaceBodySections() {
+    // Selectors that cover every public section sitting between .hero and footer.
+    // We target by class; the two .services sections, .features, .how-it-works,
+    // .stats-section, and .cta are all removed in one pass.
+    const publicSelectors = [
+        '.services',
+        '.features',
+        '.how-it-works',
+        '.stats-section',
+        '.cta'
+    ];
+
+    publicSelectors.forEach(function (sel) {
+        document.querySelectorAll(sel).forEach(function (el) {
+            el.remove();
+        });
+    });
+
+    // Build the full dashboard markup and inject it right before the footer.
+    const footer  = document.querySelector('.footer');
+    const wrapper = document.createElement('div');
+    wrapper.id    = 'dashboard-sections';
+    wrapper.innerHTML = dashboardHTML();
+
+    document.body.insertBefore(wrapper, footer);
+}
+
+/* ─────────────────────────────────────────────
+   4. DASHBOARD HTML  –  single source of truth
+   ───────────────────────────────────────────── */
+function dashboardHTML() {
+    return /* html */ `
+    <!-- ── Account Overview ── -->
+    <section class="dashboard-stats">
+      <div class="container">
+        <h2 class="section-title">Your Account Overview</h2>
+        <div class="stats-grid">
+
+          <div class="stat-item">
+            <div class="stat-icon-wrap">💼</div>
+            <div class="stat-number" id="dashActiveLoans">0</div>
+            <div class="stat-label">Active Applications</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon-wrap">✓</div>
+            <div class="stat-number" id="dashApprovedLoans">0</div>
+            <div class="stat-label">Approved Loans</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon-wrap">📊</div>
+            <div class="stat-number" id="dashTotalBorrowed">$0</div>
+            <div class="stat-label">Total Borrowed</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon-wrap">⭐</div>
+            <div class="stat-number" id="dashCreditScore">Good</div>
+            <div class="stat-label">Credit Rating</div>
+          </div>
+
         </div>
-    `;
-    
-    // Insert after hero section
-    hero.parentNode.insertBefore(dashboardSection, hero.nextSibling);
-    
-    // Load user statistics
-    loadUserStatistics();
-}
+      </div>
+    </section>
 
-// Load user statistics from localStorage
-function loadUserStatistics() {
-    const userStats = JSON.parse(localStorage.getItem('quickloan_stats') || '{}');
-    
-    const activeLoansEl = document.getElementById('userActiveLoans');
-    const approvedLoansEl = document.getElementById('userApprovedLoans');
-    const totalBorrowedEl = document.getElementById('userTotalBorrowed');
-    const creditScoreEl = document.getElementById('userCreditScore');
-    
-    if (activeLoansEl) activeLoansEl.textContent = userStats.activeLoans || 0;
-    if (approvedLoansEl) approvedLoansEl.textContent = userStats.approvedLoans || 0;
-    if (totalBorrowedEl) totalBorrowedEl.textContent = userStats.totalBorrowed || '$0';
-    if (creditScoreEl) creditScoreEl.textContent = userStats.creditScore || 'Good';
-}
+    <!-- ── Quick Actions ── -->
+    <section class="services">
+      <div class="container">
+        <h2 class="section-title">Quick Actions</h2>
+        <div class="services-grid">
 
-// Add loan calculator section
-function addLoanCalculatorSection() {
-    // Find the last services section
-    const services = document.querySelectorAll('.services');
-    if (!services.length || document.querySelector('.loan-calculator')) return;
-    
-    const lastService = services[services.length - 1];
-    
-    const calculatorSection = document.createElement('section');
-    calculatorSection.className = 'loan-calculator';
-    calculatorSection.id = 'loan-calculator';
-    calculatorSection.innerHTML = `
-        <div class="container">
-            <h2 class="section-title">Loan Calculator</h2>
-            <div class="calculator-wrapper">
-                <div class="calculator-inputs-section">
-                    <div class="calc-input-group">
-                        <label for="calcLoanAmount">Loan Amount: <span id="loanAmountDisplay">$10,000</span></label>
-                        <input type="range" id="calcLoanAmount" min="1000" max="500000" step="1000" value="10000">
-                    </div>
-                    
-                    <div class="calc-input-group">
-                        <label for="calcLoanTerm">Loan Term: <span id="loanTermDisplay">12 months</span></label>
-                        <input type="range" id="calcLoanTerm" min="6" max="84" step="6" value="12">
-                    </div>
-                    
-                    <div class="calc-input-group">
-                        <label for="calcInterestRate">Interest Rate: <span id="interestRateDisplay">4.99%</span></label>
-                        <input type="range" id="calcInterestRate" min="3" max="20" step="0.1" value="4.99">
-                    </div>
-                </div>
-                
-                <div class="calculator-results-section">
-                    <h3>Estimated Monthly Payment</h3>
-                    <div class="monthly-payment-display" id="monthlyPayment">$856</div>
-                    
-                    <div class="results-breakdown">
-                        <div class="result-row">
-                            <span>Total Interest:</span>
-                            <span id="totalInterest">$272</span>
-                        </div>
-                        <div class="result-row">
-                            <span>Total Amount:</span>
-                            <span id="totalAmount">$10,272</span>
-                        </div>
-                    </div>
-                    
-                    <a href="apply.html" class="btn btn-primary btn-full">Apply for This Loan</a>
-                </div>
-            </div>
+          <a href="apply.html" class="service-card" style="text-decoration:none; color:inherit;">
+            <div class="service-icon">🚀</div>
+            <h3>New Application</h3>
+            <p>Start a fresh loan application in just a few minutes.</p>
+          </a>
+
+          <a href="personal-loan.html" class="service-card" style="text-decoration:none; color:inherit;">
+            <div class="service-icon">💼</div>
+            <h3>Personal Loan</h3>
+            <p>Flexible funds for any personal financial need.</p>
+          </a>
+
+          <a href="business-loan.html" class="service-card" style="text-decoration:none; color:inherit;">
+            <div class="service-icon">🏢</div>
+            <h3>Business Loan</h3>
+            <p>Capital to grow or launch your venture.</p>
+          </a>
+
+          <a href="emergency-loan.html" class="service-card" style="text-decoration:none; color:inherit;">
+            <div class="service-icon">🚨</div>
+            <h3>Emergency Loan</h3>
+            <p>Fast funds deposited within 24 hours.</p>
+          </a>
+
         </div>
+      </div>
+    </section>
+
+    <!-- ── Loan Calculator ── -->
+    <section class="loan-calculator" id="loan-calculator" style="padding:5rem 0;">
+      <div class="container">
+        <h2 class="section-title">Loan Calculator</h2>
+
+        <div class="calculator-wrapper" style="
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:3rem;
+            max-width:900px;
+            margin:0 auto;
+            background:rgba(26,90,122,0.45);
+            border:1px solid rgba(100,200,230,0.3);
+            border-radius:14px;
+            padding:2.5rem;
+        ">
+          <!-- inputs -->
+          <div class="calculator-inputs-section">
+
+            <div style="margin-bottom:1.8rem;">
+              <label style="display:block; margin-bottom:0.6rem; font-weight:600; color:#d0e8f2;">
+                Loan Amount: <span id="calcAmountLabel" style="color:#00d4ff;">$10,000</span>
+              </label>
+              <input type="range" id="calcAmount" min="1000" max="500000" step="1000" value="10000"
+                     style="width:100%; accent-color:#00b4d8; cursor:pointer;">
+              <div style="display:flex; justify-content:space-between; color:#7ab8d0; font-size:0.82rem; margin-top:4px;">
+                <span>$1,000</span><span>$500,000</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom:1.8rem;">
+              <label style="display:block; margin-bottom:0.6rem; font-weight:600; color:#d0e8f2;">
+                Loan Term: <span id="calcTermLabel" style="color:#00d4ff;">12 months</span>
+              </label>
+              <input type="range" id="calcTerm" min="6" max="84" step="6" value="12"
+                     style="width:100%; accent-color:#00b4d8; cursor:pointer;">
+              <div style="display:flex; justify-content:space-between; color:#7ab8d0; font-size:0.82rem; margin-top:4px;">
+                <span>6 mo</span><span>84 mo</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom:0.5rem;">
+              <label style="display:block; margin-bottom:0.6rem; font-weight:600; color:#d0e8f2;">
+                Interest Rate: <span id="calcRateLabel" style="color:#00d4ff;">4.99%</span>
+              </label>
+              <input type="range" id="calcRate" min="3" max="20" step="0.1" value="4.99"
+                     style="width:100%; accent-color:#00b4d8; cursor:pointer;">
+              <div style="display:flex; justify-content:space-between; color:#7ab8d0; font-size:0.82rem; margin-top:4px;">
+                <span>3%</span><span>20%</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- results -->
+          <div class="calculator-results-section" style="display:flex; flex-direction:column; justify-content:center;">
+            <h3 style="color:#b0d4e3; font-size:1rem; margin-bottom:0.4rem; text-align:center;">Estimated Monthly Payment</h3>
+            <div id="calcMonthly" style="
+                font-size:3rem; font-weight:700; color:#00d4ff; text-align:center; margin-bottom:1.5rem;
+            ">$856</div>
+
+            <div style="border-top:1px solid rgba(100,200,230,0.25); padding-top:1.2rem;">
+              <div style="display:flex; justify-content:space-between; padding:0.55rem 0; border-bottom:1px solid rgba(100,200,230,0.15);">
+                <span style="color:#b0d4e3;">Principal</span>
+                <span id="calcPrincipal" style="color:#fff; font-weight:600;">$10,000</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; padding:0.55rem 0; border-bottom:1px solid rgba(100,200,230,0.15);">
+                <span style="color:#b0d4e3;">Total Interest</span>
+                <span id="calcInterest" style="color:#fff; font-weight:600;">$272</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; padding:0.55rem 0;">
+                <span style="color:#b0d4e3; font-weight:600;">Total Repayment</span>
+                <span id="calcTotal" style="color:#00d4ff; font-weight:700;">$10,272</span>
+              </div>
+            </div>
+
+            <a href="apply.html" class="btn btn-primary btn-full" style="margin-top:1.8rem;">Apply for This Loan</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Recent Activity ── -->
+    <section class="services" style="padding-top:0;">
+      <div class="container">
+        <h2 class="section-title">Recent Activity</h2>
+
+        <div style="
+            max-width:700px; margin:0 auto;
+            background:rgba(26,90,122,0.45);
+            border:1px solid rgba(100,200,230,0.3);
+            border-radius:14px; overflow:hidden;
+        ">
+          <!-- each row -->
+          <div id="activityFeed"></div>
+
+          <div style="text-align:center; padding:1.4rem 0 0.6rem;">
+            <a href="apply.html" class="btn btn-secondary" style="padding:0.7rem 2rem; font-size:0.95rem;">
+              View All Applications
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
     `;
-    
-    // Insert after the last services section
-    lastService.parentNode.insertBefore(calculatorSection, lastService.nextSibling);
-    
-    // Initialize calculator functionality
-    initializeLoanCalculator();
 }
 
-// Initialize loan calculator functionality
-function initializeLoanCalculator() {
-    const loanAmountSlider = document.getElementById('calcLoanAmount');
-    const loanTermSlider = document.getElementById('calcLoanTerm');
-    const interestRateSlider = document.getElementById('calcInterestRate');
-    
-    if (!loanAmountSlider || !loanTermSlider || !interestRateSlider) return;
-    
-    // Update displays and calculate
-    function updateCalculator() {
-        const amount = parseInt(loanAmountSlider.value);
-        const term = parseInt(loanTermSlider.value);
-        const rate = parseFloat(interestRateSlider.value);
-        
-        // Update display labels
-        document.getElementById('loanAmountDisplay').textContent = `$${amount.toLocaleString()}`;
-        document.getElementById('loanTermDisplay').textContent = `${term} months`;
-        document.getElementById('interestRateDisplay').textContent = `${rate}%`;
-        
-        // Calculate loan payments
-        const monthlyRate = rate / 100 / 12;
-        const monthlyPayment = (amount * monthlyRate * Math.pow(1 + monthlyRate, term)) / 
-                              (Math.pow(1 + monthlyRate, term) - 1);
-        const totalAmount = monthlyPayment * term;
-        const totalInterest = totalAmount - amount;
-        
-        // Update results
-        document.getElementById('monthlyPayment').textContent = `$${Math.round(monthlyPayment).toLocaleString()}`;
-        document.getElementById('totalInterest').textContent = `$${Math.round(totalInterest).toLocaleString()}`;
-        document.getElementById('totalAmount').textContent = `$${Math.round(totalAmount).toLocaleString()}`;
+/* ─────────────────────────────────────────────
+   5. POPULATE STATS  –  from localStorage
+   ───────────────────────────────────────────── */
+function loadUserStats() {
+    const stats = JSON.parse(localStorage.getItem('quickloan_stats') || '{}');
+
+    setText('dashActiveLoans',  stats.activeLoans   || '0');
+    setText('dashApprovedLoans', stats.approvedLoans || '0');
+    setText('dashTotalBorrowed', stats.totalBorrowed || '$0');
+    setText('dashCreditScore',   stats.creditScore   || 'Good');
+
+    // Populate the recent-activity feed from stored data (or show placeholder rows)
+    populateActivity(stats.recentActivity);
+}
+
+function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+}
+
+/* ─────────────────────────────────────────────
+   6. ACTIVITY FEED  –  sample rows (or real data)
+   ───────────────────────────────────────────── */
+function populateActivity(activityArray) {
+    const feed = document.getElementById('activityFeed');
+    if (!feed) return;
+
+    // Fall back to demo rows when no real data is stored yet
+    const items = (activityArray && activityArray.length)
+        ? activityArray
+        : [
+            { date: 'Jan 28, 2025', type: 'Personal Loan',  amount: '$15,000', status: 'Approved',   statusColor: '#51cf66' },
+            { date: 'Jan 22, 2025', type: 'Business Loan',  amount: '$50,000', status: 'Pending',    statusColor: '#ffc107' },
+            { date: 'Jan 15, 2025', type: 'Emergency Loan', amount: '$5,000',  status: 'Funded',     statusColor: '#00d4ff' },
+            { date: 'Dec 30, 2024', type: 'Personal Loan',  amount: '$8,000',  status: 'Completed',  statusColor: '#b0d4e3' }
+          ];
+
+    feed.innerHTML = items.map(function (item) {
+        return '<div style="display:flex; justify-content:space-between; align-items:center; padding:1rem 1.8rem; border-bottom:1px solid rgba(100,200,230,0.15);">' +
+            '<div>' +
+                '<div style="font-weight:600; color:#fff; margin-bottom:2px;">' + item.type + '</div>' +
+                '<div style="font-size:0.82rem; color:#7ab8d0;">' + item.date + '</div>' +
+            '</div>' +
+            '<div style="text-align:right;">' +
+                '<div style="font-weight:700; color:#fff; margin-bottom:2px;">' + item.amount + '</div>' +
+                '<span style="font-size:0.78rem; font-weight:600; color:' + item.statusColor + ';">' + item.status + '</span>' +
+            '</div>' +
+        '</div>';
+    }).join('');
+}
+
+/* ─────────────────────────────────────────────
+   7. LOAN CALCULATOR  –  real amortisation math
+   ───────────────────────────────────────────── */
+function initCalculator() {
+    const amountSlider = document.getElementById('calcAmount');
+    const termSlider   = document.getElementById('calcTerm');
+    const rateSlider   = document.getElementById('calcRate');
+
+    if (!amountSlider || !termSlider || !rateSlider) return;
+
+    function recalc() {
+        const amount = parseInt(amountSlider.value, 10);
+        const term   = parseInt(termSlider.value, 10);
+        const rate   = parseFloat(rateSlider.value);
+
+        // live labels
+        document.getElementById('calcAmountLabel').textContent = '$' + amount.toLocaleString();
+        document.getElementById('calcTermLabel').textContent   = term + ' months';
+        document.getElementById('calcRateLabel').textContent   = rate.toFixed(2) + '%';
+
+        // standard amortisation formula
+        const r       = rate / 100 / 12;                                          // monthly rate
+        const n       = term;                                                     // number of payments
+        const monthly = r === 0 ? amount / n                                      // edge-case: 0 %
+                                : (amount * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+        const total   = monthly * n;
+        const interest = total - amount;
+
+        document.getElementById('calcMonthly').textContent  = '$' + Math.round(monthly).toLocaleString();
+        document.getElementById('calcPrincipal').textContent = '$' + amount.toLocaleString();
+        document.getElementById('calcInterest').textContent  = '$' + Math.round(interest).toLocaleString();
+        document.getElementById('calcTotal').textContent     = '$' + Math.round(total).toLocaleString();
     }
-    
-    // Add event listeners
-    loanAmountSlider.addEventListener('input', updateCalculator);
-    loanTermSlider.addEventListener('input', updateCalculator);
-    interestRateSlider.addEventListener('input', updateCalculator);
-    
-    // Initial calculation
-    updateCalculator();
-}
 
-// Ensure public page state (no changes needed for logged out users)
-function ensurePublicPageState() {
-    // Page is already in public state by default
-    // No changes needed
-}
+    amountSlider.addEventListener('input', recalc);
+    termSlider.addEventListener('input', recalc);
+    rateSlider.addEventListener('input', recalc);
 
-// Handle user logout
-function handleLogout() {
-    // Show confirmation
-    if (confirm('Are you sure you want to logout?')) {
-        // Clear authentication data
-        localStorage.removeItem('quickloan_auth');
-        localStorage.removeItem('quickloan_last_login');
-        
-        // Optionally keep user data for easier re-login
-        // localStorage.removeItem('quickloan_user');
-        // localStorage.removeItem('quickloan_password');
-        
-        // Reload page to show public version
-        window.location.reload();
-    }
+    recalc(); // initial render
 }
