@@ -4,15 +4,19 @@
 
 // Check authentication
 document.addEventListener('DOMContentLoaded', function() {
-    if (localStorage.getItem('adminLoggedIn') !== 'true') {
+    // Use unique keys for admin authentication
+    const ADMIN_LOGIN_KEY = 'quickloan_admin_loggedin';
+    const ADMIN_USER_KEY = 'quickloan_admin_username';
+
+    if (localStorage.getItem(ADMIN_LOGIN_KEY) !== 'true') {
         window.location.href = 'admin.html';
         return;
     }
-    
+
     // Set username
-    const username = localStorage.getItem('adminUsername') || 'Administrator';
+    const username = localStorage.getItem(ADMIN_USER_KEY) || 'Administrator';
     document.getElementById('adminUser').textContent = username;
-    
+
     // Initialize
     loadSettings();
     loadAccounts();
@@ -24,8 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Logout function
 function logout() {
-    localStorage.removeItem('adminLoggedIn');
-    localStorage.removeItem('adminUsername');
+    // Use unique keys for admin authentication
+    const ADMIN_LOGIN_KEY = 'quickloan_admin_loggedin';
+    const ADMIN_USER_KEY = 'quickloan_admin_username';
+    localStorage.removeItem(ADMIN_LOGIN_KEY);
+    localStorage.removeItem(ADMIN_USER_KEY);
     window.location.href = 'admin.html';
 }
 
