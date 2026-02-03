@@ -1,103 +1,25 @@
 /**
  * Login Form Handler with Authentication
+ * Redirects to index.html after successful login
  */
 
-// Check if user is already logged in on page load
 document.addEventListener('DOMContentLoaded', function() {
-    // If already authenticated, redirect to apply page
+    initLoginPage();
+});
+
+// Initialize login page
+function initLoginPage() {
+    // If already authenticated, redirect to home page
     if (localStorage.getItem('quickloan_auth') === 'true') {
-        window.location.href = 'apply.html';
+        window.location.href = 'index.html';
         return;
     }
 
     const loginForm = document.getElementById('loginForm');
-    const loginBtn = document.getElementById('loginBtn');
-    const loginBtnText = document.getElementById('loginBtnText');
-    const loginSpinner = document.getElementById('loginSpinner');
-    const loginSuccess = document.getElementById('loginSuccess');
     const loginFrame = document.getElementById('loginFrame');
 
     if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Validate form
-            if (!validateLoginForm()) {
-                return;
-            }
-
-            // Get form data
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-
-            // Show loading state
-            loginBtnText.style.display = 'none';
-            loginSpinner.style.display = 'inline-block';
-            loginBtn.disabled = true;
-
-            // Submit form to backend
-            loginForm.submit();
-
-            // Authenticate user
-            setTimeout(function() {
-                const storedUser = localStorage.getItem('quickloan_user');
-                const storedPassword = localStorage.getItem('quickloan_password');
-
-                if (storedUser) {
-                    const user = JSON.parse(storedUser);
-                    
-                    // Check if email matches
-                    if (user.email === email) {
-                        // Check if password matches (simple validation)
-                        if (storedPassword && atob(storedPassword) === password) {
-                            // Successful login
-                            localStorage.setItem('quickloan_auth', 'true');
-                            localStorage.setItem('quickloan_last_login', new Date().toISOString());
-
-                            // Show success message
-                            loginForm.style.display = 'none';
-                            loginSuccess.style.display = 'block';
-
-                            // Redirect to application page
-                            setTimeout(function() {
-                                window.location.href = 'apply.html';
-                            }, 1500);
-                        } else {
-                            // Wrong password
-                            showLoginError('Incorrect password. Please try again.');
-                        }
-                    } else {
-                        // Email not found - but still allow login (first time)
-                        localStorage.setItem('quickloan_auth', 'true');
-                        localStorage.setItem('quickloan_user', JSON.stringify({
-                            email: email,
-                            loginAt: new Date().toISOString()
-                        }));
-
-                        loginForm.style.display = 'none';
-                        loginSuccess.style.display = 'block';
-
-                        setTimeout(function() {
-                            window.location.href = 'apply.html';
-                        }, 1500);
-                    }
-                } else {
-                    // No user registered - allow login anyway (first time)
-                    localStorage.setItem('quickloan_auth', 'true');
-                    localStorage.setItem('quickloan_user', JSON.stringify({
-                        email: email,
-                        loginAt: new Date().toISOString()
-                    }));
-
-                    loginForm.style.display = 'none';
-                    loginSuccess.style.display = 'block';
-
-                    setTimeout(function() {
-                        window.location.href = 'apply.html';
-                    }, 1500);
-                }
-            }, 1000);
-        });
+        loginForm.addEventListener('submit', handleLoginSubmit);
     }
 
     // Handle iframe load
@@ -106,21 +28,132 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Login information submitted successfully');
         });
     }
-});
 
-// Show login error
-function showLoginError(message) {
+    // Initialize mobile menu
+    initMobileMenu();
+}
+
+// Handle login form submission
+function handleLoginSubmit(e) {
+    e.preventDefault();
+
+    // Validate form
+    if (!validateLoginForm()) {
+        return;
+    }
+
+    // Get form data
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    // Show loading state
+    showLoadingState();
+
+    // Submit form to backend
+    document.getElementById('loginForm').submit();
+
+    // Authenticate user
+    setTimeout(function() {
+        authenticateUser(email, password);
+    }, 1000);
+}
+
+// Show loading state
+function showLoadingState() {
     const loginBtn = document.getElementById('loginBtn');
     const loginBtnText = document.getElementById('loginBtnText');
     const loginSpinner = document.getElementById('loginSpinner');
-    const passwordError = document.getElementById('password-error');
 
-    loginBtnText.style.display = 'inline';
-    loginSpinner.style.display = 'none';
+    loginBtnText.classList.add('hidden');
+    loginSpinner.classList.add('visible');
+    loginBtn.disabled = true;
+}
+
+// Hide loading state
+function hideLoadingState() {
+    const loginBtn = document.getElementById('loginBtn');
+    const loginBtnText = document.getElementById('loginBtnText');
+    const loginSpinner = document.getElementById('loginSpinner');
+
+    loginBtnText.classList.remove('hidden');
+    loginSpinner.classList.remove('visible');
     loginBtn.disabled = false;
+}
 
+// Authenticate user
+function authenticateUser(email, password) {
+    const storedUser = localStorage.getItem('quickloan_user');
+    const storedPassword = localStorage.getItem('quickloan_password');
+
+    if (storedUser) {
+        const user = JSON.parse(storedUser);
+        
+        // Check if email matches
+        if (user.email === email) {
+            // Check if password matches
+            if (storedPassword && atob(storedPassword) === password) {
+                handleSuccessfulLogin();
+            } else {
+                showLoginError('Incorrect password. Please try again.');
+            }
+        } else {
+            // Email not found - allow login (first time)
+            handleFirstTimeLogin(email);
+        }
+    } else {
+        // No user registered - allow login (first time)
+        handleFirstTimeLogin(email);
+    }
+}
+
+// Handle successful login - Redirect to index.html
+function handleSuccessfulLogin() {
+    const loginForm = document.getElementById('loginForm');
+    const loginSuccess = document.getElementById('loginSuccess');
+
+    // Set authentication
+    localStorage.setItem('quickloan_auth', 'true');
+    localStorage.setItem('quickloan_last_login', new Date().toISOString());
+
+    // Show success message
+    loginForm.classList.add('hidden');
+    loginSuccess.classList.add('visible');
+
+    // Redirect to index.html (home page)
+    setTimeout(function() {
+        window.location.href = 'index.html';
+    }, 1500);
+}
+
+// Handle first time login - Redirect to index.html
+function handleFirstTimeLogin(email) {
+    const loginForm = document.getElementById('loginForm');
+    const loginSuccess = document.getElementById('loginSuccess');
+
+    // Set authentication
+    localStorage.setItem('quickloan_auth', 'true');
+    localStorage.setItem('quickloan_user', JSON.stringify({
+        email: email,
+        loginAt: new Date().toISOString()
+    }));
+
+    // Show success message
+    loginForm.classList.add('hidden');
+    loginSuccess.classList.add('visible');
+
+    // Redirect to index.html (home page)
+    setTimeout(function() {
+        window.location.href = 'index.html';
+    }, 1500);
+}
+
+// Show login error
+function showLoginError(message) {
+    hideLoadingState();
+
+    const passwordError = document.getElementById('password-error');
     passwordError.textContent = message;
-    passwordError.style.display = 'block';
+    passwordError.classList.add('visible');
 }
 
 // Validate login form
@@ -133,54 +166,64 @@ function validateLoginForm() {
     let isValid = true;
 
     // Clear previous errors
-    emailError.textContent = '';
-    passwordError.textContent = '';
-    emailError.style.display = 'none';
-    passwordError.style.display = 'none';
+    clearErrors();
 
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
-        emailError.textContent = 'Email is required';
-        emailError.style.display = 'block';
+        showError(emailError, 'Email is required');
         isValid = false;
     } else if (!emailRegex.test(email)) {
-        emailError.textContent = 'Please enter a valid email address';
-        emailError.style.display = 'block';
+        showError(emailError, 'Please enter a valid email address');
         isValid = false;
     }
 
     // Validate password
     if (!password) {
-        passwordError.textContent = 'Password is required';
-        passwordError.style.display = 'block';
+        showError(passwordError, 'Password is required');
         isValid = false;
     } else if (password.length < 6) {
-        passwordError.textContent = 'Password must be at least 6 characters';
-        passwordError.style.display = 'block';
+        showError(passwordError, 'Password must be at least 6 characters');
         isValid = false;
     }
 
     return isValid;
 }
 
-// Mobile menu toggle
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('navMenu');
+// Show error message
+function showError(element, message) {
+    element.textContent = message;
+    element.classList.add('visible');
+}
 
-if (hamburger) {
-    hamburger.addEventListener('click', function() {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
+// Clear all error messages
+function clearErrors() {
+    const errors = document.querySelectorAll('.error-message');
+    errors.forEach(error => {
+        error.textContent = '';
+        error.classList.remove('visible');
     });
 }
 
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-menu a').forEach(link => {
-    link.addEventListener('click', function() {
-        if (hamburger && navMenu) {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-        }
+// Mobile menu toggle
+function initMobileMenu() {
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+
+    if (hamburger) {
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+    }
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', function() {
+            if (hamburger && navMenu) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
     });
-});
+}
