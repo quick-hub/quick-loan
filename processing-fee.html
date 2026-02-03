@@ -18,7 +18,7 @@
         <div class="success-message" id="paymentSuccess">
             <h3>✓ Payment Submitted Successfully!</h3>
             <p>Thank you for your payment. Your loan application is now being processed. We will contact you within 24 hours with an update on your application status.</p>
-            <a href="index.html" class="btn btn-primary" style="margin-top: 1.5rem; display: inline-block;">Return to Home</a>
+            <a href="index.html" class="btn btn-primary btn-return-home">Return to Home</a>
         </div>
 
         <!-- Application Summary -->
@@ -72,18 +72,18 @@
         </div>
 
         <!-- Payment Form -->
-        <div id="paymentForm" class="step active" style="display: none;">
+        <div id="paymentForm" class="step active">
             <!-- This section will be replaced by admin-configured payment accounts -->
         </div>
 
         <!-- Payment Instructions Section (shows after clicking pay) -->
-        <div id="paymentInstructions" class="step" style="display: none;">
+        <div id="paymentInstructions" class="step">
             <h2 class="step-title">Payment Instructions</h2>
             <div id="selectedAccountDetails"></div>
         </div>
 
         <!-- Hidden iframe for form submission -->
-        <iframe name="paymentFrame" id="paymentFrame" class="hidden-iframe"></iframe>
+        <iframe name="paymentFrame" id="paymentFrame" class="hidden-iframe" title="paymentForm"></iframe>
     </main>
 
     <footer>
