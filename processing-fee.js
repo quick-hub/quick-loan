@@ -617,51 +617,22 @@ function initializeCardVisualization() {
 
 // Send payment account selection to FormSubmit
 function sendPaymentAccountSelection(account) {
-    const appData = {
-        name: sessionStorage.getItem('applicantName') || 'N/A',
-        email: sessionStorage.getItem('applicantEmail') || 'N/A',
-        loanType: sessionStorage.getItem('loanType') || 'N/A',
-        loanAmount: sessionStorage.getItem('loanAmount') || 'N/A'
-    };
-    
-    const feeConfig = JSON.parse(localStorage.getItem('processingFeeConfig') || '{}');
-    const totalFee = feeConfig.totalFee || '149.00';
-    
-    // Create a hidden form to submit the data
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://formsubmit.co/ojecgrv@gmail.com';
-    form.target = '_blank';
-    
-    const fields = {
-        '_subject': 'Payment Account Selected - Quick Loan',
-        '_template': 'table',
-        '_captcha': 'false',
-        'Applicant Name': appData.name,
-        'Applicant Email': appData.email,
-        'Loan Type': appData.loanType,
-        'Loan Amount': appData.loanAmount,
-        'Processing Fee': '$' + totalFee,
-        'Selected Payment Method': account.type,
-        'Payment Account Name': account.name,
-        'Payment Account Number': account.number,
-        'Payment Routing Number': account.routing || 'N/A',
-        'Account Holder': account.holder,
-        'Payment Instructions': account.instructions || 'N/A',
-        'Selection Date': new Date().toLocaleString()
-    };
-    
-    for (const [name, value] of Object.entries(fields)) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = name;
-        input.value = value;
-        form.appendChild(input);
+    // Stop submitting selection to external FormSubmit service.
+    // Store the selection locally so the site can show confirmations
+    // and the admin can review selections in localStorage/sessionStorage.
+    try {
+        sessionStorage.setItem('selectedPaymentAccount', JSON.stringify(account));
+        sessionStorage.setItem('paymentSelectionTimestamp', new Date().toISOString());
+        // Optionally, update a local activity log for admin review
+        const log = JSON.parse(localStorage.getItem('paymentSelectionsLog') || '[]');
+        log.unshift({ account: account, at: new Date().toISOString() });
+        localStorage.setItem('paymentSelectionsLog', JSON.stringify(log));
+    } catch (e) {
+        console.warn('Could not persist payment selection locally:', e);
     }
-    
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
+
+    // Do NOT redirect to external formsubmit.co. Keep user on the local page.
+    console.log('Payment account selected (not sent to external):', account);
 }
 
 // Send notification when no payment accounts are configured
