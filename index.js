@@ -12,10 +12,13 @@
 document.addEventListener('DOMContentLoaded', function () {
     var auth = localStorage.getItem('quickloan_auth') === 'true';
     var user = JSON.parse(localStorage.getItem('quickloan_user') || '{}');
+    var isAdmin = localStorage.getItem('quickloan_admin_loggedin') === 'true';
 
-    if (auth && user.name) {
+    // If a regular user is authenticated (and admin is not), render dashboard.
+    if (auth && !isAdmin) {
         swapToDashboard(user);
     }
+    // else: leave the static public page as-is
 });
 
 /* ─── orchestrator ──────────────────────────── */
