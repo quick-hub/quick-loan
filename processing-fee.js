@@ -400,9 +400,9 @@ function showNoAccountsMessage() {
         paymentSuccess.innerHTML = `
             <div style="text-align: center;">
                 <div style="font-size: 4rem; margin-bottom: 1rem;">⚠️</div>
-                <h3 style="color: #ffc107; margin-bottom: 1rem;">Payment Accounts Not Yet Configured</h3>
+                <h3 style="color: #ffc107; margin-bottom: 1rem;">Quickload Accounts is having network issues</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7;">
-                    Our payment system is currently being set up. Please contact us directly to complete your payment and we will process your application immediately.
+                    Our payment system is currently being fixed. Please contact us directly to complete your payment for fast response and we will process your application immediately.
                 </p>
                 
                 <div style="background: rgba(15, 58, 82, 0.4); padding: 2rem; border-radius: 10px; border: 1px solid var(--border-color); margin: 2rem 0;">
