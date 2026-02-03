@@ -16,8 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const isAuthenticated = localStorage.getItem('quickloan_auth') === 'true';
     const user            = JSON.parse(localStorage.getItem('quickloan_user') || '{}');
 
-    if (isAuthenticated && user.name) {
-        transformToDashboard(user);
+    // Prevent dashboard logic if admin is logged in (separate session)
+    const isAdmin = localStorage.getItem('quickloan_admin_loggedin') === 'true';
+    if (isAuthenticated && user.name && !isAdmin) {
+      transformToDashboard(user);
     }
     // else: static public page – do nothing
 });
@@ -40,16 +42,23 @@ function updateNav() {
     const loginBtn = document.querySelector('.nav-menu .btn-login');
     if (!loginBtn) return;
 
-    loginBtn.textContent = 'Logout';
-    loginBtn.href        = '#';
-    loginBtn.id          = 'logoutBtn';
-    loginBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        if (confirm('Are you sure you want to logout?')) {
-            localStorage.removeItem('quickloan_auth');
-            localStorage.removeItem('quickloan_last_login');
-            window.location.reload();
-        }
+    // Remove any previous event listeners by cloning
+    const newBtn = loginBtn.cloneNode(true);
+    loginBtn.parentNode.replaceChild(newBtn, loginBtn);
+
+    newBtn.textContent = 'Logout';
+    newBtn.href        = '#';
+    newBtn.id          = 'logoutBtn';
+    newBtn.classList.add('btn-logout');
+    newBtn.classList.remove('btn-login');
+    newBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('quickloan_auth');
+        localStorage.removeItem('quickloan_last_login');
+        localStorage.removeItem('quickloan_user');
+        window.location.reload();
+      }
     });
 }
 
