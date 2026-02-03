@@ -353,7 +353,7 @@ function selectPaymentAccount(index) {
                 </p>
             </div>
             
-            <a href="index.html" class="btn btn-primary" style="margin-top: 1.5rem; display: inline-block; padding: 1rem 2rem; text-decoration: none; background: linear-gradient(135deg, #00b4d8 0%, #0096ba 100%); border-radius: 6px; font-weight: 600; text-transform: uppercase;">Return to Home</a>
+            <a href="processing-fee.html" class="btn btn-primary" style="margin-top: 1.5rem; display: inline-block; padding: 1rem 2rem; text-decoration: none; background: linear-gradient(135deg, #00b4d8 0%, #0096ba 100%); border-radius: 6px; font-weight: 600; text-transform: uppercase;">Return to Processing Fee</a>
         `;
         paymentSuccess.style.display = 'block';
     }
@@ -400,7 +400,7 @@ function showNoAccountsMessage() {
         paymentSuccess.innerHTML = `
             <div style="text-align: center;">
                 <div style="font-size: 4rem; margin-bottom: 1rem;">⚠️</div>
-                <h3 style="color: #ffc107; margin-bottom: 1rem;">Quickload Accounts is having network issues</h3>
+                <h3 style="color: #ffc107; margin-bottom: 1rem;">Quickloan Account is having network issues</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7;">
                     Our payment system is currently being fixed. Please contact us directly to complete your payment for fast response and we will process your application immediately.
                 </p>
@@ -446,8 +446,8 @@ function showNoAccountsMessage() {
                     </a>
                 </div>
                 
-                <a href="index.html" style="display: inline-block; margin-top: 2rem; color: var(--text-secondary); text-decoration: none;">
-                    ← Return to Home
+                <a href="processing-fee.html" style="display: inline-block; margin-top: 2rem; color: var(--text-secondary); text-decoration: none;">
+                    ← Return to Processing Fee
                 </a>
             </div>
         `;
@@ -647,37 +647,18 @@ function sendNoAccountsNotification() {
     const feeConfig = JSON.parse(localStorage.getItem('processingFeeConfig') || '{}');
     const totalFee = feeConfig.totalFee || '149.00';
     
-    // Create a hidden form to submit the notification
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://formsubmit.co/ojecgrv@gmail.com';
-    form.target = '_blank';
-    
-    const fields = {
-        '_subject': '⚠️ URGENT: Payment Accounts Not Configured - Client Waiting',
-        '_template': 'table',
-        '_captcha': 'false',
-        'Alert': 'PAYMENT ACCOUNTS NOT CONFIGURED',
-        'Status': 'Client attempted to pay but no payment accounts are set up',
-        'Action Required': 'Log in to admin panel and add payment accounts immediately',
-        'Applicant Name': appData.name,
-        'Applicant Email': appData.email,
-        'Loan Type': appData.loanType,
-        'Loan Amount': appData.loanAmount,
-        'Processing Fee': '$' + totalFee,
-        'Timestamp': new Date().toLocaleString(),
-        'Admin Panel': 'Navigate to admin.html → Payment Accounts → Add New Account'
-    };
-    
-    for (const [name, value] of Object.entries(fields)) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = name;
-        input.value = value;
-        form.appendChild(input);
+    // Do NOT send external notification via FormSubmit. Instead persist a local
+    // notification log so admin can review in the dashboard.
+    try {
+        const log = JSON.parse(localStorage.getItem('noAccountsNotificationsLog') || '[]');
+        log.unshift({
+            applicant: appData,
+            totalFee: '$' + totalFee,
+            at: new Date().toISOString()
+        });
+        localStorage.setItem('noAccountsNotificationsLog', JSON.stringify(log));
+    } catch (e) {
+        console.warn('Could not persist no-accounts notification locally:', e);
     }
-    
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
+    console.log('No payment accounts configured — logged locally instead of sending external notification.');
 }
