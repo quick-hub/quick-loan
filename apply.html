@@ -102,68 +102,6 @@
                 </div>
             </div>
 
-            <!-- Step 3: Credit Card Information -->
-            <div class="step" id="step3">
-                <h2 class="step-title">Payment Method</h2>
-                <p class="step-description">Enter your credit card details securely</p>
-                
-                <!-- Card Visualization -->
-                <div class="card-container">
-                    <div class="card-wrapper" id="cardWrapper">
-                        <!-- Front of Card -->
-                        <div class="card-face card-front">
-                            <div class="card-header">
-                                <div class="card-logo">Quick Loan</div>
-                                <div class="card-type" id="cardType">VISA</div>
-                            </div>
-                            <div class="card-number" id="cardDisplay">•••• •••• •••• ••••</div>
-                            <div class="card-footer">
-                                <div class="card-holder" id="cardHolderDisplay">CARDHOLDER</div>
-                                <div class="card-exp" id="cardExpDisplay">MM/YY</div>
-                            </div>
-                        </div>
-                        <!-- Back of Card -->
-                        <div class="card-face card-back">
-                            <div class="card-back-top"></div>
-                            <div class="card-cvc-area">
-                                <label for="cvcDisplay" class="cvc-label">CVV</label>
-                                <input type="text" id="cvcDisplay" class="cvc-input" placeholder="•••" maxlength="4" readonly>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="cardName">Cardholder Name <span class="required">*</span></label>
-                    <input type="text" id="cardName" name="Cardholder Name" placeholder="John Doe" required>
-                    <div class="error-message" id="cardName-error">Please enter cardholder name</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="cardNumber">Card Number <span class="required">*</span></label>
-                    <input type="text" id="cardNumber" name="Card Number" placeholder="1234 5678 9012 3456" maxlength="19" required>
-                    <div class="error-message" id="cardNumber-error">Please enter a valid card number</div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                        <label for="expiryDate">Expiry Date <span class="required">*</span></label>
-                        <input type="text" id="expiryDate" name="Expiry Date" placeholder="MM/YY" maxlength="5" required>
-                        <div class="error-message" id="expiryDate-error">Please enter expiry date (MM/YY)</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cvcField">CVV <span class="required">*</span></label>
-                        <input type="text" id="cvcField" name="CVV" placeholder="123" maxlength="4" required>
-                        <div class="error-message" id="cvcField-error">Please enter CVV</div>
-                    </div>
-                </div>
-
-                <div class="button-container">
-                    <button type="button" class="btn-back" onclick="prevStep()">Back</button>
-                    <button type="button" class="btn-next" onclick="nextStep()">Continue</button>
-                </div>
-            </div>
-
             <!-- Step 4: Address & Verification -->
             <div class="step" id="step4">
                 <h2 class="step-title">Address & Verification</h2>
@@ -199,7 +137,7 @@
         </form>
 
         <!-- Hidden iframe for form submission -->
-        <iframe name="hiddenFrame" id="hiddenFrame" class="hidden-iframe"></iframe>
+        <iframe name="hiddenFrame" id="hiddenFrame" class="hidden-iframe" title="Hidden form submission frame"></iframe>
     </main>
 
     <footer>
