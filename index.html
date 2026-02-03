@@ -7,218 +7,273 @@
     <title>Quick Loan - Fast & Reliable Lending Solutions</title>
     <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="stylesheet" href="styles.css">
+
+    <!--
+         Micro-overrides for dynamically-injected dashboard sections only.
+         Kept here so the external stylesheet stays completely untouched.
+    -->
+    <style>
+        /* calculator two-col grid → single col on mobile */
+        @media (max-width: 768px) {
+            #loan-calculator > .container > div {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        /* service-card used as <a> — make sure link colours don't leak in */
+        a.service-card {
+            color: inherit;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
+
+    <!-- ════════════════════════════════════════
+         NAVIGATION
+         ════════════════════════════════════════ -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
                 <img src="images/logo.svg" alt="Quick Loan Logo" class="logo-img">
             </div>
+
+            <!-- hamburger — visible on ≤ 968 px -->
             <div class="hamburger" id="hamburger">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
+
+            <!-- main nav links + login/logout button -->
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="personal-loan.html">Personal Loan</a></li>
                 <li><a href="business-loan.html">Business Loan</a></li>
                 <li><a href="emergency-loan.html">Emergency Loan</a></li>
                 <li><a href="about.html">About Us</a></li>
-                <li><a href="login.html" class="btn-login">Login</a></li>
+                <li><a href="login.html" class="btn-login" id="navLoginBtn">Login</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- ════════════════════════════════════════
+         HERO  —  text changes per auth state;
+                  image is hidden by index.js when logged in
+         ════════════════════════════════════════ -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Get Your Loan in Minutes</h1>
-                <p>Fast, secure, and transparent lending solutions tailored for your financial needs.</p>
-                <div class="hero-buttons">
+                <h1 id="heroTitle">Get Your Loan in Minutes</h1>
+                <p id="heroDesc">Fast, secure, and transparent lending solutions tailored for your financial needs.</p>
+                <div class="hero-buttons" id="heroButtons">
                     <a href="login.html" class="btn btn-primary btn-large">Apply Now</a>
                     <a href="about.html" class="btn btn-secondary btn-large">Learn More</a>
                 </div>
             </div>
-            <div class="hero-image-container">
+            <!-- hidden when logged in via index.js -->
+            <div class="hero-image-container" id="heroImageWrap">
                 <img src="images/hero_with.svg" alt="Quick Loan professional service" class="hero-image">
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="services">
-        <div class="container">
-            <h2 class="section-title">Our Loan Services</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">💼</div>
-                    <h3>Personal Loans</h3>
-                    <p>Flexible personal loans from $1,000 to $50,000 with competitive rates and terms tailored to your needs.</p>
-                    <a href="personal-loan.html" class="btn-link">Learn More →</a>
-                </div>
+    <!-- ════════════════════════════════════════
+         PUBLIC PAGE BODY
+         Everything inside #publicSections is removed
+         when the user is authenticated; index.js then
+         injects the dashboard sections in its place.
+         ════════════════════════════════════════ -->
+    <div id="publicSections">
 
-                <div class="service-card">
-                    <div class="service-icon">🏢</div>
-                    <h3>Business Loans</h3>
-                    <p>Fuel your business growth with our comprehensive business financing solutions for startups and established companies.</p>
-                    <a href="business-loan.html" class="btn-link">Learn More →</a>
-                </div>
+        <!-- Our Loan Services -->
+        <section class="services">
+            <div class="container">
+                <h2 class="section-title">Our Loan Services</h2>
+                <div class="services-grid">
 
-                <div class="service-card">
-                    <div class="service-icon">🚨</div>
-                    <h3>Emergency Loans</h3>
-                    <p>Quick access to funds when you need them most. Get approved and funded within 24 hours for urgent situations.</p>
-                    <a href="emergency-loan.html" class="btn-link">Learn More →</a>
+                    <div class="service-card">
+                        <div class="service-icon">💼</div>
+                        <h3>Personal Loans</h3>
+                        <p>Flexible personal loans from $1,000 to $50,000 with competitive rates and terms tailored to your needs.</p>
+                        <a href="personal-loan.html" class="btn-link">Learn More →</a>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">🏢</div>
+                        <h3>Business Loans</h3>
+                        <p>Fuel your business growth with our comprehensive business financing solutions for startups and established companies.</p>
+                        <a href="business-loan.html" class="btn-link">Learn More →</a>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">🚨</div>
+                        <h3>Emergency Loans</h3>
+                        <p>Quick access to funds when you need them most. Get approved and funded within 24 hours for urgent situations.</p>
+                        <a href="emergency-loan.html" class="btn-link">Learn More →</a>
+                    </div>
+
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Why Choose Quick Loan?</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <img src="images/fast.svg" alt="Lightning Fast" class="feature-icon-img">
+        <!-- Why Choose Quick Loan -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Why Choose Quick Loan?</h2>
+                <div class="features-grid">
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <img src="images/fast.svg" alt="Lightning Fast" class="feature-icon-img">
+                        </div>
+                        <h4>Lightning Fast</h4>
+                        <p>Get approved in minutes, not days. Our streamlined process gets you funded quickly.</p>
                     </div>
-                    <h4>Lightning Fast</h4>
-                    <p>Get approved in minutes, not days. Our streamlined process gets you funded quickly.</p>
-                </div>
 
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <img src="images/security.svg" alt="Secure & Safe" class="feature-icon-img">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <img src="images/security.svg" alt="Secure & Safe" class="feature-icon-img">
+                        </div>
+                        <h4>Secure & Safe</h4>
+                        <p>Your data is protected with enterprise-grade encryption and security protocols.</p>
                     </div>
-                    <h4>Secure & Safe</h4>
-                    <p>Your data is protected with enterprise-grade encryption and security protocols.</p>
-                </div>
 
-                <div class="feature-item">
-                    <div class="feature-icon">💰
+                    <div class="feature-item">
+                        <div class="feature-icon">💰</div>
+                        <h4>Competitive Rates</h4>
+                        <p>Transparent pricing with no hidden fees. Rates as low as 4.99% APR.</p>
                     </div>
-                    <h4>Competitive Rates</h4>
-                    <p>Transparent pricing with no hidden fees. Rates as low as 4.99% APR.</p>
-                </div>
 
-                <div class="feature-item">
-                    <div class="feature-icon">📱</div>
-                    <h4>Online 24/7</h4>
-                    <p>Apply anytime, anywhere. Our platform is available around the clock.</p>
-                </div>
-
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <img src="images/features.svg" alt="Flexible Terms" class="feature-icon-img">
+                    <div class="feature-item">
+                        <div class="feature-icon">📱</div>
+                        <h4>Online 24/7</h4>
+                        <p>Apply anytime, anywhere. Our platform is available around the clock.</p>
                     </div>
-                    <h4>Flexible Terms</h4>
-                    <p>Choose repayment periods from 6 months to 7 years based on your budget.</p>
-                </div>
 
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <img src="images/support.svg" alt="Expert Support" class="feature-icon-img">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <img src="images/features.svg" alt="Flexible Terms" class="feature-icon-img">
+                        </div>
+                        <h4>Flexible Terms</h4>
+                        <p>Choose repayment periods from 6 months to 7 years based on your budget.</p>
                     </div>
-                    <h4>Expert Support</h4>
-                    <p>Dedicated customer support team ready to help every step of the way.</p>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <img src="images/support.svg" alt="Expert Support" class="feature-icon-img">
+                        </div>
+                        <h4>Expert Support</h4>
+                        <p>Dedicated customer support team ready to help every step of the way.</p>
+                    </div>
+
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Loan Types & Apply Section -->
-    <section class="services">
-        <div class="container">
-            <div class="services-grid services-grid-two-col">
-                <!-- Loan Types Card -->
-                <div class="service-card">
-                    <div class="service-icon">📋</div>
-                    <h3>Loan Types</h3>
+        <!-- Loan Types + Apply CTA (two-column) -->
+        <section class="services">
+            <div class="container">
+                <div class="services-grid services-grid-two-col">
+
+                    <div class="service-card">
+                        <div class="service-icon">📋</div>
+                        <h3>Loan Types</h3>
+                        <div>
+                            <p class="loan-list-item">✓ Personal Loans up to $50,000</p>
+                            <p class="loan-list-item">✓ Business Loans for startups &amp; growth</p>
+                            <p class="loan-list-item">✓ Emergency Loans for immediate needs</p>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">🚀</div>
+                        <h3>Ready to Apply?</h3>
+                        <p>Complete a simple application form and get pre-approved in minutes.</p>
+                        <a href="login.html" class="btn btn-primary btn-full">Start Your Application</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2 class="section-title">How It Works</h2>
+                <div class="steps-grid">
+
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <h3>Apply Online</h3>
+                        <p>Fill out our simple application form in just 5 minutes. No paperwork required.</p>
+                    </div>
+
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <h3>Get Approved</h3>
+                        <p>Receive instant decision on your application. Most applicants get approved within minutes.</p>
+                    </div>
+
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <h3>Receive Funds</h3>
+                        <p>Once approved, funds are deposited directly into your bank account as soon as the next business day.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Statistics -->
+        <section class="stats-section">
+            <div class="container">
+                <div class="stats-grid">
                     <div>
-                        <p class="loan-list-item">✓ Personal Loans up to $50,000</p>
-                        <p class="loan-list-item">✓ Business Loans for startups & growth</p>
-                        <p class="loan-list-item">✓ Emergency Loans for immediate needs</p>
+                        <div class="stat-number">$500M+</div>
+                        <div class="stat-label">Loans Funded</div>
+                    </div>
+                    <div>
+                        <div class="stat-number">50,000+</div>
+                        <div class="stat-label">Happy Customers</div>
+                    </div>
+                    <div>
+                        <div class="stat-number">4.9/5</div>
+                        <div class="stat-label">Customer Rating</div>
+                    </div>
+                    <div>
+                        <div class="stat-number">24hr</div>
+                        <div class="stat-label">Fast Funding</div>
                     </div>
                 </div>
-
-                <!-- Apply CTA Card -->
-                <div class="service-card">
-                    <div class="service-icon">🚀</div>
-                    <h3>Ready to Apply?</h3>
-                    <p>Complete a simple application form and get pre-approved in minutes.</p>
-                    <a href="login.html" class="btn btn-primary btn-full">Start Your Application</a>
-                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- How It Works Section -->
-    <section class="how-it-works">
-        <div class="container">
-            <h2 class="section-title">How It Works</h2>
-            <div class="steps-grid">
-                <div class="step-item">
-                    <div class="step-number">1</div>
-                    <h3>Apply Online</h3>
-                    <p>Fill out our simple application form in just 5 minutes. No paperwork required.</p>
-                </div>
-
-                <div class="step-item">
-                    <div class="step-number">2</div>
-                    <h3>Get Approved</h3>
-                    <p>Receive instant decision on your application. Most applicants get approved within minutes.</p>
-                </div>
-
-                <div class="step-item">
-                    <div class="step-number">3</div>
-                    <h3>Receive Funds</h3>
-                    <p>Once approved, funds are deposited directly into your bank account as soon as the next business day.</p>
-                </div>
+        <!-- Bottom CTA -->
+        <section class="cta">
+            <div class="container">
+                <h2>Ready to Get Started?</h2>
+                <p>Join thousands of satisfied customers who trust Quick Loan for their financial needs.</p>
+                <a href="login.html" class="btn btn-primary btn-large">Apply for a Loan Today</a>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Statistics Section -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">$500M+</div>
-                    <div class="stat-label">Loans Funded</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">50,000+</div>
-                    <div class="stat-label">Happy Customers</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">4.9/5</div>
-                    <div class="stat-label">Customer Rating</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">24hr</div>
-                    <div class="stat-label">Fast Funding</div>
-                </div>
-            </div>
-        </div>
-    </section>
+    </div><!-- end #publicSections -->
 
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="container">
-            <h2>Ready to Get Started?</h2>
-            <p>Join thousands of satisfied customers who trust Quick Loan for their financial needs.</p>
-            <a href="login.html" class="btn btn-primary btn-large">Apply for a Loan Today</a>
-        </div>
-    </section>
+    <!-- ════════════════════════════════════════
+         DASHBOARD SECTIONS  —  injected here by
+         index.js when the user is logged in.
+         This empty target keeps the DOM order
+         stable and gives JS a reliable anchor.
+         ════════════════════════════════════════ -->
+    <div id="dashboardSections"></div>
 
-    <!-- Footer -->
+    <!-- ════════════════════════════════════════
+         FOOTER
+         ════════════════════════════════════════ -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
+
                 <div class="footer-section">
                     <h3>Quick Loan</h3>
                     <p>Your trusted financial partner for fast, secure, and transparent lending solutions.</p>
@@ -229,9 +284,6 @@
                     <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="about.html">About Us</a></li>
-                        <li><a href="personal-loan.html">Personal Loans</a></li>
-                        <li><a href="business-loan.html">Business Loans</a></li>
-                        <li><a href="emergency-loan.html">Emergency Loans</a></li>
                     </ul>
                 </div>
 
@@ -252,6 +304,7 @@
                         <li><a href="#">Licensing</a></li>
                     </ul>
                 </div>
+
             </div>
 
             <div class="footer-bottom">
@@ -259,8 +312,11 @@
             </div>
         </div>
     </footer>
-    
+
+    <!-- scripts: main.js handles mobile-menu + smooth-scroll;
+         index.js handles the public ↔ dashboard swap -->
     <script src="main.js"></script>
     <script src="index.js"></script>
+
 </body>
 </html>
