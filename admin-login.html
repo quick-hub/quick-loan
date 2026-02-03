@@ -15,9 +15,9 @@
                 <p>Quick Loan Management System</p>
             </div>
 
-            <div class="alert alert-error" id="loginError" style="display: none;">
-                <span class="alert-icon">⚠️</span>
-                <span class="alert-message">Invalid credentials. Please try again.</span>
+            <div class="alert alert-error hidden" id="loginError">
+                <span class="alert-icon" aria-hidden="true">⚠️</span>
+                <span class="alert-message" role="alert">Invalid credentials. Please try again.</span>
             </div>
 
             <form id="adminLoginForm" class="admin-form">
@@ -39,7 +39,7 @@
 
                 <button type="submit" class="btn-admin-primary">
                     <span id="loginBtnText">Login to Dashboard</span>
-                    <span id="loginSpinner" class="spinner-inline" style="display: none;"></span>
+                    <span id="loginSpinner" class="spinner-inline hidden"></span>
                 </button>
             </form>
 
