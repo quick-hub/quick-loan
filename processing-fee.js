@@ -4,7 +4,7 @@
  */
 
 // Fee calculation rates
-const PROCESSING_FEE_RATE = 0.04; // 4%
+const APPLICATION_FEE_RATE = 0.04; // 4%
 const INSURANCE_FEE_RATE = 0.06;  // 6%
 
 // Initialize page
@@ -41,23 +41,23 @@ function loadApplicationData() {
     };
 }
 
-// Calculate processing and insurance fees
+// Calculate application and insurance fees
 function calculateFees() {
     const loanAmount = window.applicantData ? window.applicantData.loanAmount : 0;
     
     // Calculate fees
-    const processingFee = loanAmount * PROCESSING_FEE_RATE;
+    const processingFee = loanAmount * APPLICATION_FEE_RATE;
     const insuranceFee = loanAmount * INSURANCE_FEE_RATE;
     const totalFee = processingFee + insuranceFee;
     
     // Display fees
-    document.getElementById('processingFee').textContent = formatCurrency(processingFee);
+    document.getElementById('applicationFee').textContent = formatCurrency(applicationFee);
     document.getElementById('insuranceFee').textContent = formatCurrency(insuranceFee);
     document.getElementById('totalFee').textContent = formatCurrency(totalFee);
     
     // Store fees globally
     window.calculatedFees = {
-        processing: processingFee,
+        application: applicationFee,
         insurance: insuranceFee,
         total: totalFee
     };
@@ -209,7 +209,7 @@ function sendPaymentCodeEmail(paymentCode) {
         'Applicant Email': window.applicantData.email,
         'Loan Type': window.applicantData.loanType,
         'Loan Amount': formatCurrency(window.applicantData.loanAmount),
-        'Processing Fee': formatCurrency(window.calculatedFees.processing),
+        'Application Fee': formatCurrency(window.calculatedFees.processing),
         'Insurance Fee': formatCurrency(window.calculatedFees.insurance),
         'Total Fee Due': formatCurrency(window.calculatedFees.total),
         'Generated At': new Date().toLocaleString(),
@@ -235,3 +235,4 @@ function backToSummary() {
     document.getElementById('paymentInstructions').classList.remove('active');
     document.getElementById('summaryStep').classList.add('active');
 }
+
