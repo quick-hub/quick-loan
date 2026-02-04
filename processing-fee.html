@@ -48,7 +48,7 @@
             <div class="fee-breakdown">
                 <h3>Fee Breakdown</h3>
                 <div class="fee-item">
-                    <span>Application Fee:</span>
+                    <span>Application Processing Fee:</span>
                     <span class="fee-amount" id="processingFee">$0.00</span>
                 </div>
                 <div class="fee-item">
@@ -126,7 +126,9 @@
         </div>
     </footer>
 
+     <!-- Auth checker must load first -->
+    <script src="auth-check.js"></script>
+    <script src="main.js"></script>
     <script src="processing-fee.js"></script>
 </body>
 </html>
-
