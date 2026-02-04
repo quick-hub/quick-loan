@@ -17,9 +17,9 @@
 
         <!-- Success Message -->
         <div class="success-message" id="paymentSuccess">
-            <h3>✓ Payment Code Generated Successfully!</h3>
-            <p>Your payment code has been generated. Please follow the instructions below to complete your payment.</p>
-            <a href="index.html" class="btn btn-primary btn-return-home">Return to Home</a>
+            <h3>✓ Payment Request Sent Successfully!</h3>
+            <p>Thank you for submitting your payment request. We will reply with payment account details shortly. You will be redirected to the homepage in a few seconds.</p>
+            <a href="index.html" class="btn btn-primary btn-return-home">Return to Home Now</a>
         </div>
 
         <!-- Application Summary -->
@@ -48,7 +48,7 @@
             <div class="fee-breakdown">
                 <h3>Fee Breakdown</h3>
                 <div class="fee-item">
-                    <span>Application Processing Fee:</span>
+                    <span>Application Fee:</span>
                     <span class="fee-amount" id="processingFee">$0.00</span>
                 </div>
                 <div class="fee-item">
@@ -91,29 +91,37 @@
                     </button>
                 </div>
             </div>
-                <div class="payment-summary-card">
-                    <h4>Payment Summary</h4>
-                    <div class="summary-row">
-                        <span>Payment Code:</span>
-                        <span class="highlight-value" id="summaryPaymentCode">-</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Applicant:</span>
-                        <span id="summaryPaymentName">-</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Amount Due:</span>
-                        <span class="highlight-value" id="summaryPaymentAmount">$0.00</span>
-                    </div>
-                </div>
 
-                <div class="button-container">
-                    <a href="mailto:quickloanz@zohomail.com?subject=Payment Request - Code: PAYMENT_CODE&body=Hello,%0D%0A%0D%0AI would like to complete my loan application payment.%0D%0A%0D%0APayment Code: PAYMENT_CODE%0D%0AName: APPLICANT_NAME%0D%0A%0D%0APlease send me the payment account details.%0D%0A%0D%0AThank you" 
-                       class="btn btn-primary btn-full" 
-                       id="sendEmailBtn">
-                        📧 Send Payment Request
-                    </a>
+            <div class="payment-summary-card">
+                <h4>Payment Summary</h4>
+                <div class="summary-row">
+                    <span>Payment Code:</span>
+                    <span class="highlight-value" id="summaryPaymentCode">-</span>
                 </div>
+                <div class="summary-row">
+                    <span>Applicant:</span>
+                    <span id="summaryPaymentName">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Amount Due:</span>
+                    <span class="highlight-value" id="summaryPaymentAmount">$0.00</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-icon">📧</div>
+                <div class="info-content">
+                    <strong>Next Step</strong>
+                    <p>Click the button below to send us your payment code via email. We will respond with payment account details within a few minutes.</p>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <a href="mailto:quickloanz@zohomail.com?subject=Payment Request - Code: PAYMENT_CODE&body=Hello,%0D%0A%0D%0AI would like to complete my loan application payment.%0D%0A%0D%0APayment Code: PAYMENT_CODE%0D%0AName: APPLICANT_NAME%0D%0A%0D%0APlease send me the payment account details.%0D%0A%0D%0AThank you" 
+                   class="btn btn-primary btn-full" 
+                   id="sendEmailBtn">
+                    📧 Send Payment Request
+                </a>
             </div>
         </div>
 
@@ -122,8 +130,7 @@
     </main>
 
     <footer>
-            <p class="footer-note">&copy; 2025 Quick Loan. All rights reserved.</p>
-        </div>
+        <p class="footer-note">&copy; 2025 Quick Loan. All rights reserved.</p>
     </footer>
 
      <!-- Auth checker must load first -->
