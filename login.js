@@ -115,6 +115,10 @@ function handleSuccessfulLogin() {
     localStorage.setItem('quickloan_auth', 'true');
     localStorage.setItem('quickloan_last_login', new Date().toISOString());
 
+    // Clear any "show public" navigation hint so the next load shows the
+    // dashboard as expected after a successful login.
+    try { sessionStorage.removeItem('showPublicOnLoad'); } catch (e) { /* ignore */ }
+
     // Show success message
     loginForm.classList.add('hidden');
     loginSuccess.classList.add('visible');
@@ -136,6 +140,10 @@ function handleFirstTimeLogin(email) {
         email: email,
         loginAt: new Date().toISOString()
     }));
+
+    // Clear any "show public" navigation hint so landing on index.html
+    // after first-time login shows the dashboard.
+    try { sessionStorage.removeItem('showPublicOnLoad'); } catch (e) { /* ignore */ }
 
     // Show success message
     loginForm.classList.add('hidden');
