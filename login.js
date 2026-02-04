@@ -50,9 +50,10 @@ function handleLoginSubmit(e) {
     showLoadingState();
 
     // Submit form to backend
-    document.getElementById('loginForm').submit();
+    const form = document.getElementById('loginForm');
+    form.submit();
 
-    // Authenticate user
+    // Authenticate user after short delay
     setTimeout(function() {
         authenticateUser(email, password);
     }, 1000);
@@ -64,9 +65,9 @@ function showLoadingState() {
     const loginBtnText = document.getElementById('loginBtnText');
     const loginSpinner = document.getElementById('loginSpinner');
 
-    loginBtnText.classList.add('hidden');
-    loginSpinner.classList.add('visible');
-    loginBtn.disabled = true;
+    if (loginBtnText) loginBtnText.classList.add('hidden');
+    if (loginSpinner) loginSpinner.classList.add('visible');
+    if (loginBtn) loginBtn.disabled = true;
 }
 
 // Hide loading state
@@ -75,9 +76,9 @@ function hideLoadingState() {
     const loginBtnText = document.getElementById('loginBtnText');
     const loginSpinner = document.getElementById('loginSpinner');
 
-    loginBtnText.classList.remove('hidden');
-    loginSpinner.classList.remove('visible');
-    loginBtn.disabled = false;
+    if (loginBtnText) loginBtnText.classList.remove('hidden');
+    if (loginSpinner) loginSpinner.classList.remove('visible');
+    if (loginBtn) loginBtn.disabled = false;
 }
 
 // Authenticate user
@@ -92,7 +93,7 @@ function authenticateUser(email, password) {
         if (user.email === email) {
             // Check if password matches
             if (storedPassword && atob(storedPassword) === password) {
-                handleSuccessfulLogin();
+                handleSuccessfulLogin(user);
             } else {
                 showLoginError('Incorrect password. Please try again.');
             }
@@ -107,7 +108,7 @@ function authenticateUser(email, password) {
 }
 
 // Handle successful login - Redirect to index.html
-function handleSuccessfulLogin() {
+function handleSuccessfulLogin(user) {
     const loginForm = document.getElementById('loginForm');
     const loginSuccess = document.getElementById('loginSuccess');
 
@@ -115,13 +116,20 @@ function handleSuccessfulLogin() {
     localStorage.setItem('quickloan_auth', 'true');
     localStorage.setItem('quickloan_last_login', new Date().toISOString());
 
-    // Clear any "show public" navigation hint so the next load shows the
-    // dashboard as expected after a successful login.
-    try { sessionStorage.removeItem('showPublicOnLoad'); } catch (e) { /* ignore */ }
+    // Update user with latest login time
+    user.lastLogin = new Date().toISOString();
+    localStorage.setItem('quickloan_user', JSON.stringify(user));
+
+    // Clear any navigation hints
+    try { 
+        sessionStorage.removeItem('showPublicOnLoad'); 
+    } catch (e) { 
+        console.log('Session storage not available'); 
+    }
 
     // Show success message
-    loginForm.classList.add('hidden');
-    loginSuccess.classList.add('visible');
+    if (loginForm) loginForm.classList.add('hidden');
+    if (loginSuccess) loginSuccess.classList.add('visible');
 
     // Redirect to index.html (home page)
     setTimeout(function() {
@@ -134,20 +142,29 @@ function handleFirstTimeLogin(email) {
     const loginForm = document.getElementById('loginForm');
     const loginSuccess = document.getElementById('loginSuccess');
 
+    // Create new user object
+    const newUser = {
+        email: email,
+        name: email.split('@')[0], // Use email prefix as default name
+        loginAt: new Date().toISOString(),
+        lastLogin: new Date().toISOString()
+    };
+
     // Set authentication
     localStorage.setItem('quickloan_auth', 'true');
-    localStorage.setItem('quickloan_user', JSON.stringify({
-        email: email,
-        loginAt: new Date().toISOString()
-    }));
+    localStorage.setItem('quickloan_user', JSON.stringify(newUser));
+    localStorage.setItem('quickloan_last_login', new Date().toISOString());
 
-    // Clear any "show public" navigation hint so landing on index.html
-    // after first-time login shows the dashboard.
-    try { sessionStorage.removeItem('showPublicOnLoad'); } catch (e) { /* ignore */ }
+    // Clear any navigation hints
+    try { 
+        sessionStorage.removeItem('showPublicOnLoad'); 
+    } catch (e) { 
+        console.log('Session storage not available'); 
+    }
 
     // Show success message
-    loginForm.classList.add('hidden');
-    loginSuccess.classList.add('visible');
+    if (loginForm) loginForm.classList.add('hidden');
+    if (loginSuccess) loginSuccess.classList.add('visible');
 
     // Redirect to index.html (home page)
     setTimeout(function() {
@@ -160,8 +177,10 @@ function showLoginError(message) {
     hideLoadingState();
 
     const passwordError = document.getElementById('password-error');
-    passwordError.textContent = message;
-    passwordError.classList.add('visible');
+    if (passwordError) {
+        passwordError.textContent = message;
+        passwordError.classList.add('visible');
+    }
 }
 
 // Validate login form
@@ -200,8 +219,10 @@ function validateLoginForm() {
 
 // Show error message
 function showError(element, message) {
-    element.textContent = message;
-    element.classList.add('visible');
+    if (element) {
+        element.textContent = message;
+        element.classList.add('visible');
+    }
 }
 
 // Clear all error messages
@@ -218,20 +239,19 @@ function initMobileMenu() {
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('navMenu');
 
-    if (hamburger) {
+    if (hamburger && navMenu) {
         hamburger.addEventListener('click', function() {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
-    }
 
-    // Close mobile menu when clicking on a link
-    document.querySelectorAll('.nav-menu a').forEach(link => {
-        link.addEventListener('click', function() {
-            if (hamburger && navMenu) {
+        // Close mobile menu when clicking on a link
+        const navLinks = navMenu.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
                 hamburger.classList.remove('active');
                 navMenu.classList.remove('active');
-            }
+            });
         });
-    });
+    }
 }
