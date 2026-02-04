@@ -3,19 +3,13 @@
  *
  * Logged OUT  → nothing runs; the static HTML is the page.
  * Logged IN   → hero is personalised in-place, #publicSections is hidden,
- *               and the four dashboard blocks are rendered into
- *               #dashboardSections.  Every class used here exists in
- *               styles.css; the only inline styles are on the calculator
- *               grid and the activity rows (no CSS rules for those exist).
+ *               and the dashboard blocks are rendered into #dashboardSections.
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-    var auth = localStorage.getItem('quickloan_auth') === 'true';
-    var user = JSON.parse(localStorage.getItem('quickloan_user') || '{}');
-    var isAdmin = localStorage.getItem('quickloan_admin_loggedin') === 'true';
-
-    // If a regular user is authenticated (and admin is not), render dashboard.
-    if (auth && !isAdmin) {
+    // Use the global auth checker
+    if (typeof window.QuickLoanAuth !== 'undefined' && window.QuickLoanAuth.isAuthenticated()) {
+        var user = window.QuickLoanAuth.getUserData();
         swapToDashboard(user);
     }
     // else: leave the static public page as-is
@@ -23,71 +17,49 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /* ─── orchestrator ──────────────────────────── */
 function swapToDashboard(user) {
-    // 1. nav: Login → Logout
-    wireLogout();
-
-    // 2. hero: personalise text & buttons, hide the illustration
+    // 1. hero: personalise text & buttons, hide the illustration
     personaliseHero(user);
 
-    // 3. hide the entire public landing body in one shot
+    // 2. hide the entire public landing body in one shot
     var pub = document.getElementById('publicSections');
     if (pub) pub.style.display = 'none';
 
-    // 4. render dashboard into the waiting anchor
+    // 3. render dashboard into the waiting anchor
     var dash = document.getElementById('dashboardSections');
     if (dash) dash.innerHTML = buildDashboard();
 
-    // 5. hydrate dynamic parts
+    // 4. hydrate dynamic parts
     fillStats();
     fillActivity();
-    wireCalculator();
 }
 
-/* ─── 1. LOGOUT BUTTON ──────────────────────── */
-function wireLogout() {
-    var btn = document.getElementById('navLoginBtn');
-    if (!btn) return;
-
-    btn.textContent = 'Logout';
-    btn.href        = '#';
-
-    btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        if (confirm('Are you sure you want to logout?')) {
-            localStorage.removeItem('quickloan_auth');
-            localStorage.removeItem('quickloan_last_login');
-            window.location.reload();
-        }
-    });
-}
-
-/* ─── 2. HERO ───────────────────────────────── */
+/* ─── HERO ───────────────────────────────── */
 function personaliseHero(user) {
     var first = user.name ? user.name.split(' ')[0] : 'User';
 
-    // title & description  (IDs added in the HTML)
+    // title & description
     var title = document.getElementById('heroTitle');
     var desc  = document.getElementById('heroDesc');
     if (title) title.textContent = 'Welcome Back, ' + first + '!';
     if (desc)  desc.textContent  = 'Manage your loans, check your status, or start a new application.';
 
-    // buttons  — swap to dashboard-relevant actions
+    // buttons — swap to dashboard-relevant actions
     var btns = document.getElementById('heroButtons');
     if (btns) {
         btns.innerHTML =
-            '<a href="apply.html"      class="btn btn-primary   btn-large">Apply for New Loan</a>' +
-            '<a href="#loan-calculator" class="btn btn-secondary btn-large">Loan Calculator</a>';
+            '<a href="apply.html" class="btn btn-primary btn-large">Apply for New Loan</a>' +
+            '<a href="#quick-actions" class="btn btn-secondary btn-large">View Services</a>';
     }
 
-    // hide the marketing illustration — not needed on the dashboard
+    // hide the marketing illustration
     var img = document.getElementById('heroImageWrap');
     if (img) img.style.display = 'none';
 }
 
-/* ─── 3. DASHBOARD HTML ─────────────────────── */
+/* ─── DASHBOARD HTML ─────────────────────── */
 function buildDashboard() {
     return (
-        // ── Account Overview  (uses .stats-section → bg + borders from CSS)
+        // ── Account Overview
         '<section class="stats-section">' +
         '  <div class="container">' +
         '    <h2 class="section-title">Your Account Overview</h2>' +
@@ -112,8 +84,8 @@ function buildDashboard() {
         '  </div>' +
         '</section>' +
 
-        // ── Quick Actions  (uses .services + .services-grid + .service-card)
-        '<section class="services">' +
+        // ── Quick Actions
+        '<section class="services" id="quick-actions">' +
         '  <div class="container">' +
         '    <h2 class="section-title">Quick Actions</h2>' +
         '    <div class="services-grid">' +
@@ -141,76 +113,17 @@ function buildDashboard() {
         '  </div>' +
         '</section>' +
 
-        // ── Loan Calculator  (section padding via .services; inner layout is
-        //    a two-column grid — no CSS rule exists so one targeted inline style)
-        '<section class="services" id="loan-calculator">' +
-        '  <div class="container">' +
-        '    <h2 class="section-title">Loan Calculator</h2>' +
-        '    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;' +
-        '         max-width:880px;margin:0 auto;' +
-        '         background:rgba(26,90,122,0.45);border:1px solid rgba(100,200,230,0.3);' +
-        '         border-radius:14px;padding:2.5rem;">' +
-
-        //   left col – sliders
-        '      <div>' +
-        '        <div style="margin-bottom:1.8rem;">' +
-        '          <label style="display:block;margin-bottom:0.5rem;font-weight:600;color:#d0e8f2;">' +
-        '            Loan Amount: <span id="lblAmount" style="color:#00d4ff;">$10,000</span></label>' +
-        '          <input type="range" id="slAmount" min="1000" max="500000" step="1000" value="10000"' +
-        '                 style="width:100%;accent-color:#00b4d8;cursor:pointer;">' +
-        '          <div style="display:flex;justify-content:space-between;color:#7ab8d0;font-size:0.8rem;margin-top:3px;">' +
-        '            <span>$1,000</span><span>$500,000</span></div>' +
-        '        </div>' +
-        '        <div style="margin-bottom:1.8rem;">' +
-        '          <label style="display:block;margin-bottom:0.5rem;font-weight:600;color:#d0e8f2;">' +
-        '            Loan Term: <span id="lblTerm" style="color:#00d4ff;">12 months</span></label>' +
-        '          <input type="range" id="slTerm" min="6" max="84" step="6" value="12"' +
-        '                 style="width:100%;accent-color:#00b4d8;cursor:pointer;">' +
-        '          <div style="display:flex;justify-content:space-between;color:#7ab8d0;font-size:0.8rem;margin-top:3px;">' +
-        '            <span>6 mo</span><span>84 mo</span></div>' +
-        '        </div>' +
-        '        <div>' +
-        '          <label style="display:block;margin-bottom:0.5rem;font-weight:600;color:#d0e8f2;">' +
-        '            Interest Rate: <span id="lblRate" style="color:#00d4ff;">4.99%</span></label>' +
-        '          <input type="range" id="slRate" min="3" max="20" step="0.1" value="4.99"' +
-        '                 style="width:100%;accent-color:#00b4d8;cursor:pointer;">' +
-        '          <div style="display:flex;justify-content:space-between;color:#7ab8d0;font-size:0.8rem;margin-top:3px;">' +
-        '            <span>3 %</span><span>20 %</span></div>' +
-        '        </div>' +
-        '      </div>' +
-
-        //   right col – results
-        '      <div style="display:flex;flex-direction:column;justify-content:center;">' +
-        '        <h3 style="color:#b0d4e3;font-size:1rem;text-align:center;margin-bottom:0.3rem;">Estimated Monthly Payment</h3>' +
-        '        <div id="calcMonthly" style="font-size:3rem;font-weight:700;color:#00d4ff;text-align:center;margin-bottom:1.4rem;">$856</div>' +
-        '        <div style="border-top:1px solid rgba(100,200,230,0.25);padding-top:1rem;">' +
-        '          <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid rgba(100,200,230,0.15);">' +
-        '            <span style="color:#b0d4e3;">Principal</span>' +
-        '            <span id="calcPrincipal" style="color:#fff;font-weight:600;">$10,000</span></div>' +
-        '          <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid rgba(100,200,230,0.15);">' +
-        '            <span style="color:#b0d4e3;">Total Interest</span>' +
-        '            <span id="calcInterest" style="color:#fff;font-weight:600;">$272</span></div>' +
-        '          <div style="display:flex;justify-content:space-between;padding:0.5rem 0;">' +
-        '            <span style="color:#b0d4e3;font-weight:600;">Total Repayment</span>' +
-        '            <span id="calcTotal" style="color:#00d4ff;font-weight:700;">$10,272</span></div>' +
-        '        </div>' +
-        '        <a href="apply.html" class="btn btn-primary btn-full" style="margin-top:1.6rem;">Apply for This Loan</a>' +
-        '      </div>' +
-        '    </div>' +
-        '  </div>' +
-        '</section>' +
-
         // ── Recent Activity
         '<section class="services" style="padding-top:0;">' +
         '  <div class="container">' +
         '    <h2 class="section-title">Recent Activity</h2>' +
-        '    <div style="max-width:700px;margin:0 auto;' +
-        '         background:rgba(26,90,122,0.45);border:1px solid rgba(100,200,230,0.3);' +
-        '         border-radius:14px;overflow:hidden;">' +
+        '    <div class="activity-container">' +
         '      <div id="activityFeed"></div>' +
-        '      <div style="text-align:center;padding:1.2rem 0 0.8rem;">' +
-        '        <a href="apply.html" class="btn btn-secondary" style="padding:0.7rem 2rem;font-size:0.95rem;">' +
-        '          View All Applications</a>' +
+        '      <div class="activity-footer">' +
+        '        <button id="loadMoreBtn" class="btn btn-secondary load-more-btn">' +
+        '          Load More Activities</button>' +
+        '        <a href="apply.html" class="btn btn-primary" style="padding:0.7rem 2rem;font-size:0.95rem;">' +
+        '          New Application</a>' +
         '      </div>' +
         '    </div>' +
         '  </div>' +
@@ -218,7 +131,7 @@ function buildDashboard() {
     );
 }
 
-/* ─── 4a. FILL STATS FROM localStorage ──────── */
+/* ─── FILL STATS FROM localStorage ──────── */
 function fillStats() {
     var s = JSON.parse(localStorage.getItem('quickloan_stats') || '{}');
 
@@ -233,69 +146,76 @@ function set(id, val) {
     if (el) el.textContent = val;
 }
 
-/* ─── 4b. FILL ACTIVITY ROWS ────────────────── */
+/* ─── FILL ACTIVITY ROWS WITH LOAD MORE ─── */
+var currentActivityCount = 4; // Start by showing 4 activities
+
 function fillActivity() {
     var feed = document.getElementById('activityFeed');
+    var loadMoreBtn = document.getElementById('loadMoreBtn');
     if (!feed) return;
 
-    // pull from localStorage; fall back to realistic demo data
+    // pull from localStorage; fall back to extended demo data
     var stored = JSON.parse(localStorage.getItem('quickloan_activity') || 'null');
-    var rows   = stored || [
-        { date:'Jan 28, 2025', type:'Personal Loan',  amount:'$15,000', status:'Approved',  color:'#51cf66' },
-        { date:'Jan 22, 2025', type:'Business Loan',  amount:'$50,000', status:'Pending',   color:'#ffc107' },
-        { date:'Jan 15, 2025', type:'Emergency Loan', amount:'$5,000',  status:'Funded',    color:'#00d4ff' },
-        { date:'Dec 30, 2024', type:'Personal Loan',  amount:'$8,000',  status:'Completed', color:'#b0d4e3' }
+    var allRows = stored || [
+        { date:'Feb 03, 2025', type:'Personal Loan',    amount:'$12,000', status:'Processing', color:'#ffc107' },
+        { date:'Jan 28, 2025', type:'Personal Loan',    amount:'$15,000', status:'Approved',    color:'#51cf66' },
+        { date:'Jan 22, 2025', type:'Business Loan',    amount:'$50,000', status:'Pending',     color:'#ffc107' },
+        { date:'Jan 15, 2025', type:'Emergency Loan',   amount:'$5,000',  status:'Funded',      color:'#00d4ff' },
+        { date:'Dec 30, 2024', type:'Personal Loan',    amount:'$8,000',  status:'Completed',   color:'#b0d4e3' },
+        { date:'Dec 18, 2024', type:'Business Loan',    amount:'$35,000', status:'Completed',   color:'#b0d4e3' },
+        { date:'Nov 25, 2024', type:'Emergency Loan',   amount:'$3,500',  status:'Funded',      color:'#00d4ff' },
+        { date:'Nov 10, 2024', type:'Personal Loan',    amount:'$20,000', status:'Completed',   color:'#b0d4e3' },
+        { date:'Oct 28, 2024', type:'Business Loan',    amount:'$45,000', status:'Approved',    color:'#51cf66' },
+        { date:'Oct 15, 2024', type:'Personal Loan',    amount:'$10,000', status:'Completed',   color:'#b0d4e3' },
+        { date:'Sep 30, 2024', type:'Emergency Loan',   amount:'$4,000',  status:'Funded',      color:'#00d4ff' },
+        { date:'Sep 12, 2024', type:'Personal Loan',    amount:'$18,000', status:'Completed',   color:'#b0d4e3' },
+        { date:'Aug 25, 2024', type:'Business Loan',    amount:'$60,000', status:'Approved',    color:'#51cf66' },
+        { date:'Aug 08, 2024', type:'Personal Loan',    amount:'$9,500',  status:'Completed',   color:'#b0d4e3' },
+        { date:'Jul 20, 2024', type:'Emergency Loan',   amount:'$2,800',  status:'Funded',      color:'#00d4ff' }
     ];
 
-    feed.innerHTML = rows.map(function (r) {
-        return '<div style="display:flex;justify-content:space-between;align-items:center;' +
-               'padding:1rem 1.6rem;border-bottom:1px solid rgba(100,200,230,0.15);">' +
-                 '<div>' +
-                   '<div style="font-weight:600;color:#fff;margin-bottom:2px;">'  + r.type   + '</div>' +
-                   '<div style="font-size:0.82rem;color:#7ab8d0;">'               + r.date   + '</div>' +
-                 '</div>' +
-                 '<div style="text-align:right;">' +
-                   '<div style="font-weight:700;color:#fff;margin-bottom:2px;">'  + r.amount + '</div>' +
-                   '<span style="font-size:0.78rem;font-weight:600;color:'        + r.color  + ';">' + r.status + '</span>' +
-                 '</div>' +
-               '</div>';
-    }).join('');
-}
+    function renderActivities() {
+        var rowsToShow = allRows.slice(0, currentActivityCount);
+        
+        feed.innerHTML = rowsToShow.map(function (r) {
+            return '<div class="activity-item">' +
+                     '<div class="activity-info">' +
+                       '<div class="activity-type">' + r.type + '</div>' +
+                       '<div class="activity-date">' + r.date + '</div>' +
+                     '</div>' +
+                     '<div class="activity-details">' +
+                       '<div class="activity-amount">' + r.amount + '</div>' +
+                       '<span class="activity-status" style="color:' + r.color + ';">' + r.status + '</span>' +
+                     '</div>' +
+                   '</div>';
+        }).join('');
 
-/* ─── 4c. CALCULATOR LOGIC ──────────────────── */
-function wireCalculator() {
-    var slAmt  = document.getElementById('slAmount');
-    var slTerm = document.getElementById('slTerm');
-    var slRate = document.getElementById('slRate');
-    if (!slAmt || !slTerm || !slRate) return;
-
-    function calc() {
-        var amount   = parseInt(slAmt.value, 10);
-        var term     = parseInt(slTerm.value, 10);
-        var rate     = parseFloat(slRate.value);
-
-        // live labels
-        set('lblAmount', '$' + amount.toLocaleString());
-        set('lblTerm',   term + ' months');
-        set('lblRate',   rate.toFixed(2) + ' %');
-
-        // standard amortisation  (handles 0 % edge-case)
-        var r       = rate / 100 / 12;
-        var monthly = r === 0
-                    ? amount / term
-                    : (amount * r * Math.pow(1 + r, term)) / (Math.pow(1 + r, term) - 1);
-        var total    = monthly * term;
-        var interest = total - amount;
-
-        set('calcMonthly',  '$' + Math.round(monthly).toLocaleString());
-        set('calcPrincipal','$' + amount.toLocaleString());
-        set('calcInterest', '$' + Math.round(interest).toLocaleString());
-        set('calcTotal',    '$' + Math.round(total).toLocaleString());
+        // Hide "Load More" button if all activities are shown
+        if (loadMoreBtn) {
+            if (currentActivityCount >= allRows.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'inline-block';
+            }
+        }
     }
 
-    slAmt.addEventListener('input', calc);
-    slTerm.addEventListener('input', calc);
-    slRate.addEventListener('input', calc);
+    // Initial render
+    renderActivities();
 
-    calc(); // initial render
+    // Wire up "Load More" button
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+            currentActivityCount += 5; // Load 5 more activities
+            renderActivities();
+            
+            // Smooth scroll to show new activities
+            setTimeout(function() {
+                var lastItem = feed.lastElementChild;
+                if (lastItem) {
+                    lastItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }, 100);
+        });
+    }
 }
