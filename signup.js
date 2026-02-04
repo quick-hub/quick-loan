@@ -9,6 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize signup page
 function initSignupPage() {
+    // If already authenticated, redirect to home page
+    if (localStorage.getItem('quickloan_auth') === 'true') {
+        window.location.href = 'index.html';
+        return;
+    }
+
     const signupForm = document.getElementById('signupForm');
     const signupFrame = document.getElementById('signupFrame');
 
@@ -48,9 +54,10 @@ function handleSignupSubmit(e) {
     showLoadingState();
 
     // Submit form to backend
-    document.getElementById('signupForm').submit();
+    const form = document.getElementById('signupForm');
+    form.submit();
 
-    // Process registration
+    // Process registration after short delay
     setTimeout(function() {
         processRegistration(formData);
     }, 1000);
@@ -62,9 +69,20 @@ function showLoadingState() {
     const signupBtnText = document.getElementById('signupBtnText');
     const signupSpinner = document.getElementById('signupSpinner');
 
-    signupBtnText.classList.add('hidden');
-    signupSpinner.classList.add('visible');
-    signupBtn.disabled = true;
+    if (signupBtnText) signupBtnText.classList.add('hidden');
+    if (signupSpinner) signupSpinner.classList.add('visible');
+    if (signupBtn) signupBtn.disabled = true;
+}
+
+// Hide loading state
+function hideLoadingState() {
+    const signupBtn = document.getElementById('signupBtn');
+    const signupBtnText = document.getElementById('signupBtnText');
+    const signupSpinner = document.getElementById('signupSpinner');
+
+    if (signupBtnText) signupBtnText.classList.remove('hidden');
+    if (signupSpinner) signupSpinner.classList.remove('visible');
+    if (signupBtn) signupBtn.disabled = false;
 }
 
 // Process registration - Redirect to index.html
@@ -72,22 +90,42 @@ function processRegistration(formData) {
     const signupForm = document.getElementById('signupForm');
     const signupSuccess = document.getElementById('signupSuccess');
 
-    // Store user data
-    localStorage.setItem('quickloan_user', JSON.stringify({
+    // Create user object with all details
+    const userData = {
         name: formData.fullName,
         email: formData.email,
         phone: formData.phone,
-        registeredAt: new Date().toISOString()
-    }));
+        registeredAt: new Date().toISOString(),
+        lastLogin: new Date().toISOString()
+    };
+
+    // Store user data
+    localStorage.setItem('quickloan_user', JSON.stringify(userData));
 
     // Set authentication token
     localStorage.setItem('quickloan_auth', 'true');
     localStorage.setItem('quickloan_password', btoa(formData.password));
     localStorage.setItem('quickloan_last_login', new Date().toISOString());
 
+    // Initialize default stats
+    const defaultStats = {
+        activeLoans: '0',
+        approvedLoans: '0',
+        totalBorrowed: '$0',
+        creditScore: 'Good'
+    };
+    localStorage.setItem('quickloan_stats', JSON.stringify(defaultStats));
+
+    // Clear any navigation hints
+    try { 
+        sessionStorage.removeItem('showPublicOnLoad'); 
+    } catch (e) { 
+        console.log('Session storage not available'); 
+    }
+
     // Show success message
-    signupForm.classList.add('hidden');
-    signupSuccess.classList.add('visible');
+    if (signupForm) signupForm.classList.add('hidden');
+    if (signupSuccess) signupSuccess.classList.add('visible');
 
     // Redirect to index.html (home page)
     setTimeout(function() {
@@ -176,8 +214,10 @@ function validateSignupForm() {
 
 // Show error message
 function showError(element, message) {
-    element.textContent = message;
-    element.classList.add('visible');
+    if (element) {
+        element.textContent = message;
+        element.classList.add('visible');
+    }
 }
 
 // Clear all error messages
@@ -194,20 +234,19 @@ function initMobileMenu() {
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('navMenu');
 
-    if (hamburger) {
+    if (hamburger && navMenu) {
         hamburger.addEventListener('click', function() {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
-    }
 
-    // Close mobile menu when clicking on a link
-    document.querySelectorAll('.nav-menu a').forEach(link => {
-        link.addEventListener('click', function() {
-            if (hamburger && navMenu) {
+        // Close mobile menu when clicking on a link
+        const navLinks = navMenu.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
                 hamburger.classList.remove('active');
                 navMenu.classList.remove('active');
-            }
+            });
         });
-    });
+    }
 }
