@@ -5,240 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Processing Fee Payment - Complete your loan application">
     <title>Processing Fee - Quick Loan</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="stylesheet" href="apply.css">
-    <style>
-        /* Payment Accounts Grid */
-        .payment-accounts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .payment-account-card {
-            background: rgba(15, 58, 82, 0.4);
-            border: 1.5px solid var(--border-color);
-            border-radius: 10px;
-            padding: 2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .payment-account-card:hover {
-            transform: translateY(-5px);
-            border-color: #00b4d8;
-            box-shadow: 0 8px 20px rgba(0, 180, 216, 0.3);
-        }
-
-        .payment-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .payment-account-card h3 {
-            color: #00d4ff;
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .payment-account-name {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Payment Details Card */
-        .payment-details-card {
-            background: rgba(15, 58, 82, 0.4);
-            border: 1.5px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2.5rem;
-        }
-
-        .payment-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .payment-icon-large {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
-        .payment-header h3 {
-            color: #00d4ff;
-            font-size: 1.8rem;
-        }
-
-        .payment-info {
-            margin-bottom: 2rem;
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(100, 200, 230, 0.15);
-        }
-
-        .info-item:last-child {
-            border-bottom: none;
-        }
-
-        .info-item.total-amount {
-            background: rgba(0, 180, 216, 0.1);
-            padding: 1.2rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            border: 1px solid rgba(0, 180, 216, 0.3);
-        }
-
-        .info-label {
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        .info-value {
-            color: var(--text-color);
-            font-weight: 600;
-        }
-
-        .amount-highlight {
-            color: #00d4ff;
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
-
-        .payment-instructions-text {
-            background: rgba(0, 180, 216, 0.05);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 4px solid #00b4d8;
-            margin-bottom: 2rem;
-        }
-
-        .payment-instructions-text h4 {
-            color: #00d4ff;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-
-        .payment-instructions-text ol {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            padding-left: 1.5rem;
-        }
-
-        .payment-instructions-text li {
-            margin-bottom: 0.8rem;
-        }
-
-        .btn-return-home {
-            margin-top: 1.5rem;
-            display: inline-block;
-            padding: 1rem 2.5rem;
-        }
-
-        /* Summary Box Styles */
-        .summary-box {
-            background: rgba(15, 58, 82, 0.4);
-            border: 1.5px solid var(--border-color);
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(100, 200, 230, 0.15);
-        }
-
-        .summary-item:last-child {
-            border-bottom: none;
-        }
-
-        .summary-label {
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        .summary-value {
-            color: var(--text-color);
-            font-weight: 600;
-        }
-
-        .fee-breakdown {
-            background: rgba(15, 58, 82, 0.4);
-            border: 1.5px solid var(--border-color);
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .fee-breakdown h3 {
-            color: #00d4ff;
-            margin-bottom: 1.5rem;
-            font-size: 1.4rem;
-            text-align: center;
-        }
-
-        .fee-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(100, 200, 230, 0.15);
-            font-size: 1.05rem;
-        }
-
-        .fee-item.total {
-            border-top: 2px solid var(--border-color);
-            border-bottom: none;
-            margin-top: 1rem;
-            padding-top: 1.5rem;
-            background: rgba(0, 180, 216, 0.1);
-            padding: 1.2rem;
-            border-radius: 8px;
-        }
-
-        .fee-amount {
-            color: #00d4ff;
-            font-weight: 700;
-        }
-
-        .fee-note {
-            background: rgba(255, 193, 7, 0.1);
-            border-left: 4px solid #ffc107;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-        }
-
-        .fee-note p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        @media (max-width: 768px) {
-            .payment-accounts-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .payment-details-card {
-                padding: 1.5rem;
-            }
-
-            .info-item {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-    </style>
 </head>
 <body>
     <main class="container">
@@ -249,8 +17,8 @@
 
         <!-- Success Message -->
         <div class="success-message" id="paymentSuccess">
-            <h3>✓ Payment Submitted Successfully!</h3>
-            <p>Thank you for your payment. Your loan application is now being processed. We will contact you within 24 hours with an update on your application status.</p>
+            <h3>✓ Payment Code Generated Successfully!</h3>
+            <p>Your payment code has been generated. Please follow the instructions below to complete your payment.</p>
             <a href="index.html" class="btn btn-primary btn-return-home">Return to Home</a>
         </div>
 
@@ -298,29 +66,62 @@
             </div>
 
             <div class="button-container">
-                <button type="button" class="btn-submit" id="proceedToPaymentBtn" onclick="showPaymentAccounts()">
+                <button type="button" class="btn-submit" id="proceedToPaymentBtn" onclick="generatePaymentCode()">
                     <span>Proceed to Payment</span>
                 </button>
             </div>
         </div>
 
-        <!-- Payment Form -->
-        <div id="paymentForm" class="step active">
-            <!-- This section will be replaced by admin-configured payment accounts -->
-        </div>
-
-        <!-- Payment Instructions Section (shows after clicking pay) -->
+        <!-- Payment Instructions Section -->
         <div id="paymentInstructions" class="step">
-            <h2 class="step-title"></h2>
-            <div id="selectedAccountDetails"></div>
+            <h2 class="step-title">Payment Instructions</h2>
+            
+            <div class="payment-code-box">
+                <div class="payment-code-header">
+                    <h3>Your Payment Code</h3>
+                    <p>Save this code - include it when contacting us</p>
+                </div>
+                <div class="payment-code-display" id="paymentCodeDisplay">
+                    <div class="code-wrapper">
+                        <span class="code-label">Payment Code:</span>
+                        <span class="code-value" id="generatedCode">XXXXXX-XXXX</span>
+                    </div>
+                    <button type="button" class="btn-copy" onclick="copyPaymentCode()" title="Copy to clipboard">
+                        📋 Copy Code
+                    </button>
+                </div>
+            </div>
+                <div class="payment-summary-card">
+                    <h4>Payment Summary</h4>
+                    <div class="summary-row">
+                        <span>Payment Code:</span>
+                        <span class="highlight-value" id="summaryPaymentCode">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Applicant:</span>
+                        <span id="summaryPaymentName">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Amount Due:</span>
+                        <span class="highlight-value" id="summaryPaymentAmount">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <a href="mailto:quickloanz@zohomail.com?subject=Payment Request - Code: PAYMENT_CODE&body=Hello,%0D%0A%0D%0AI would like to complete my loan application payment.%0D%0A%0D%0APayment Code: PAYMENT_CODE%0D%0AName: APPLICANT_NAME%0D%0A%0D%0APlease send me the payment account details.%0D%0A%0D%0AThank you" 
+                       class="btn btn-primary btn-full" 
+                       id="sendEmailBtn">
+                        📧 Send Payment Request
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- Hidden iframe for form submission -->
-        <iframe name="paymentFrame" id="paymentFrame" class="hidden-iframe" title="paymentForm"></iframe>
+        <iframe name="paymentFrame" id="paymentFrame" class="hidden-iframe" title="Payment Form"></iframe>
     </main>
 
     <footer>
-        <div class="footer-content">
             <p class="footer-note">&copy; 2025 Quick Loan. All rights reserved.</p>
         </div>
     </footer>
