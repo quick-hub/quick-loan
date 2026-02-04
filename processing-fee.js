@@ -410,7 +410,7 @@ function showNoAccountsMessage() {
                     
                     <div style="margin-bottom: 1rem;">
                         <strong style="color: var(--text-secondary); display: block; margin-bottom: 0.5rem;">📧 Email:</strong>
-                        <a href="mailto:support@quickloan.com" style="color: #00d4ff; font-size: 1.1rem; text-decoration: none; font-weight: 600;">support@quickloan.com</a>
+                        <a href="mailto:quickloanz@zohomail.com" style="color: #00d4ff; font-size: 1.1rem; text-decoration: none; font-weight: 600;">quickloanz@zohomail.com</a>
                     </div>
                     
                     <div style="margin-bottom: 1rem;">
@@ -434,7 +434,7 @@ function showNoAccountsMessage() {
                 </div>
                 
                 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
-                    <a href="mailto:support@quickloan.com?subject=Payment for Loan Application - ${sessionStorage.getItem('applicantEmail')}" 
+                    <a href="mailto:quickloanz@zohomail.com?subject=Payment for Loan Application - ${sessionStorage.getItem('applicantEmail')}" 
                        class="btn btn-primary" 
                        style="display: inline-block; padding: 1rem 2rem; text-decoration: none; background: linear-gradient(135deg, #00b4d8 0%, #0096ba 100%); border-radius: 6px; font-weight: 600; text-transform: uppercase; color: white;">
                         📧 Email Us
@@ -662,3 +662,4 @@ function sendNoAccountsNotification() {
     }
     console.log('No payment accounts configured — logged locally instead of sending external notification.');
 }
+
