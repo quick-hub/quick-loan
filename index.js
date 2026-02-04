@@ -26,7 +26,10 @@ function swapToDashboard(user) {
 
     // 3. render dashboard into the waiting anchor
     var dash = document.getElementById('dashboardSections');
-    if (dash) dash.innerHTML = buildDashboard();
+    if (dash) {
+        dash.innerHTML = buildDashboard();
+        dash.style.display = 'block';
+    }
 
     // 4. hydrate dynamic parts
     fillStats();
@@ -133,7 +136,15 @@ function buildDashboard() {
 
 /* ─── FILL STATS FROM localStorage ──────── */
 function fillStats() {
-    var s = JSON.parse(localStorage.getItem('quickloan_stats') || '{}');
+    var statsData = localStorage.getItem('quickloan_stats');
+    var s = {};
+    
+    try {
+        s = statsData ? JSON.parse(statsData) : {};
+    } catch (e) {
+        console.error('Error parsing stats data:', e);
+        s = {};
+    }
 
     set('dashActive',   s.activeLoans   || '0');
     set('dashApproved', s.approvedLoans || '0');
@@ -155,7 +166,15 @@ function fillActivity() {
     if (!feed) return;
 
     // pull from localStorage; fall back to extended demo data
-    var stored = JSON.parse(localStorage.getItem('quickloan_activity') || 'null');
+    var stored = null;
+    try {
+        var storedData = localStorage.getItem('quickloan_activity');
+        stored = storedData ? JSON.parse(storedData) : null;
+    } catch (e) {
+        console.error('Error parsing activity data:', e);
+        stored = null;
+    }
+
     var allRows = stored || [
         { date:'Feb 03, 2025', type:'Personal Loan',    amount:'$12,000', status:'Processing', color:'#ffc107' },
         { date:'Jan 28, 2025', type:'Personal Loan',    amount:'$15,000', status:'Approved',    color:'#51cf66' },
@@ -205,6 +224,11 @@ function fillActivity() {
 
     // Wire up "Load More" button
     if (loadMoreBtn) {
+        // Remove existing listeners
+        var newBtn = loadMoreBtn.cloneNode(true);
+        loadMoreBtn.parentNode.replaceChild(newBtn, loadMoreBtn);
+        loadMoreBtn = newBtn;
+
         loadMoreBtn.addEventListener('click', function() {
             currentActivityCount += 5; // Load 5 more activities
             renderActivities();
