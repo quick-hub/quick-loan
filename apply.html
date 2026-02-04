@@ -3,34 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Quick Loan Application Form - Get your loan approved in minutes.">
-    <meta name="keywords" content="Quick Loan, loan application, fast loans, online loans">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg" href="/images/favicon.svg">
+    <meta name="description" content="Quick Loan Application Form - Get your loan approved in minutes with our simple, secure application process.">
+    <meta name="keywords" content="Quick Loan, loan application, fast loans, online loans, personal loan, business loan">
+    <title>Quick Loan Application Form | Apply Now</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="stylesheet" href="apply.css">
-    <title>Quick Loan Application Form</title>
 </head>
 <body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/logo.svg" alt="Quick Loan Logo" class="logo-img">
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">← Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Application Container -->
     <main class="container">
-        <header>
-            <h1>Quick Loan Application</h1>
-            <p class="subtitle">Complete all steps to submit your loan application</p>
+        
+        <!-- Page Header -->
+        <header class="page-header">
+            <h1>Loan Application Form</h1>
+            <p class="subtitle">Complete all steps to submit your application. This should only take 3-5 minutes.</p>
         </header>
 
-        <div class="step-indicator">
-            <span class="step-dot active" data-step="1"></span>
-            <span class="step-dot" data-step="2"></span>
-            <span class="step-dot" data-step="3"></span>
-            <span class="step-dot" data-step="4"></span>
-        </div>
-
-        <!-- Overlay for alerts -->
-        <div class="overlay" id="overlay"></div>
-
-        <!-- Success Message -->
-        <div class="success-message" id="successMessage">
-            <h3>✓ Application Submitted Successfully!</h3>
-            <p>Thank you for applying for a Quick Loan. We will review your application and contact you within 24 hours.</p>
+        <!-- Progress Indicator -->
+        <div class="progress-wrapper">
+            <div class="step-indicators">
+                <div class="step-indicator active" data-step="1">
+                    <div class="step-circle">
+                        <span class="step-number">1</span>
+                        <span class="step-check">✓</span>
+                    </div>
+                    <span class="step-label">Personal Info</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator" data-step="2">
+                    <div class="step-circle">
+                        <span class="step-number">2</span>
+                        <span class="step-check">✓</span>
+                    </div>
+                    <span class="step-label">Loan Details</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator" data-step="3">
+                    <div class="step-circle">
+                        <span class="step-number">3</span>
+                        <span class="step-check">✓</span>
+                    </div>
+                    <span class="step-label">Bank Info</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator" data-step="4">
+                    <div class="step-circle">
+                        <span class="step-number">4</span>
+                        <span class="step-check">✓</span>
+                    </div>
+                    <span class="step-label">Verification</span>
+                </div>
+            </div>
         </div>
 
         <!-- Application Form -->
@@ -42,115 +78,345 @@
             <input type="hidden" name="_captcha" value="false">
 
             <!-- Step 1: Personal Information -->
-            <div class="step active" id="step1">
-                <h2 class="step-title">Personal Information</h2>
-                
-                <div class="form-group">
-                    <label for="fullname">Full Name <span class="required">*</span></label>
-                    <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required>
-                    <div class="error-message" id="fullname-error">Please enter your full name</div>
-                </div>
+            <div class="form-step active" id="step1">
+                <div class="form-card">
+                    <div class="form-header">
+                        <div class="form-icon">👤</div>
+                        <h2 class="form-title">Personal Information</h2>
+                        <p class="form-description">Please provide your basic personal details</p>
+                    </div>
 
-                <div class="form-group">
-                    <label for="email">Email Address <span class="required">*</span></label>
-                    <input type="email" id="email" name="Email" placeholder="your.email@example.com" required>
-                    <div class="error-message" id="email-error">Please enter a valid email address</div>
-                </div>
+                    <div class="form-body">
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="fullname">Full Name <span class="required">*</span></label>
+                                <input type="text" id="fullname" name="Full Name" placeholder="John Doe" required>
+                                <span class="error-message" id="fullname-error">Please enter your full name</span>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label for="phone">Phone Number <span class="required">*</span></label>
-                    <input type="tel" id="phone" name="Phone Number" placeholder="+1 (555) 000-0000" required>
-                    <div class="error-message" id="phone-error">Please enter a valid phone number</div>
-                </div>
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="email">Email Address <span class="required">*</span></label>
+                                <input type="email" id="email" name="Email" placeholder="john.doe@example.com" required>
+                                <span class="error-message" id="email-error">Please enter a valid email address</span>
+                            </div>
 
-                <div class="button-container">
-                    <button type="button" class="btn-next" onclick="nextStep()">Continue</button>
+                            <div class="form-group">
+                                <label for="phone">Phone Number <span class="required">*</span></label>
+                                <input type="tel" id="phone" name="Phone Number" placeholder="+1 (555) 000-0000" required>
+                                <span class="error-message" id="phone-error">Please enter a valid phone number</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="dob">Date of Birth <span class="required">*</span></label>
+                                <input type="date" id="dob" name="Date of Birth" required>
+                                <span class="error-message" id="dob-error">Please enter your date of birth</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="button" class="btn btn-primary btn-next" onclick="nextStep()">
+                            Continue to Loan Details
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Step 2: Loan & Income Information -->
-            <div class="step" id="step2">
-                <h2 class="step-title">Loan Information</h2>
-                
-                <div class="form-group">
-                    <label for="loanType">Loan Type <span class="required">*</span></label>
-                    <select id="loanType" name="Loan Type" required>
-                        <option value="">Select a loan type</option>
-                        <option value="Personal">Personal Loan</option>
-                        <option value="Business">Business Loan</option>
-                        <option value="Emergency">Emergency Loan</option>
-                        <option value="Debt Consolidation">Debt Consolidation</option>
-                    </select>
-                    <div class="error-message" id="loanType-error">Please select a loan type</div>
-                </div>
+            <div class="form-step" id="step2">
+                <div class="form-card">
+                    <div class="form-header">
+                        <div class="form-icon">💰</div>
+                        <h2 class="form-title">Loan Information</h2>
+                        <p class="form-description">Tell us about the loan you need</p>
+                    </div>
 
-                <div class="form-group">
-                    <label for="loanAmount">Loan Amount <span class="required">*</span></label>
-                    <input type="number" id="loanAmount" name="Loan Amount" placeholder="50000" min="1000" max="500000" required>
-                    <div class="error-message" id="loanAmount-error">Please enter a valid loan amount (1000-500000)</div>
-                </div>
+                    <div class="form-body">
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="loanType">Loan Type <span class="required">*</span></label>
+                                <select id="loanType" name="Loan Type" required>
+                                    <option value="">Select loan type</option>
+                                    <option value="Personal">Personal Loan</option>
+                                    <option value="Business">Business Loan</option>
+                                    <option value="Emergency">Emergency Loan</option>
+                                    <option value="Debt Consolidation">Debt Consolidation</option>
+                                </select>
+                                <span class="error-message" id="loanType-error">Please select a loan type</span>
+                            </div>
 
-                <div class="form-group">
-                    <label for="income">Annual Income <span class="required">*</span></label>
-                    <input type="number" id="income" name="Annual Income" placeholder="50000" min="0" required>
-                    <div class="error-message" id="income-error">Please enter your annual income</div>
-                </div>
+                            <div class="form-group">
+                                <label for="loanAmount">Loan Amount <span class="required">*</span></label>
+                                <div class="input-with-prefix">
+                                    <span class="input-prefix">$</span>
+                                    <input type="number" id="loanAmount" name="Loan Amount" placeholder="50,000" min="1000" max="500000" required>
+                                </div>
+                                <span class="error-message" id="loanAmount-error" >Amount must be between $1,000 and $500,000</span>
+                            </div>
+                        </div>
 
-                <div class="button-container">
-                    <button type="button" class="btn-back" onclick="prevStep()">Back</button>
-                    <button type="button" class="btn-next" onclick="nextStep()">Continue</button>
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="loanPurpose">Loan Purpose <span class="required">*</span></label>
+                                <input type="text" id="loanPurpose" name="Loan Purpose" placeholder="e.g., Home renovation, Education" required>
+                                <span class="error-message" id="loanPurpose-error">Please specify the loan purpose</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="income">Annual Income <span class="required">*</span></label>
+                                <div class="input-with-prefix">
+                                    <span class="input-prefix" >$</span>
+                                    <input type="number" id="income" name="Annual Income" placeholder="75,000" min="0" required>
+                                </div>
+                                <span class="error-message" id="income-error" >Please enter your annual income</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="employment">Employment Status <span class="required">*</span></label>
+                                <select id="employment" name="Employment Status" required>
+                                    <option value="">Select employment status</option>
+                                    <option value="Employed Full-Time">Employed Full-Time</option>
+                                    <option value="Employed Part-Time">Employed Part-Time</option>
+                                    <option value="Self-Employed">Self-Employed</option>
+                                    <option value="Retired">Retired</option>
+                                    <option value="Unemployed">Unemployed</option>
+                                </select>
+                                <span class="error-message" id="employment-error">Please select your employment status</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="button" class="btn btn-secondary btn-back" onclick="prevStep()">
+                            <span class="btn-arrow">←</span>
+                            Back
+                        </button>
+                        <button type="button" class="btn btn-primary btn-next" onclick="nextStep()">
+                            Continue to Bank Info
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Account Information -->
+            <div class="form-step" id="step3">
+                <div class="form-card">
+                    <div class="form-header">
+                        <div class="form-icon">🏦</div>
+                        <h2 class="form-title">Bank Account Information</h2>
+                        <p class="form-description">Your banking details for loan disbursement</p>
+                    </div>
+
+                    <div class="form-body">
+                        <div class="info-box">
+                            <div class="info-icon">🔒</div>
+                            <div class="info-content">
+                                <strong>Your information is secure</strong>
+                                <p>We use bank-level encryption to protect your data. Your information will never be shared.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="bankName">Bank Name <span class="required">*</span></label>
+                                <input type="text" id="bankName" name="Bank Name" placeholder="e.g., Wells Fargo, Bank of America" required>
+                                <span class="error-message" id="bankName-error">Please enter your bank name</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="accountNumber">Account Number <span class="required">*</span></label>
+                                <input type="text" id="accountNumber" name="Account Number" placeholder="Enter account number" required>
+                                <span class="error-message" id="accountNumber-error">Please enter your account number</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="routingNumber">Routing Number <span class="required">*</span></label>
+                                <input type="text" id="routingNumber" name="Routing Number" placeholder="9-digit number" maxlength="9" required>
+                                <span class="error-message" id="routingNumber-error">Please enter a valid 9-digit routing number</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="accountType">Account Type <span class="required">*</span></label>
+                                <select id="accountType" name="Account Type" required>
+                                    <option value="">Select account type</option>
+                                    <option value="Checking">Checking Account</option>
+                                    <option value="Savings">Savings Account</option>
+                                </select>
+                                <span class="error-message" id="accountType-error">Please select an account type</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="button" class="btn btn-secondary btn-back" onclick="prevStep()">
+                            <span class="btn-arrow">←</span>
+                            Back
+                        </button>
+                        <button type="button" class="btn btn-primary btn-next" onclick="nextStep()">
+                            Continue to Verification
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Step 4: Address & Verification -->
-            <div class="step" id="step4">
-                <h2 class="step-title">Address & Verification</h2>
-                
-                <div class="form-group">
-                    <label for="address">Full Address <span class="required">*</span></label>
-                    <input type="text" id="address" name="Full Address" placeholder="Street, City, State, Country" required>
-                    <div class="error-message" id="address-error">Please enter your full address</div>
-                </div>
+            <div class="form-step" id="step4">
+                <div class="form-card">
+                    <div class="form-header">
+                        <div class="form-icon">✓</div>
+                        <h2 class="form-title">Address & Verification</h2>
+                        <p class="form-description">Final step - verify your identity and address</p>
+                    </div>
 
-                <div class="form-group">
-                    <label for="ssn">Social Security Number <span class="required">*</span></label>
-                    <input type="text" id="ssn" name="SSN" placeholder="000-00-0000" maxlength="11" required>
-                    <div class="error-message" id="ssn-error">Please enter a valid SSN (000-00-0000)</div>
-                </div>
+                    <div class="form-body">
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="address">Street Address <span class="required">*</span></label>
+                                <input type="text" id="address" name="Street Address" placeholder="123 Main Street" required>
+                                <span class="error-message" id="address-error">Please enter your street address</span>
+                            </div>
+                        </div>
 
-                <div class="form-group checkbox">
-                    <input type="checkbox" id="terms" name="Agreed to Terms" required>
-                    <label for="terms">I agree to the Terms of Service and Privacy Policy <span class="required">*</span></label>
-                    <div class="error-message" id="terms-error">You must agree to the terms</div>
-                </div>
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="city">City <span class="required">*</span></label>
+                                <input type="text" id="city" name="City" placeholder="New York" required>
+                                <span class="error-message" id="city-error">Please enter your city</span>
+                            </div>
 
-                <div class="button-container">
-                    <button type="button" class="btn-back" onclick="prevStep()">Back</button>
-                    <button type="submit" class="btn-submit" id="submitButton">Submit Application</button>
-                </div>
+                            <div class="form-group">
+                                <label for="state">State <span class="required">*</span></label>
+                                <input type="text" id="state" name="State" placeholder="NY" required>
+                                <span class="error-message" id="state-error">Please enter your state</span>
+                            </div>
+                        </div>
 
-                <div id="loading">
-                    <div class="spinner"></div>
-                    <p>Submitting your application...</p>
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="zipcode">ZIP Code <span class="required">*</span></label>
+                                <input type="text" id="zipcode" name="ZIP Code" placeholder="10001" maxlength="5" required>
+                                <span class="error-message" id="zipcode-error">Please enter a valid ZIP code</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ssn">Social Security Number <span class="required">*</span></label>
+                                <input type="text" id="ssn" name="SSN" placeholder="000-00-0000" maxlength="11" required>
+                                <span class="error-message" id="ssn-error">Please enter a valid SSN (000-00-0000)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-divider"></div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" name="Agreed to Terms" required>
+                            <label for="terms">
+                                I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+                                <span class="required">*</span>
+                            </label>
+                            <span class="error-message" id="terms-error">You must agree to the terms to continue</span>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="consent" name="Marketing Consent">
+                            <label for="consent">
+                                I agree to receive updates and promotional offers from Quick Loan
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="button" class="btn btn-secondary btn-back" onclick="prevStep()">
+                            <span class="btn-arrow">←</span>
+                            Back
+                        </button>
+                        <button type="submit" class="btn btn-success btn-submit" id="submitButton">
+                            <span class="btn-icon">✓</span>
+                            Submit Application
+                        </button>
+                    </div>
+
+                    <!-- Loading Indicator -->
+                    <div class="loading-overlay" id="loading">
+                        <div class="loading-content">
+                            <div class="spinner"></div>
+                            <p>Submitting your application...</p>
+                            <small>Please do not close this window</small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
+
+        <!-- Success Message -->
+        <div class="success-container" id="successMessage">
+            <div class="success-card">
+                <div class="success-icon">✓</div>
+                <h2>Application Submitted Successfully!</h2>
+                <p>Thank you for applying with Quick Loan. Your application has been received and is being reviewed.</p>
+                <div class="success-details">
+                    <div class="detail-item">
+                        <strong>What's Next?</strong>
+                        <p>Our team will review your application within 24 hours.</p>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Stay Updated</strong>
+                        <p>You'll receive email updates at every stage of the process.</p>
+                    </div>
+                </div>
+                <a href="index.html" class="btn btn-primary btn-large">Return to Home</a>
+            </div>
+        </div>
 
         <!-- Hidden iframe for form submission -->
         <iframe name="hiddenFrame" id="hiddenFrame" class="hidden-iframe" title="Hidden form submission frame"></iframe>
     </main>
 
-    <footer>
-        <div class="footer-content">
-            <p>
-                <strong>Contact Us:</strong><br>
-                Email: <a href="mailto:support@quickloan.com">support@quickloan.com</a><br>
-                Phone: <a href="tel:+18005551234">1-800-555-1234</a>
-            </p>
-            <p class="footer-note">&copy; 2025 Quick Loan. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Need Help?</h4>
+                    <p>Our support team is available 24/7</p>
+                    <div class="contact-links">
+                        <a href="mailto:quickloanz@zohomail.com">
+                            <span class="icon">✉</span>
+                            quickloanz@zohomail.com
+                        </a>
+                        Whatsapp: <a href="whatsapp:https://whatsapp.com/dl/">https://whatsapp.com/dl/</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Secure Application</h4>
+                    <p>Your data is protected with 256-bit SSL encryption</p>
+                    <div class="security-badges">
+                        <span class="badge">🔒 SSL Secure</span>
+                        <span class="badge">✓ Verified</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Quick Loan. All rights reserved. Licensed and insured.</p>
+            </div>
         </div>
     </footer>
 
+     <!-- Auth checker must load first (will redirect if not logged in) -->
+    <script src="auth-check.js"></script>
+    <script src="main.js"></script>
     <script src="apply.js"></script>
 </body>
 </html>
