@@ -11,6 +11,7 @@ const INSURANCE_FEE_RATE = 0.06;  // 6%
 document.addEventListener('DOMContentLoaded', function() {
     loadApplicationData();
     calculateFees();
+    setupEmailButton();
 });
 
 // Load application data from sessionStorage or localStorage
@@ -41,17 +42,17 @@ function loadApplicationData() {
     };
 }
 
-// Calculate application and insurance fees
+// Calculate processing and insurance fees
 function calculateFees() {
     const loanAmount = window.applicantData ? window.applicantData.loanAmount : 0;
     
     // Calculate fees
-    const processingFee = loanAmount * APPLICATION_FEE_RATE;
+    const applicationFee = loanAmount * APPLICATION_FEE_RATE;
     const insuranceFee = loanAmount * INSURANCE_FEE_RATE;
-    const totalFee = processingFee + insuranceFee;
+    const totalFee = applicationFee + insuranceFee;
     
     // Display fees
-    document.getElementById('applicationFee').textContent = formatCurrency(applicationFee);
+    document.getElementById('processingFee').textContent = formatCurrency(applicationFee);
     document.getElementById('insuranceFee').textContent = formatCurrency(insuranceFee);
     document.getElementById('totalFee').textContent = formatCurrency(totalFee);
     
@@ -108,7 +109,6 @@ function showPaymentInstructions(paymentCode) {
     
     // Fill in applicant information
     document.getElementById('summaryPaymentName').textContent = window.applicantData.name;
-    document.getElementById('instructionTotalFee').textContent = formatCurrency(window.calculatedFees.total);
     document.getElementById('summaryPaymentAmount').textContent = formatCurrency(window.calculatedFees.total);
     
     // Update mailto link
@@ -134,6 +134,38 @@ Thank you`;
     
     const mailtoLink = `mailto:quickloanz@zohomail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     document.getElementById('sendEmailBtn').href = mailtoLink;
+}
+
+// Setup email button click handler
+function setupEmailButton() {
+    const emailBtn = document.getElementById('sendEmailBtn');
+    if (emailBtn) {
+        emailBtn.addEventListener('click', function(e) {
+            // Allow the mailto to open first
+            setTimeout(() => {
+                handleEmailSent();
+            }, 500);
+        });
+    }
+}
+
+// Handle email sent action
+function handleEmailSent() {
+    // Hide payment instructions
+    document.getElementById('paymentInstructions').style.display = 'none';
+    document.getElementById('summaryStep').style.display = 'none';
+    
+    // Show success message
+    const successMessage = document.getElementById('paymentSuccess');
+    successMessage.classList.add('show');
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Redirect to homepage after 4 seconds
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 4000);
 }
 
 // Copy payment code to clipboard
@@ -178,15 +210,36 @@ function showCopySuccess(message) {
     const toast = document.createElement('div');
     toast.className = 'copy-toast';
     toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(81, 207, 102, 0.4);
+        font-weight: 600;
+        font-size: 0.95rem;
+        z-index: 10000;
+        transition: transform 0.3s ease;
+    `;
     document.body.appendChild(toast);
     
     // Show toast
-    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.style.transform = 'translateX(-50%) translateY(0)';
+    }, 10);
     
     // Hide and remove toast
     setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => document.body.removeChild(toast), 300);
+        toast.style.transform = 'translateX(-50%) translateY(100px)';
+        setTimeout(() => {
+            if (document.body.contains(toast)) {
+                document.body.removeChild(toast);
+            }
+        }, 300);
     }, 2000);
 }
 
@@ -209,7 +262,7 @@ function sendPaymentCodeEmail(paymentCode) {
         'Applicant Email': window.applicantData.email,
         'Loan Type': window.applicantData.loanType,
         'Loan Amount': formatCurrency(window.applicantData.loanAmount),
-        'Application Fee': formatCurrency(window.calculatedFees.processing),
+        'Processing Fee': formatCurrency(window.calculatedFees.processing),
         'Insurance Fee': formatCurrency(window.calculatedFees.insurance),
         'Total Fee Due': formatCurrency(window.calculatedFees.total),
         'Generated At': new Date().toLocaleString(),
@@ -235,4 +288,3 @@ function backToSummary() {
     document.getElementById('paymentInstructions').classList.remove('active');
     document.getElementById('summaryStep').classList.add('active');
 }
-
