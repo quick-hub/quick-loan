@@ -207,9 +207,9 @@ function validateField(field) {
             case 'loanAmount':
                 const cleanLoanAmount = field.getAttribute('data-clean-value') || field.value.replace(/,/g, '');
                 const amount = parseFloat(cleanLoanAmount);
-                if (isNaN(amount) || amount < 1000 || amount > 500000) {
+                if (isNaN(amount) || amount < 100 || amount > 500000) {
                     isValid = false;
-                    errorMessage = 'Loan amount must be between $1,000 and $500,000';
+                    errorMessage = 'Loan amount must be between $100 and $500,000';
                 }
                 break;
                 
