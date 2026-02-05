@@ -1057,6 +1057,201 @@ a:hover {
 }
 
 /* ============================================
+   ABOUT PAGE - INLINE STYLES EXTRACTED
+   ============================================ */
+
+/* Who We Serve Section */
+.who-we-serve-section {
+    background: rgba(26, 90, 122, 0.2);
+    padding: 4rem 0;
+}
+
+.services-grid-centered {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Our Story Section */
+.about-story-section {
+    padding-top: 4rem;
+}
+
+/* What We Do Section */
+.what-we-do-section {
+    padding-top: 3rem;
+}
+
+.what-we-do-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: -1rem auto 3rem;
+    color: #b0d4e3;
+    font-size: 1.1rem;
+}
+
+.what-we-do-footer {
+    text-align: center;
+    max-width: 900px;
+    margin: 3rem auto 0;
+    color: #b0d4e3;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+/* Values Section */
+.values-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: -1rem auto 3rem;
+    color: #b0d4e3;
+    font-size: 1.1rem;
+}
+
+/* Our Mission Section */
+.our-mission-section {
+    background: linear-gradient(135deg, rgba(0, 150, 186, 0.15), rgba(0, 212, 255, 0.08));
+    padding: 5rem 0;
+}
+
+.mission-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.mission-statement {
+    background: rgba(26, 90, 122, 0.4);
+    padding: 3rem;
+    border-radius: 12px;
+    border: 1px solid rgba(100, 200, 230, 0.3);
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.mission-quote {
+    font-size: 1.8rem;
+    color: #00d4ff;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+}
+
+.mission-detail-title {
+    color: #00d4ff;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+}
+
+.mission-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.mission-list li {
+    padding: 0.5rem 0;
+    color: #b0d4e3;
+}
+
+.mission-list-icon {
+    display: inline;
+}
+
+.mission-list-strong {
+    color: #00d4ff;
+}
+
+/* Mission Pillars Section */
+.mission-pillars-section {
+    padding: 5rem 0;
+}
+
+.mission-pillar-detail {
+    margin-top: 1rem;
+}
+
+/* Our Promise Section */
+.our-promise-section {
+    background: rgba(26, 90, 122, 0.2);
+    padding: 4rem 0;
+}
+
+.promise-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.promise-intro {
+    color: #b0d4e3;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.promise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.promise-item {
+    background: rgba(0, 180, 216, 0.1);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(100, 200, 230, 0.3);
+}
+
+.promise-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.promise-title {
+    color: #00d4ff;
+}
+
+/* Final Note Section */
+.final-note-section {
+    padding: 5rem 0;
+}
+
+.final-note-box {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(0, 150, 186, 0.15), rgba(0, 212, 255, 0.08));
+    padding: 3rem;
+    border-radius: 12px;
+    border: 2px solid rgba(0, 180, 216, 0.3);
+}
+
+.final-note-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.final-note-title {
+    font-size: 1.8rem;
+    color: #00d4ff;
+    margin-bottom: 1rem;
+}
+
+.final-note-text {
+    color: #b0d4e3;
+    font-size: 1.15rem;
+    line-height: 1.8;
+}
+
+/* Contact Info Section */
+.contact-info-section {
+    padding-top: 0;
+}
+
+.contact-link {
+    color: #00d4ff;
+}
+
+/* ============================================
    FOOTER
    ============================================ */
 .footer {
