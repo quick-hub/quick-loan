@@ -7,7 +7,7 @@
 
 // Fee calculation rates
 const PROCESSING_FEE_RATE = 0.04; // 4%
-const INSURANCE_FEE_RATE = 0.06.5;  // 6.5%
+const INSURANCE_FEE_RATE = 0.065;  // 6.5%
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
@@ -312,3 +312,4 @@ function sendPaymentRequestConfirmation() {
 }
 
 console.log('%cProcessing Fee Page', 'color: #00d4ff; font-size: 20px; font-weight: bold;');
+
