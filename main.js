@@ -1,14 +1,19 @@
 /**
- * main.js — Global utilities
- * - Hamburger menu toggle
+ * main.js — Global utilities and UI interactions
+ * 
+ * Features:
+ * - Hamburger menu toggle with animations
  * - Smooth scrolling for anchor links
  * - Active link highlighting
+ * - Utility functions for formatting
+ * - Form validation helpers
  */
 
 document.addEventListener('DOMContentLoaded', function() {
     initHamburgerMenu();
     initSmoothScrolling();
     highlightActiveLink();
+    initScrollAnimations();
 });
 
 // ════════════════════════════════════════
@@ -48,14 +53,33 @@ function initHamburgerMenu() {
         }
     });
 
+    // Handle window resize
+    var resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (window.innerWidth > 968) {
+                closeMenu();
+            }
+        }, 250);
+    });
+
     function toggleMenu() {
         var isActive = navMenu.classList.toggle('active');
         animateHamburger(isActive);
+        
+        // Toggle body scroll
+        if (isActive) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
     }
 
     function closeMenu() {
         navMenu.classList.remove('active');
         animateHamburger(false);
+        document.body.style.overflow = '';
     }
 
     function animateHamburger(isActive) {
@@ -103,6 +127,11 @@ function initSmoothScrolling() {
                     top: targetPosition,
                     behavior: 'smooth'
                 });
+                
+                // Update URL without jumping
+                if (history.pushState) {
+                    history.pushState(null, null, href);
+                }
             }
         });
     });
@@ -124,6 +153,11 @@ function highlightActiveLink() {
     navLinks.forEach(function(link) {
         var linkPage = link.getAttribute('href');
         
+        // Skip logout button
+        if (link.classList.contains('logout-btn') || link.classList.contains('btn-login')) {
+            return;
+        }
+        
         // Remove active class from all links first
         link.classList.remove('active');
         
@@ -141,25 +175,89 @@ function highlightActiveLink() {
 }
 
 // ════════════════════════════════════════
+// SCROLL ANIMATIONS
+// ════════════════════════════════════════
+function initScrollAnimations() {
+    var observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements with fade-in class
+    var animatedElements = document.querySelectorAll('.service-card, .feature-item, .step-item');
+    animatedElements.forEach(function(el, index) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        el.style.transitionDelay = (index * 0.1) + 's';
+        observer.observe(el);
+    });
+}
+
+// ════════════════════════════════════════
 // UTILITY FUNCTIONS
 // ════════════════════════════════════════
 
-// Format currency
+/**
+ * Format number as currency
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 function formatCurrency(amount) {
+    if (isNaN(amount)) return '$0.00';
     return '$' + parseFloat(amount).toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
 }
 
-// Format date
+/**
+ * Format date string
+ * @param {string|Date} dateString - Date to format
+ * @returns {string} Formatted date string
+ */
 function formatDate(dateString) {
     var date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Invalid Date';
+    
     var options = { year: 'numeric', month: 'short', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
 }
 
-// Debounce function for performance
+/**
+ * Format date with time
+ * @param {string|Date} dateString - Date to format
+ * @returns {string} Formatted date and time string
+ */
+function formatDateTime(dateString) {
+    var date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Invalid Date';
+    
+    var options = { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
+    return date.toLocaleDateString('en-US', options);
+}
+
+/**
+ * Debounce function for performance optimization
+ * @param {Function} func - Function to debounce
+ * @param {number} wait - Wait time in milliseconds
+ * @returns {Function} Debounced function
+ */
 function debounce(func, wait) {
     var timeout;
     return function executedFunction() {
@@ -174,41 +272,201 @@ function debounce(func, wait) {
     };
 }
 
-// Show validation error
+/**
+ * Throttle function for performance optimization
+ * @param {Function} func - Function to throttle
+ * @param {number} limit - Time limit in milliseconds
+ * @returns {Function} Throttled function
+ */
+function throttle(func, limit) {
+    var inThrottle;
+    return function() {
+        var args = arguments;
+        var context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(function() { inThrottle = false; }, limit);
+        }
+    };
+}
+
+/**
+ * Show validation error message
+ * @param {string} elementId - ID of error element
+ * @param {string} message - Error message to display
+ */
 function showValidationError(elementId, message) {
     var element = document.getElementById(elementId);
     if (element) {
         element.textContent = message;
         element.style.display = 'block';
+        element.setAttribute('role', 'alert');
     }
 }
 
-// Clear validation error
+/**
+ * Clear validation error message
+ * @param {string} elementId - ID of error element
+ */
 function clearValidationError(elementId) {
     var element = document.getElementById(elementId);
     if (element) {
         element.textContent = '';
         element.style.display = 'none';
+        element.removeAttribute('role');
     }
 }
 
-// Clear all errors
+/**
+ * Clear all error messages on the page
+ */
 function clearAllErrors() {
     var errors = document.querySelectorAll('.error-message');
     errors.forEach(function(error) {
         error.textContent = '';
         error.style.display = 'none';
+        error.removeAttribute('role');
     });
 }
+
+/**
+ * Validate email format
+ * @param {string} email - Email to validate
+ * @returns {boolean} True if valid
+ */
+function isValidEmail(email) {
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+/**
+ * Validate phone number format
+ * @param {string} phone - Phone number to validate
+ * @returns {boolean} True if valid
+ */
+function isValidPhone(phone) {
+    var phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+    return phoneRegex.test(phone);
+}
+
+/**
+ * Show success message toast
+ * @param {string} message - Message to display
+ */
+function showSuccessMessage(message) {
+    showToast(message, 'success');
+}
+
+/**
+ * Show error message toast
+ * @param {string} message - Message to display
+ */
+function showErrorMessage(message) {
+    showToast(message, 'error');
+}
+
+/**
+ * Show toast notification
+ * @param {string} message - Message to display
+ * @param {string} type - Type of toast ('success' or 'error')
+ */
+function showToast(message, type) {
+    var toast = document.createElement('div');
+    var bgColor = type === 'success' 
+        ? 'linear-gradient(135deg, #51cf66, #40c057)' 
+        : 'linear-gradient(135deg, #ff6b6b, #ff5252)';
+    
+    toast.style.cssText = 
+        'position: fixed; top: 20px; right: 20px; ' +
+        'background: ' + bgColor + '; ' +
+        'color: white; padding: 1rem 1.5rem; border-radius: 8px; ' +
+        'box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); ' +
+        'z-index: 10000; font-weight: 600; max-width: 300px; ' +
+        'animation: slideInRight 0.3s ease;';
+    
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(function() {
+        toast.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(function() {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 300);
+    }, 3000);
+}
+
+/**
+ * Copy text to clipboard
+ * @param {string} text - Text to copy
+ */
+function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+            showSuccessMessage('Copied to clipboard!');
+        }).catch(function(err) {
+            console.error('Failed to copy:', err);
+        });
+    } else {
+        // Fallback for older browsers
+        var textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showSuccessMessage('Copied to clipboard!');
+        } catch (err) {
+            console.error('Failed to copy:', err);
+        }
+        document.body.removeChild(textArea);
+    }
+}
+
+/**
+ * Sanitize HTML to prevent XSS
+ * @param {string} html - HTML string to sanitize
+ * @returns {string} Sanitized HTML
+ */
+function sanitizeHTML(html) {
+    var temp = document.createElement('div');
+    temp.textContent = html;
+    return temp.innerHTML;
+}
+
+// Add CSS animations
+var style = document.createElement('style');
+style.textContent = 
+    '@keyframes slideInRight { ' +
+    '  from { transform: translateX(100%); opacity: 0; } ' +
+    '  to { transform: translateX(0); opacity: 1; } ' +
+    '} ' +
+    '@keyframes slideOutRight { ' +
+    '  from { transform: translateX(0); opacity: 1; } ' +
+    '  to { transform: translateX(100%); opacity: 0; } ' +
+    '}';
+document.head.appendChild(style);
 
 // Export utility functions globally
 if (typeof window !== 'undefined') {
     window.QuickLoanUtils = {
         formatCurrency: formatCurrency,
         formatDate: formatDate,
+        formatDateTime: formatDateTime,
         debounce: debounce,
+        throttle: throttle,
         showValidationError: showValidationError,
         clearValidationError: clearValidationError,
-        clearAllErrors: clearAllErrors
+        clearAllErrors: clearAllErrors,
+        isValidEmail: isValidEmail,
+        isValidPhone: isValidPhone,
+        showSuccessMessage: showSuccessMessage,
+        showErrorMessage: showErrorMessage,
+        copyToClipboard: copyToClipboard,
+        sanitizeHTML: sanitizeHTML
     };
 }
