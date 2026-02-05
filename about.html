@@ -3,170 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="About Quick Loan - Learn about our mission and services">
+    <meta name="description" content="About Quick Loan - Learn about our mission, values, and commitment to financial accessibility">
     <title>About Us - Quick Loan</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Navigation -->
+
+    <!-- NAVIGATION -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">Quick Loan</div>
-            <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html" class="active">About</a></li>
-                <li><a href="personal-loan.html">Personal Loan</a></li>
-                <li><a href="business-loan.html">Business Loan</a></li>
-                <li><a href="emergency-loan.html">Emergency Loan</a></li>
-                <li><a href="login.html" class="btn-login">Login</a></li>
-            </ul>
-            <div class="hamburger">
+            <div class="logo">
+                <img src="images/logo.svg" alt="Quick Loan Logo" class="logo-img">
+            </div>
+
+            <div class="hamburger" id="hamburger">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="personal-loan.html">Personal Loan</a></li>
+                <li><a href="business-loan.html">Business Loan</a></li>
+                <li><a href="emergency-loan.html">Emergency Loan</a></li>
+                <li><a href="about.html" class="active">About Us</a></li>
+                <li><a href="login.html" class="btn-login" id="navLoginBtn">Login</a></li>
+            </ul>
         </div>
     </nav>
 
-    <!-- Page Header -->
+    <!-- PAGE HEADER -->
     <section class="page-header">
         <div class="container">
-            <h1>About Quick Loan</h1>
-            <p>Your trusted partner in financial solutions</p>
+            <h1>About QuickLoan</h1>
+            <p>Your trusted partner in financial solutions since 2015</p>
         </div>
     </section>
 
-    <!-- About Content -->
+    <!-- WHO WE ARE -->
     <section class="about-content">
         <div class="container">
             <div class="about-grid">
                 <div class="about-text">
                     <h2>Who We Are</h2>
-                    <p>Quick Loan is a leading financial services provider dedicated to helping individuals and businesses achieve their financial goals. With years of experience in the lending industry, we've helped thousands of customers access the funds they need quickly and securely.</p>
-                    <p>Our mission is to provide fast, transparent, and reliable loan services with competitive rates and flexible repayment options. We believe everyone deserves access to fair financial services, and we're committed to making the loan application process as simple and stress-free as possible.</p>
+                    <p>QuickLoan is a modern financial technology platform built to make access to credit faster, simpler, and more transparent for individuals and small businesses. We exist to bridge the gap between people who need immediate financial support and the traditional lending systems that are often slow, complicated, and inaccessible.</p>
+                    
+                    <p>At QuickLoan, we understand that financial needs don't always come with advance notice. Emergencies happen. Opportunities arise unexpectedly. Bills pile up. Businesses face short-term cash flow challenges. Unfortunately, traditional loan processes are often filled with long queues, excessive paperwork, rigid eligibility requirements, and delayed approvals. These barriers leave many people stranded when they need help the most.</p>
+                    
+                    <p><strong>QuickLoan was created to change that reality.</strong></p>
+                    
+                    <p>We are a digital-first platform designed around speed, simplicity, and user experience. Our system removes unnecessary friction from the borrowing process and replaces it with a streamlined, intuitive approach that allows users to apply for loans in minutes rather than days or weeks. From application to approval, our focus is on efficiency without sacrificing responsibility or transparency.</p>
                 </div>
                 <div class="about-image">
                     <div class="image-placeholder">
-                        <div class="placeholder-icon">🏦</div>
+                        <div class="placeholder-icon">🏢</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Our Values -->
+    <!-- WHO WE SERVE -->
+    <section class="services who-we-serve-section">
+        <div class="container">
+            <h2 class="section-title">Who We Serve</h2>
+            <div class="services-grid services-grid-two-col services-grid-centered">
+                <div class="service-card">
+                    <div class="service-icon">👥</div>
+                    <h3>Individuals</h3>
+                    <p>QuickLoan serves individuals, entrepreneurs, freelancers, and small business owners who value time, clarity, and flexibility. Whether it's covering urgent personal expenses, funding a business need, or handling unexpected financial gaps, QuickLoan is built to respond quickly and reliably.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💼</div>
+                    <h3>Businesses</h3>
+                    <p>We understand that every borrower's situation is unique. That's why our platform is designed to be flexible, responsive, and user-focused, serving salaried workers, freelancers, small business owners, and entrepreneurs seeking short-term financial flexibility.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUR STORY -->
+    <section class="about-content about-story-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <div class="placeholder-icon">📖</div>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <h2>Our Story</h2>
+                    <p>QuickLoan was founded on a simple observation: too many capable people are excluded from financial support not because they are irresponsible, but because existing systems were not designed with their realities in mind.</p>
+                    
+                    <p>In many communities, access to credit is still limited by outdated processes, rigid requirements, and slow decision-making. Even in a digital age, many lending platforms fail to prioritize user experience, leaving borrowers confused, frustrated, and underserved.</p>
+                    
+                    <p>Our team recognized the need for a smarter solution—one that blends technology with financial responsibility. QuickLoan emerged from this vision: a platform that leverages modern tools to deliver fast, fair, and accessible loan services while maintaining trust and accountability.</p>
+                    
+                    <p><strong>From the beginning, our goal has been clear: to build a loan platform that works for real people in real situations.</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT WE DO -->
+    <section class="features what-we-do-section">
+        <div class="container">
+            <h2 class="section-title">What We Do</h2>
+            <p class="what-we-do-intro">
+                QuickLoan provides a simple online loan application experience designed to minimize stress and maximize clarity.
+            </p>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">📝</div>
+                    <h4>Apply Online</h4>
+                    <p>Apply for loans online with minimal documentation</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Fast Decisions</h4>
+                    <p>Receive fast decisions without unnecessary delays</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💡</div>
+                    <h4>Clear Terms</h4>
+                    <p>Understand loan terms clearly before committing</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💰</div>
+                    <h4>Flexible Financing</h4>
+                    <p>Access financing that fits your short-term needs</p>
+                </div>
+            </div>
+            <p class="what-we-do-footer">
+                Our platform emphasizes transparency at every stage. We believe borrowers deserve to know exactly what they are agreeing to—no hidden fees, no confusing jargon, and no last-minute surprises. QuickLoan is not just about lending money; it's about offering a reliable financial tool that empowers users to make informed decisions.
+            </p>
+        </div>
+    </section>
+
+    <!-- OUR VALUES -->
     <section class="values-section">
         <div class="container">
             <h2 class="section-title">Our Core Values</h2>
+            <p class="values-intro">
+                Everything we build at QuickLoan is guided by a core set of values
+            </p>
             <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">⚡</div>
+                    <h3>Speed with Purpose</h3>
+                    <p>We prioritize fast access to loans because we know time matters. However, speed never comes at the expense of clarity or responsibility.</p>
+                </div>
                 <div class="value-card">
                     <div class="value-icon">🎯</div>
                     <h3>Transparency</h3>
-                    <p>We believe in clear communication with no hidden fees or surprise charges</p>
+                    <p>We communicate openly and honestly. Loan terms, repayment expectations, and processes are clearly explained so users can borrow with confidence.</p>
                 </div>
                 <div class="value-card">
-                    <div class="value-icon">⚡</div>
-                    <h3>Speed</h3>
-                    <p>Fast approval process to get you the funds when you need them most</p>
+                    <div class="value-icon">🌍</div>
+                    <h3>Accessibility</h3>
+                    <p>We aim to lower the barriers to financial access by simplifying applications and designing systems that serve a broader range of users.</p>
                 </div>
                 <div class="value-card">
                     <div class="value-icon">🤝</div>
                     <h3>Trust</h3>
-                    <p>Building lasting relationships based on integrity and reliability</p>
+                    <p>Trust is the foundation of finance. We work hard to earn and maintain user trust through ethical practices, secure systems, and consistent service.</p>
                 </div>
                 <div class="value-card">
-                    <div class="value-icon">🔒</div>
-                    <h3>Security</h3>
-                    <p>Your personal and financial information is protected with advanced security</p>
+                    <div class="value-icon">🚀</div>
+                    <h3>Innovation</h3>
+                    <p>We continuously improve our platform using modern technology to deliver better experiences and smarter solutions.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Statistics -->
+    <!-- OUR MISSION -->
+    <section class="about-content our-mission-section">
+        <div class="container">
+            <h2 class="section-title">Our Mission</h2>
+            
+            <div class="mission-content">
+                <div class="mission-statement">
+                    <h3 class="mission-quote">
+                        "To provide fast, transparent, and accessible financial solutions that empower individuals and businesses to meet their immediate needs with confidence and dignity."
+                    </h3>
+                </div>
+
+                <div class="about-text">
+                    <h3 class="mission-detail-title">Our Mission in Detail</h3>
+                    <p>At QuickLoan, our mission goes beyond lending money. We are committed to transforming how people experience borrowing by removing fear, confusion, and unnecessary obstacles from the process.</p>
+                    
+                    <p>We believe financial support should be:</p>
+                    <ul class="mission-list">
+                        <li><span class="mission-list-icon">✓</span> <strong class="mission-list-strong">Simple</strong> – easy to understand and easy to access</li>
+                        <li><span class="mission-list-icon">✓</span> <strong class="mission-list-strong">Fast</strong> – responsive to urgent needs</li>
+                        <li><span class="mission-list-icon">✓</span> <strong class="mission-list-strong">Fair</strong> – designed with integrity and transparency</li>
+                        <li><span class="mission-list-icon">✓</span> <strong class="mission-list-strong">Empowering</strong> – enabling users to move forward, not backward</li>
+                    </ul>
+                    
+                    <p>Our mission is rooted in the belief that access to credit can be a powerful tool when delivered responsibly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MISSION PILLARS -->
+    <section class="services mission-pillars-section">
+        <div class="container">
+            <h2 class="section-title">How We Deliver Our Mission</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">💪</div>
+                    <h3>Empowering Financial Confidence</h3>
+                    <p>One of the biggest challenges borrowers face is uncertainty—uncertainty about approval, repayment terms, and the overall impact of taking a loan. QuickLoan exists to replace uncertainty with confidence.</p>
+                    <p class="mission-pillar-detail">By clearly presenting loan details and maintaining open communication, we help users make informed financial decisions. We want every borrower to feel in control, not pressured.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">😌</div>
+                    <h3>Reducing Financial Stress</h3>
+                    <p>Financial stress affects productivity, mental health, and quality of life. Our mission includes reducing this stress by offering fast and reliable solutions when time is critical.</p>
+                    <p class="mission-pillar-detail">QuickLoan's streamlined process allows users to focus on solving their problems rather than navigating complex systems.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">📈</div>
+                    <h3>Supporting Growth and Stability</h3>
+                    <p>For small businesses and entrepreneurs, access to short-term financing can mean the difference between stagnation and growth. QuickLoan supports this journey by providing timely financial assistance.</p>
+                    <p class="mission-pillar-detail">We help businesses stay operational, seize opportunities, and manage cash flow challenges. Our mission is to be a dependable partner in our users' financial journeys.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3>Technology as a Tool for Inclusion</h3>
+                    <p>Technology is at the heart of QuickLoan, but it is not the goal—it is the tool. We use modern digital systems to make financial services more inclusive, efficient, and reliable.</p>
+                    <p class="mission-pillar-detail">By automating processes and reducing manual bottlenecks, we can serve users faster while maintaining consistency and accuracy.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">⚖️</div>
+                    <h3>Ethical Lending Practices</h3>
+                    <p>QuickLoan is committed to ethical lending. Our mission includes promoting responsible borrowing by encouraging realistic repayment plans, providing clear loan terms, and avoiding misleading promises.</p>
+                    <p class="mission-pillar-detail">We respect user privacy and data security. We believe long-term success comes from building sustainable relationships, not short-term gains.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">🔮</div>
+                    <h3>Looking Ahead</h3>
+                    <p>Our mission continues to evolve as we grow. We are committed to expanding our offerings, improving our technology, and refining our services to meet the changing needs of our users.</p>
+                    <p class="mission-pillar-detail">As we move forward, our focus remains the same: delivering fast, transparent, and accessible financial solutions that make a real difference.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUR PROMISE -->
+    <section class="about-content our-promise-section">
+        <div class="container">
+            <div class="promise-wrapper">
+                <h2 class="section-title">Our Promise</h2>
+                <p class="promise-intro">
+                    At QuickLoan, we promise to:
+                </p>
+                <div class="promise-grid">
+                    <div class="promise-item">
+                        <div class="promise-icon">👥</div>
+                        <h4 class="promise-title">Put Users First</h4>
+                    </div>
+                    <div class="promise-item">
+                        <div class="promise-icon">💬</div>
+                        <h4 class="promise-title">Communicate Honestly</h4>
+                    </div>
+                    <div class="promise-item">
+                        <div class="promise-icon">📊</div>
+                        <h4 class="promise-title">Improve Continuously</h4>
+                    </div>
+                    <div class="promise-item">
+                        <div class="promise-icon">✅</div>
+                        <h4 class="promise-title">Act Responsibly</h4>
+                    </div>
+                    <div class="promise-item">
+                        <div class="promise-icon">🤝</div>
+                        <h4 class="promise-title">Build Trust</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATISTICS -->
     <section class="stats-section">
         <div class="container">
+            <h2 class="section-title">QuickLoan by the Numbers</h2>
             <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">10,000+</div>
+                <div>
+                    <div class="stat-number">$500M+</div>
+                    <div class="stat-label">Total Loans Funded</div>
+                </div>
+                <div>
+                    <div class="stat-number">50,000+</div>
                     <div class="stat-label">Happy Customers</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">$50M+</div>
-                    <div class="stat-label">Loans Approved</div>
+                <div>
+                    <div class="stat-number">10 Years</div>
+                    <div class="stat-label">In Business</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">24hrs</div>
-                    <div class="stat-label">Average Approval Time</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">Customer Satisfaction</div>
+                <div>
+                    <div class="stat-number">4.9/5</div>
+                    <div class="stat-label">Customer Rating</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- How It Works -->
-    <section class="how-it-works">
+    <!-- FINAL NOTE -->
+    <section class="about-content final-note-section">
         <div class="container">
-            <h2 class="section-title">How It Works</h2>
-            <div class="steps-grid">
-                <div class="step-item">
-                    <div class="step-number">1</div>
-                    <h3>Apply Online</h3>
-                    <p>Fill out our simple online application in just a few minutes</p>
+            <div class="final-note-box">
+                <div class="final-note-icon">💙</div>
+                <h3 class="final-note-title">More Than a Loan Platform</h3>
+                <p class="final-note-text">
+                    QuickLoan is more than a loan platform—it is a commitment to better financial access, smarter solutions, and meaningful support when it matters most.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT INFO -->
+    <section class="services contact-info-section">
+        <div class="container">
+            <h2 class="section-title">Get in Touch</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">📧</div>
+                    <h3>Email Us</h3>
+                    <p><a href="mailto:quickloanz@zohomail.com" class="contact-link">quickloanz@zohomail.com</a></p>
+                    <p>We typically respond within 2 business hours</p>
                 </div>
-                <div class="step-item">
-                    <div class="step-number">2</div>
-                    <h3>Get Approved</h3>
-                    <p>Receive approval decision within 24 hours</p>
-                </div>
-                <div class="step-item">
-                    <div class="step-number">3</div>
-                    <h3>Receive Funds</h3>
-                    <p>Get your money deposited directly to your account</p>
+                
+                <div class="service-card">
+                    <div class="service-icon">💬</div>
+                    <h3>WhatsApp</h3>
+                    <p><a href="https://whatsapp.com/dl/" class="contact-link">Message us on WhatsApp</a></p>
+                    <p>Quick responses during business hours</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
+    <!-- CTA -->
     <section class="cta">
         <div class="container">
-            <h2>Ready to Get Started?</h2>
-            <p>Join thousands of satisfied customers who trust Quick Loan</p>
-            <a href="apply.html" class="btn btn-primary btn-large">Apply for a Loan</a>
+            <h2>Ready to Experience the QuickLoan Difference?</h2>
+            <p>Join thousands of satisfied customers who trust us for their financial needs.</p>
+            <a href="login.html" class="btn btn-primary btn-large">Get Started Today</a>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Quick Loan</h3>
-                <p>Fast and reliable loan services for all your financial needs.</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Loan</h3>
+                    <p>Your trusted financial partner for fast, secure, and transparent lending solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li>Email: <a href="mailto:quickloanz@zohomail.com">quickloanz@zohomail.com</a></li>
+                        <li>Whatsapp: <a href="https://whatsapp.com/dl/">Chat with us on WhatsApp</a></li>
+                        <li>Hours: Mon-Fri 9AM-6PM EST</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Licensing</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="personal-loan.html">Personal Loan</a></li>
-                    <li><a href="business-loan.html">Business Loan</a></li>
-                    <li><a href="emergency-loan.html">Emergency Loan</a></li>
-                </ul>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Quick Loan. All rights reserved. Licensed and insured.</p>
             </div>
-            <div class="footer-section">
-                <h4>Contact Us</h4>
-                <p>Email: <a href="mailto:support@quickloan.com">support@quickloan.com</a></p>
-                <p>Phone: <a href="tel:+18005551234">1-800-555-1234</a></p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Quick Loan. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- Auth checker must load first -->
+    <script src="auth-check.js"></script>
     <script src="main.js"></script>
+
 </body>
 </html>
