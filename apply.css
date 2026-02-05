@@ -1,5 +1,6 @@
 /* ============================================
    QUICK LOAN - UNIFIED CSS
+   Works for apply.html and processing-fee.html
    ============================================ */
 
 :root {
@@ -252,7 +253,7 @@ header h1, .page-header h1 {
     display: none;
 }
 
-.form-step.active, .step.active, #paymentInstructions.show {
+.form-step.active, .step.active {
     display: block;
     animation: fadeInSlide 0.5s ease;
 }
@@ -446,6 +447,8 @@ header h1, .page-header h1 {
 
 .input-with-prefix {
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .input-prefix {
@@ -457,10 +460,14 @@ header h1, .page-header h1 {
     font-weight: 700;
     font-size: 1.15rem;
     pointer-events: none;
+    z-index: 1;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .input-with-prefix input {
-    padding-left: 3.5rem;
+    padding-left: 2.3rem;
+    width: 100%;
 }
 
 .checkbox-group {
@@ -574,6 +581,12 @@ header h1, .page-header h1 {
     overflow: hidden;
 }
 
+.btn:disabled, .btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .btn-primary, .btn-submit {
     background: linear-gradient(135deg, #00b4d8 0%, #0096ba 100%);
     color: white;
@@ -581,7 +594,7 @@ header h1, .page-header h1 {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.btn-primary:hover, .btn-submit:hover {
+.btn-primary:hover:not(:disabled), .btn-submit:hover:not(:disabled) {
     background: linear-gradient(135deg, #0096ba 0%, #007a95 100%);
     transform: translateY(-3px);
     box-shadow: 0 8px 24px rgba(0, 180, 216, 0.5);
@@ -1091,6 +1104,23 @@ footer .footer-note {
 
 .hidden { display: none !important; }
 .show { display: block !important; }
+
+/* Copy toast notification (dynamically created) */
+.copy-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-weight: 600;
+    z-index: 10000;
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.3s ease;
+}
 
 /* ============================================
    RESPONSIVE
