@@ -191,57 +191,37 @@
          * Update navigation based on auth state
          */
         updateNavigation: function() {
-            var loginBtn = document.getElementById('navLoginBtn');
-            if (!loginBtn) return;
+            var navMenu = document.getElementById('navMenu');
+            if (!navMenu) return;
+
+            // Find or create login/logout button container
+            var loginItem = navMenu.querySelector('.nav-auth-item');
+            if (!loginItem) {
+                loginItem = document.createElement('li');
+                loginItem.className = 'nav-auth-item';
+                navMenu.appendChild(loginItem);
+            }
 
             if (this.isAuthenticated()) {
                 var firstName = this.getFirstName();
                 
-                // Update logout button
-                loginBtn.textContent = 'Logout';
-                loginBtn.href = '#';
-                loginBtn.classList.add('logout-btn');
-                loginBtn.classList.remove('btn-login');
-                
-                // Remove old event listeners by cloning
-                var newBtn = loginBtn.cloneNode(true);
-                if (loginBtn.parentNode) {
-                    loginBtn.parentNode.replaceChild(newBtn, loginBtn);
-                }
+                // Create greeting + logout button
+                loginItem.innerHTML = 
+                    '<span class="user-greeting">Hi, ' + firstName + '</span>' +
+                    '<a href="#" class="btn-login logout-btn" id="logoutBtn">Logout</a>';
                 
                 // Add logout event listener
                 var self = this;
-                newBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    self.logout();
-                });
-                
-                // Add user greeting
-                var navMenu = document.getElementById('navMenu');
-                if (navMenu && !document.getElementById('userGreeting')) {
-                    var greeting = document.createElement('li');
-                    greeting.id = 'userGreeting';
-                    greeting.innerHTML = '<span>Hi, ' + firstName + '</span>';
-                    navMenu.insertBefore(greeting, newBtn.parentElement);
+                var logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        self.logout();
+                    });
                 }
             } else {
-                // Reset to login button
-                loginBtn.textContent = 'Login';
-                loginBtn.href = 'login.html';
-                loginBtn.classList.add('btn-login');
-                loginBtn.classList.remove('logout-btn');
-                
-                // Remove any existing click listeners
-                var newLoginBtn = loginBtn.cloneNode(true);
-                if (loginBtn.parentNode) {
-                    loginBtn.parentNode.replaceChild(newLoginBtn, loginBtn);
-                }
-                
-                // Remove user greeting
-                var greeting = document.getElementById('userGreeting');
-                if (greeting) {
-                    greeting.remove();
-                }
+                // Show login button
+                loginItem.innerHTML = '<a href="login.html" class="btn-login">Login</a>';
             }
         },
 
@@ -279,7 +259,7 @@
                                         btnText.indexOf('get started') !== -1 ||
                                         btnText.indexOf('get loan') !== -1;
                     
-                    if (isActionButton && btn.id !== 'navLoginBtn') {
+                    if (isActionButton && !btn.classList.contains('btn-login')) {
                         btn.href = 'apply.html';
                     }
                 });
@@ -303,9 +283,34 @@
         }
     };
 
-    // Add CSS animation for logout message
+    // Add CSS for user greeting and animations
     var style = document.createElement('style');
-    style.textContent = '@keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }';
+    style.textContent = 
+        '.user-greeting { ' +
+        '  color: #333; ' +
+        '  font-weight: 600; ' +
+        '  margin-right: 1rem; ' +
+        '  display: inline-block; ' +
+        '} ' +
+        '.nav-auth-item { ' +
+        '  display: flex; ' +
+        '  align-items: center; ' +
+        '} ' +
+        '@keyframes slideInRight { ' +
+        '  from { transform: translateX(100%); opacity: 0; } ' +
+        '  to { transform: translateX(0); opacity: 1; } ' +
+        '} ' +
+        '@media (max-width: 968px) { ' +
+        '  .user-greeting { ' +
+        '    display: block; ' +
+        '    margin-bottom: 0.5rem; ' +
+        '    margin-right: 0; ' +
+        '  } ' +
+        '  .nav-auth-item { ' +
+        '    flex-direction: column; ' +
+        '    align-items: flex-start; ' +
+        '  } ' +
+        '}';
     document.head.appendChild(style);
 
     // Initialize authentication
