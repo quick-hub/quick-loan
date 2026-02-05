@@ -11,6 +11,10 @@
     --border-color: rgba(100, 200, 230, 0.3);
     --error-color: #ff6b6b;
     --success-color: #51cf66;
+    --whatsapp-green: #25D366;
+    --whatsapp-hover: #20b858;
+    --logout-red: #ef4444;
+    --logout-red-hover: #dc2626;
     --font: 'Segoe UI', 'Roboto', sans-serif;
 }
 
@@ -106,17 +110,130 @@ a:hover {
     border-bottom-color: var(--accent-primary);
 }
 
+/* Login Button Styling */
 .btn-login {
-    background: var(--accent-primary);
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 100%);
     color: white !important;
-    padding: 0.6rem 1.5rem !important;
-    border-radius: 6px;
+    padding: 0.65rem 1.8rem !important;
+    border-radius: 8px;
     border: none !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-login::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-login:hover::before {
+    left: 100%;
 }
 
 .btn-login:hover {
-    background: var(--accent-hover);
+    background: linear-gradient(135deg, var(--accent-hover) 0%, #007a95 100%);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 180, 216, 0.5);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 180, 216, 0.4);
+}
+
+/* Logout Button Styling - Professional & Polished */
+.logout-btn {
+    background: linear-gradient(135deg, var(--logout-red) 0%, var(--logout-red-hover) 100%) !important;
+    color: white !important;
+    padding: 0.65rem 1.8rem !important;
+    border-radius: 8px;
+    border: none !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logout-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.logout-btn:hover::before {
+    left: 100%;
+}
+
+.logout-btn:hover {
+    background: linear-gradient(135deg, var(--logout-red-hover) 0%, #b91c1c 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5);
+    border-bottom-color: transparent !important;
+}
+
+.logout-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+}
+
+/* Logout Icon */
+.logout-btn::after {
+    content: '🚪';
+    font-size: 1rem;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.logout-btn:hover::after {
+    transform: translateX(3px);
+}
+
+/* User Greeting Styling */
+#userGreeting {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 212, 255, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    margin-right: 0.5rem;
+}
+
+#userGreeting span {
+    color: #00d4ff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+#userGreeting span::before {
+    content: '👤';
+    font-size: 1.1rem;
 }
 
 /* Hamburger Menu */
@@ -133,6 +250,47 @@ a:hover {
     background: var(--text-color);
     transition: all 0.3s ease;
     border-radius: 2px;
+}
+
+/* ============================================
+   FLOATING WHATSAPP BUTTON
+   ============================================ */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: var(--whatsapp-green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    z-index: 999;
+    transition: all 0.3s ease;
+    animation: pulse-whatsapp 2s infinite;
+}
+
+.whatsapp-float:hover {
+    background: var(--whatsapp-hover);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+}
+
+.whatsapp-float .whatsapp-icon {
+    width: 35px;
+    height: 35px;
+    color: white;
+}
+
+@keyframes pulse-whatsapp {
+    0%, 100% {
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.7);
+    }
 }
 
 /* ============================================
@@ -1290,10 +1448,46 @@ a:hover {
 
 .footer-section a {
     color: var(--text-secondary);
+    transition: all 0.3s ease;
 }
 
 .footer-section a:hover {
     color: var(--accent-primary);
+}
+
+/* Contact Icons */
+.contact-icon {
+    display: inline-block;
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+}
+
+/* WhatsApp Link in Footer */
+.whatsapp-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, var(--whatsapp-green) 0%, #20b858 100%);
+    color: white !important;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 0.3rem;
+    text-decoration: none;
+}
+
+.whatsapp-link:hover {
+    background: linear-gradient(135deg, var(--whatsapp-hover) 0%, #1a9d4a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    color: white !important;
+}
+
+.whatsapp-svg-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
 }
 
 .footer-bottom {
@@ -1340,6 +1534,12 @@ a:hover {
     .notice-box {
         flex-direction: column;
         text-align: center;
+    }
+
+    #userGreeting {
+        background: transparent;
+        border: none;
+        padding: 0;
     }
 }
 
@@ -1398,6 +1598,28 @@ a:hover {
     .load-more-btn {
         width: 100%;
     }
+
+    .whatsapp-link {
+        display: flex;
+        justify-content: center;
+    }
+
+    .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+    }
+
+    .whatsapp-float .whatsapp-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .logout-btn, .btn-login {
+        padding: 0.6rem 1.4rem !important;
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1425,5 +1647,31 @@ a:hover {
 
     .activity-item {
         padding: 1rem;
+    }
+
+    .whatsapp-link {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .whatsapp-float {
+        bottom: 15px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .whatsapp-float .whatsapp-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .logout-btn, .btn-login {
+        padding: 0.5rem 1.2rem !important;
+        font-size: 0.85rem;
+    }
+
+    #userGreeting span {
+        font-size: 0.85rem;
     }
 }
