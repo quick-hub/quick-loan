@@ -154,9 +154,15 @@
                                 <label for="loanAmount">Loan Amount <span class="required">*</span></label>
                                 <div class="input-with-prefix">
                                     <span class="input-prefix">$</span>
-                                    <input type="number" id="loanAmount" name="Loan Amount" placeholder="50,000" min="1000" max="500000" required>
+                                    <input type="text" 
+                                           id="loanAmount" 
+                                           name="Loan Amount" 
+                                           placeholder="50,000" 
+                                           required
+                                           inputmode="numeric"
+                                           data-clean-value="">
                                 </div>
-                                <span class="error-message" id="loanAmount-error" >Amount must be between $1,000 and $500,000</span>
+                                <span class="error-message" id="loanAmount-error">Amount must be between $1,000 and $500,000</span>
                             </div>
                         </div>
 
@@ -170,10 +176,16 @@
                             <div class="form-group">
                                 <label for="income">Annual Income <span class="required">*</span></label>
                                 <div class="input-with-prefix">
-                                    <span class="input-prefix" >$</span>
-                                    <input type="number" id="income" name="Annual Income" placeholder="75,000" min="0" required>
+                                    <span class="input-prefix">$</span>
+                                    <input type="text" 
+                                           id="income" 
+                                           name="Annual Income" 
+                                           placeholder="75,000" 
+                                           required
+                                           inputmode="numeric"
+                                           data-clean-value="">
                                 </div>
-                                <span class="error-message" id="income-error" >Please enter your annual income</span>
+                                <span class="error-message" id="income-error">Please enter your annual income</span>
                             </div>
                         </div>
 
