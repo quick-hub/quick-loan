@@ -1,7 +1,6 @@
 /**
- * apply.js — Multi-step form with validation
- * Professional loan application form handler
- * Fixed value parsing and data storage
+ * apply.js — Multi-step form with validation and proper submission handling
+ * Professional loan application form handler with processing animation
  */
 
 // ============================================
@@ -9,6 +8,7 @@
 // ============================================
 let currentStep = 1;
 const totalSteps = 4;
+let formSubmitted = false;
 
 // ============================================
 // INITIALIZATION
@@ -23,6 +23,12 @@ function initializeForm() {
     // Show first step
     showStep(1);
     updateProgressIndicator();
+    
+    // Hide processing message initially
+    const processingMsg = document.getElementById('processingMessage');
+    if (processingMsg) {
+        processingMsg.style.display = 'none';
+    }
 }
 
 // ============================================
@@ -199,7 +205,6 @@ function validateField(field) {
                 break;
                 
             case 'loanAmount':
-                // Get clean value from data attribute
                 const cleanLoanAmount = field.getAttribute('data-clean-value') || field.value.replace(/,/g, '');
                 const amount = parseFloat(cleanLoanAmount);
                 if (isNaN(amount) || amount < 1000 || amount > 500000) {
@@ -209,7 +214,6 @@ function validateField(field) {
                 break;
                 
             case 'income':
-                // Get clean value from data attribute
                 const cleanIncome = field.getAttribute('data-clean-value') || field.value.replace(/,/g, '');
                 const incomeValue = parseFloat(cleanIncome);
                 if (isNaN(incomeValue) || incomeValue < 0) {
@@ -369,43 +373,13 @@ function initializeValidation() {
     // Format loan amount with live comma formatting
     const loanAmountInput = document.getElementById('loanAmount');
     if (loanAmountInput) {
-        // Change input type from number to text to allow commas
-        loanAmountInput.setAttribute('type', 'text');
-        loanAmountInput.setAttribute('inputmode', 'numeric');
-        
         loanAmountInput.addEventListener('input', function(e) {
-            // Get cursor position
-            let cursorPosition = e.target.selectionStart;
-            
-            // Get the value and remove all non-numeric characters
             let value = e.target.value.replace(/[^\d]/g, '');
-            
-            // Store clean value
             e.target.setAttribute('data-clean-value', value);
             
-            // Format with commas
             if (value) {
                 const formatted = parseInt(value, 10).toLocaleString('en-US');
-                const oldLength = e.target.value.length;
                 e.target.value = formatted;
-                const newLength = formatted.length;
-                
-                // Adjust cursor position if commas were added/removed
-                const diff = newLength - oldLength;
-                cursorPosition = Math.max(cursorPosition + diff, 0);
-                e.target.setSelectionRange(cursorPosition, cursorPosition);
-            } else {
-                e.target.value = '';
-            }
-        });
-        
-        // Validate on blur
-        loanAmountInput.addEventListener('blur', function(e) {
-            const cleanValue = e.target.getAttribute('data-clean-value') || '';
-            const numValue = parseInt(cleanValue, 10) || 0;
-            
-            if (numValue > 0) {
-                e.target.value = numValue.toLocaleString('en-US');
             } else {
                 e.target.value = '';
             }
@@ -415,43 +389,13 @@ function initializeValidation() {
     // Format income with live comma formatting
     const incomeInput = document.getElementById('income');
     if (incomeInput) {
-        // Change input type from number to text to allow commas
-        incomeInput.setAttribute('type', 'text');
-        incomeInput.setAttribute('inputmode', 'numeric');
-        
         incomeInput.addEventListener('input', function(e) {
-            // Get cursor position
-            let cursorPosition = e.target.selectionStart;
-            
-            // Get the value and remove all non-numeric characters
             let value = e.target.value.replace(/[^\d]/g, '');
-            
-            // Store clean value
             e.target.setAttribute('data-clean-value', value);
             
-            // Format with commas
             if (value) {
                 const formatted = parseInt(value, 10).toLocaleString('en-US');
-                const oldLength = e.target.value.length;
                 e.target.value = formatted;
-                const newLength = formatted.length;
-                
-                // Adjust cursor position if commas were added/removed
-                const diff = newLength - oldLength;
-                cursorPosition = Math.max(cursorPosition + diff, 0);
-                e.target.setSelectionRange(cursorPosition, cursorPosition);
-            } else {
-                e.target.value = '';
-            }
-        });
-        
-        // Validate on blur
-        incomeInput.addEventListener('blur', function(e) {
-            const cleanValue = e.target.getAttribute('data-clean-value') || '';
-            const numValue = parseInt(cleanValue, 10) || 0;
-            
-            if (numValue > 0) {
-                e.target.value = numValue.toLocaleString('en-US');
             } else {
                 e.target.value = '';
             }
@@ -469,26 +413,22 @@ function storeFormData() {
         const email = document.getElementById('email')?.value || '';
         const loanType = document.getElementById('loanType')?.value || '';
         
-        // Get raw values and clean them
+        // Get raw values
         const loanAmountInput = document.getElementById('loanAmount');
         const incomeInput = document.getElementById('income');
         
         let loanAmount = '';
         let income = '';
         
-        // Get loan amount - check data attribute first, then clean the value
         if (loanAmountInput) {
-            const dataValue = loanAmountInput.getAttribute('data-clean-value');
-            loanAmount = dataValue || loanAmountInput.value || '';
+            loanAmount = loanAmountInput.getAttribute('data-clean-value') || loanAmountInput.value.replace(/,/g, '');
         }
         
-        // Get income - check data attribute first, then clean the value
         if (incomeInput) {
-            const dataValue = incomeInput.getAttribute('data-clean-value');
-            income = dataValue || incomeInput.value || '';
+            income = incomeInput.getAttribute('data-clean-value') || incomeInput.value.replace(/,/g, '');
         }
         
-        // Parse numeric values (remove any commas that might still be there)
+        // Parse numeric values
         const parsedLoanAmount = parseFloat(String(loanAmount).replace(/,/g, '')) || 0;
         const parsedIncome = parseFloat(String(income).replace(/,/g, '')) || 0;
         
@@ -500,7 +440,7 @@ function storeFormData() {
             annualIncome: parsedIncome
         });
         
-        // Store in sessionStorage for processing-fee.html
+        // Store in sessionStorage
         sessionStorage.setItem('applicantName', fullname);
         sessionStorage.setItem('applicantEmail', email);
         sessionStorage.setItem('loanType', loanType);
@@ -520,155 +460,147 @@ function storeFormData() {
 }
 
 // ============================================
+// PROCESSING ANIMATION
+// ============================================
+function showProcessingAnimation() {
+    // Hide form elements
+    const form = document.getElementById('applicationForm');
+    const header = document.getElementById('pageHeader');
+    const progress = document.getElementById('progressWrapper');
+    
+    if (form) form.style.display = 'none';
+    if (header) header.style.display = 'none';
+    if (progress) progress.style.display = 'none';
+    
+    // Show processing message
+    const processingMsg = document.getElementById('processingMessage');
+    if (processingMsg) {
+        processingMsg.style.display = 'block';
+        processingMsg.classList.add('show');
+    }
+    
+    // Scroll to top
+    scrollToTop();
+    
+    // Animate processing steps
+    setTimeout(() => {
+        const step2 = document.getElementById('procStep2');
+        if (step2) {
+            step2.classList.remove('active');
+            step2.classList.add('completed');
+            const icon2 = step2.querySelector('.step-icon');
+            if (icon2) icon2.textContent = '✓';
+        }
+        
+        const step3 = document.getElementById('procStep3');
+        if (step3) {
+            step3.classList.add('active');
+        }
+    }, 1500);
+    
+    setTimeout(() => {
+        const step3 = document.getElementById('procStep3');
+        if (step3) {
+            step3.classList.remove('active');
+            step3.classList.add('completed');
+            const icon3 = step3.querySelector('.step-icon');
+            if (icon3) icon3.textContent = '✓';
+        }
+    }, 3000);
+}
+
+// ============================================
 // FORM SUBMISSION
 // ============================================
 document.getElementById('applicationForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    
+    // Prevent double submission
+    if (formSubmitted) {
+        return;
+    }
     
     // Final validation
     if (!validateStep(currentStep)) {
         return;
     }
     
-    // Get references to inputs that might have formatted values
-    const loanAmountInput = document.getElementById('loanAmount');
-    const incomeInput = document.getElementById('income');
-    
-    // Store original formatted values
-    const originalLoanAmount = loanAmountInput ? loanAmountInput.value : '';
-    const originalIncome = incomeInput ? incomeInput.value : '';
-    
-    // Temporarily set clean values for form submission
-    if (loanAmountInput && loanAmountInput.value) {
-        loanAmountInput.value = loanAmountInput.value.replace(/,/g, '');
-    }
-    
-    if (incomeInput && incomeInput.value) {
-        incomeInput.value = incomeInput.value.replace(/,/g, '');
-    }
-    
-    // Store form data before submission
-    storeFormData();
+    formSubmitted = true;
     
     // Disable submit button
     const submitButton = document.getElementById('submitButton');
     if (submitButton) {
         submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';
     }
     
-    // Show loading overlay
-    const loading = document.getElementById('loading');
-    if (loading) {
-        loading.classList.add('show');
-    }
+    // Store form data before submission
+    storeFormData();
     
-    // Create form data with cleaned values
+    // Show processing animation
+    showProcessingAnimation();
+    
+    // Get clean values for submission
+    const loanAmountInput = document.getElementById('loanAmount');
+    const incomeInput = document.getElementById('income');
+    
+    // Create a hidden form for submission with clean values
+    const hiddenForm = document.createElement('form');
+    hiddenForm.action = this.action;
+    hiddenForm.method = 'POST';
+    hiddenForm.target = 'hiddenFrame';
+    hiddenForm.style.display = 'none';
+    
+    // Copy all form data
     const formData = new FormData(this);
     
-    // Submit via fetch
-    fetch(this.action, {
-        method: 'POST',
-        body: formData
-    }).then(() => {
-        // Show success after delay
-        setTimeout(function() {
-            // Hide loading
-            if (loading) {
-                loading.classList.remove('show');
-            }
-            
-            // Hide form
-            document.getElementById('applicationForm').style.display = 'none';
-            
-            // Hide progress indicator
-            const progressWrapper = document.querySelector('.progress-wrapper');
-            if (progressWrapper) {
-                progressWrapper.style.display = 'none';
-            }
-            
-            // Show success message
-            const successMessage = document.getElementById('successMessage');
-            if (successMessage) {
-                successMessage.classList.add('show');
-            }
-            
-            // Scroll to top
-            scrollToTop();
-            
-            // Store submission timestamp
-            storeSubmissionData();
-            
-            // Redirect to processing fee page after 3 seconds
-            setTimeout(function() {
-                window.location.href = 'processing-fee.html';
-            }, 3000);
-            
-        }, 2000);
-    }).catch((error) => {
-        console.error('Submission error:', error);
-        // Still proceed to processing fee page even if email fails
-        setTimeout(function() {
-            if (loading) {
-                loading.classList.remove('show');
-            }
-            window.location.href = 'processing-fee.html';
-        }, 2000);
-    });
-});
-
-// ============================================
-// STORAGE FUNCTIONS
-// ============================================
-function storeSubmissionData() {
-    const submissionData = {
-        timestamp: new Date().toISOString(),
-        loanType: document.getElementById('loanType')?.value || '',
-        loanAmount: parseFloat(document.getElementById('loanAmount')?.value.replace(/,/g, '') || '0'),
-        submitted: true
-    };
-    
-    try {
-        localStorage.setItem('quickloan_last_application', JSON.stringify(submissionData));
-    } catch (e) {
-        console.log('Could not save to localStorage:', e);
+    // Replace formatted values with clean values
+    if (loanAmountInput) {
+        formData.set('Loan Amount', loanAmountInput.getAttribute('data-clean-value') || loanAmountInput.value.replace(/,/g, ''));
     }
-}
+    if (incomeInput) {
+        formData.set('Annual Income', incomeInput.getAttribute('data-clean-value') || incomeInput.value.replace(/,/g, ''));
+    }
+    
+    // Add all fields to hidden form
+    for (let [key, value] of formData.entries()) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        hiddenForm.appendChild(input);
+    }
+    
+    document.body.appendChild(hiddenForm);
+    
+    // Submit the hidden form
+    hiddenForm.submit();
+    
+    // Redirect to processing fee page after animation completes
+    setTimeout(function() {
+        window.location.href = 'processing-fee.html';
+    }, 4000);
+    
+    // Remove hidden form
+    setTimeout(() => {
+        if (hiddenForm.parentNode) {
+            hiddenForm.parentNode.removeChild(hiddenForm);
+        }
+    }, 5000);
+});
 
 // ============================================
 // KEYBOARD NAVIGATION
 // ============================================
 document.addEventListener('keydown', function(e) {
-    // Enter key on non-textarea fields should go to next step
     if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && e.target.type !== 'submit') {
         e.preventDefault();
-        
         const nextButton = document.querySelector('.form-step.active .btn-next');
         if (nextButton) {
             nextButton.click();
         }
     }
 });
-
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
-function formatCurrency(value) {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    }).format(value);
-}
-
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-}
 
 // ============================================
 // PREVENT ACCIDENTAL NAVIGATION
@@ -682,25 +614,12 @@ document.querySelectorAll('input, select, textarea').forEach(function(element) {
 });
 
 window.addEventListener('beforeunload', function(e) {
-    if (formModified && currentStep < totalSteps) {
+    if (formModified && currentStep < totalSteps && !formSubmitted) {
         e.preventDefault();
         e.returnValue = '';
         return '';
     }
 });
-
-// ============================================
-// ANALYTICS & TRACKING (Optional)
-// ============================================
-function trackStepCompletion(stepNumber) {
-    // Add your analytics tracking here
-    console.log(`Step ${stepNumber} completed`);
-}
-
-function trackFormSubmission() {
-    // Add your analytics tracking here
-    console.log('Form submitted successfully');
-}
 
 // ============================================
 // CONSOLE WELCOME MESSAGE
