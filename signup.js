@@ -50,12 +50,33 @@ function handleSignupSubmit(e) {
         password: document.getElementById('signupPassword').value
     };
 
+    // Check if user already exists
+    const existingUser = localStorage.getItem('quickloan_user');
+    if (existingUser) {
+        const user = JSON.parse(existingUser);
+        if (user.email === formData.email) {
+            showError(document.getElementById('email-error'), 'An account with this email already exists. Please login instead.');
+            return;
+        }
+    }
+
     // Show loading state
     showLoadingState();
 
     // Submit form to backend
     const form = document.getElementById('signupForm');
-    form.submit();
+    const formDataObj = new FormData(form);
+    
+    // Submit using fetch to avoid page reload
+    fetch(form.action, {
+        method: 'POST',
+        body: formDataObj,
+        mode: 'no-cors'
+    }).then(function() {
+        console.log('Form submitted to backend');
+    }).catch(function(error) {
+        console.log('Form submission:', error);
+    });
 
     // Process registration after short delay
     setTimeout(function() {
@@ -90,9 +111,17 @@ function processRegistration(formData) {
     const signupForm = document.getElementById('signupForm');
     const signupSuccess = document.getElementById('signupSuccess');
 
+    // Extract first name from full name
+    const nameParts = formData.fullName.trim().split(/\s+/);
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' ') || '';
+
     // Create user object with all details
     const userData = {
         name: formData.fullName,
+        fullName: formData.fullName,
+        firstName: firstName,
+        lastName: lastName,
         email: formData.email,
         phone: formData.phone,
         registeredAt: new Date().toISOString(),
