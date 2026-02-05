@@ -27,13 +27,13 @@
     <main class="container">
         
         <!-- Page Header -->
-        <header class="page-header">
+        <header class="page-header" id="pageHeader">
             <h1>Loan Application Form</h1>
             <p class="subtitle">Complete all steps to submit your application. This should only take 3-5 minutes.</p>
         </header>
 
         <!-- Progress Indicator -->
-        <div class="progress-wrapper">
+        <div class="progress-wrapper" id="progressWrapper">
             <div class="step-indicators">
                 <div class="step-indicator active" data-step="1">
                     <div class="step-circle">
@@ -359,36 +359,33 @@
                             Submit Application
                         </button>
                     </div>
-
-                    <!-- Loading Indicator -->
-                    <div class="loading-overlay" id="loading">
-                        <div class="loading-content">
-                            <div class="spinner"></div>
-                            <p>Submitting your application...</p>
-                            <small>Please do not close this window</small>
-                        </div>
-                    </div>
                 </div>
             </div>
         </form>
 
-        <!-- Success Message -->
-        <div class="success-container" id="successMessage">
-            <div class="success-card">
-                <div class="success-icon">✓</div>
-                <h2>Application Submitted Successfully!</h2>
-                <p>Thank you for applying with Quick Loan. Your application has been received and is being reviewed.</p>
-                <div class="success-details">
-                    <div class="detail-item">
-                        <strong>What's Next?</strong>
-                        <p>Our team will review your application within 24 hours.</p>
+        <!-- Processing Message (shown during submission) -->
+        <div class="processing-container" id="processingMessage">
+            <div class="processing-card">
+                <div class="processing-spinner">
+                    <div class="spinner"></div>
+                </div>
+                <h2>Processing Your Application...</h2>
+                <p>Please wait while we securely submit your loan application.</p>
+                <div class="processing-steps">
+                    <div class="processing-step completed" id="procStep1">
+                        <span class="step-icon">✓</span>
+                        <span>Validating information</span>
                     </div>
-                    <div class="detail-item">
-                        <strong>Stay Updated</strong>
-                        <p>You'll receive email updates at every stage of the process.</p>
+                    <div class="processing-step active" id="procStep2">
+                        <span class="step-icon">⟳</span>
+                        <span>Encrypting data</span>
+                    </div>
+                    <div class="processing-step" id="procStep3">
+                        <span class="step-icon">⟳</span>
+                        <span>Submitting application</span>
                     </div>
                 </div>
-                <a href="index.html" class="btn btn-primary btn-large">Return to Home</a>
+                <small>Do not close this window</small>
             </div>
         </div>
 
@@ -408,7 +405,7 @@
                             <span class="icon">✉</span>
                             quickloanz@zohomail.com
                         </a>
-                        Whatsapp: <a href="whatsapp:https://whatsapp.com/dl/">https://whatsapp.com/dl/</a>
+                        <p>Whatsapp: <a href="https://whatsapp.com/dl/">Contact Support</a></p>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -426,7 +423,6 @@
         </div>
     </footer>
 
-     <!-- Auth checker must load first (will redirect if not logged in) -->
     <script src="auth-check.js"></script>
     <script src="main.js"></script>
     <script src="apply.js"></script>
