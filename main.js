@@ -141,60 +141,6 @@ function highlightActiveLink() {
 }
 
 // ════════════════════════════════════════
-// FORM UTILITIES (if needed globally)
-// ════════════════════════════════════════
-
-// Show validation error
-function showValidationError(elementId, message) {
-    var element = document.getElementById(elementId);
-    if (element) {
-        element.textContent = message;
-        element.classList.add('visible', 'show');
-    }
-}
-
-// Clear validation error
-function clearValidationError(elementId) {
-    var element = document.getElementById(elementId);
-    if (element) {
-        element.textContent = '';
-        element.classList.remove('visible', 'show');
-    }
-}
-
-// Clear all errors
-function clearAllErrors() {
-    var errors = document.querySelectorAll('.error-message');
-    errors.forEach(function(error) {
-        error.textContent = '';
-        error.classList.remove('visible', 'show');
-    });
-}
-
-// ════════════════════════════════════════
-// SCROLL TO TOP BUTTON (optional)
-// ════════════════════════════════════════
-function initScrollToTop() {
-    var scrollBtn = document.getElementById('scrollToTop');
-    if (!scrollBtn) return;
-
-    window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-            scrollBtn.classList.add('visible');
-        } else {
-            scrollBtn.classList.remove('visible');
-        }
-    });
-
-    scrollBtn.addEventListener('click', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-}
-
-// ════════════════════════════════════════
 // UTILITY FUNCTIONS
 // ════════════════════════════════════════
 
@@ -228,7 +174,34 @@ function debounce(func, wait) {
     };
 }
 
-// Export utility functions globally if needed
+// Show validation error
+function showValidationError(elementId, message) {
+    var element = document.getElementById(elementId);
+    if (element) {
+        element.textContent = message;
+        element.style.display = 'block';
+    }
+}
+
+// Clear validation error
+function clearValidationError(elementId) {
+    var element = document.getElementById(elementId);
+    if (element) {
+        element.textContent = '';
+        element.style.display = 'none';
+    }
+}
+
+// Clear all errors
+function clearAllErrors() {
+    var errors = document.querySelectorAll('.error-message');
+    errors.forEach(function(error) {
+        error.textContent = '';
+        error.style.display = 'none';
+    });
+}
+
+// Export utility functions globally
 if (typeof window !== 'undefined') {
     window.QuickLoanUtils = {
         formatCurrency: formatCurrency,
