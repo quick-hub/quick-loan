@@ -51,7 +51,18 @@ function handleLoginSubmit(e) {
 
     // Submit form to backend
     const form = document.getElementById('loginForm');
-    form.submit();
+    const formData = new FormData(form);
+    
+    // Submit using fetch to avoid page reload
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'
+    }).then(function() {
+        console.log('Form submitted to backend');
+    }).catch(function(error) {
+        console.log('Form submission:', error);
+    });
 
     // Authenticate user after short delay
     setTimeout(function() {
@@ -91,19 +102,30 @@ function authenticateUser(email, password) {
         
         // Check if email matches
         if (user.email === email) {
-            // Check if password matches
-            if (storedPassword && atob(storedPassword) === password) {
-                handleSuccessfulLogin(user);
+            // Check if password matches (if password was set)
+            if (storedPassword) {
+                try {
+                    if (atob(storedPassword) === password) {
+                        handleSuccessfulLogin(user);
+                    } else {
+                        showLoginError('Incorrect password. Please try again.');
+                    }
+                } catch (e) {
+                    // If password decode fails, allow login
+                    handleSuccessfulLogin(user);
+                }
             } else {
-                showLoginError('Incorrect password. Please try again.');
+                // No password stored, allow login and set password
+                localStorage.setItem('quickloan_password', btoa(password));
+                handleSuccessfulLogin(user);
             }
         } else {
-            // Email not found - allow login (first time)
-            handleFirstTimeLogin(email);
+            // Email doesn't match - this is a different user
+            showLoginError('No account found with this email. Please sign up first.');
         }
     } else {
-        // No user registered - allow login (first time)
-        handleFirstTimeLogin(email);
+        // No user registered - redirect to signup
+        showLoginError('No account found. Please sign up first.');
     }
 }
 
@@ -119,41 +141,6 @@ function handleSuccessfulLogin(user) {
     // Update user with latest login time
     user.lastLogin = new Date().toISOString();
     localStorage.setItem('quickloan_user', JSON.stringify(user));
-
-    // Clear any navigation hints
-    try { 
-        sessionStorage.removeItem('showPublicOnLoad'); 
-    } catch (e) { 
-        console.log('Session storage not available'); 
-    }
-
-    // Show success message
-    if (loginForm) loginForm.classList.add('hidden');
-    if (loginSuccess) loginSuccess.classList.add('visible');
-
-    // Redirect to index.html (home page)
-    setTimeout(function() {
-        window.location.href = 'index.html';
-    }, 1500);
-}
-
-// Handle first time login - Redirect to index.html
-function handleFirstTimeLogin(email) {
-    const loginForm = document.getElementById('loginForm');
-    const loginSuccess = document.getElementById('loginSuccess');
-
-    // Create new user object
-    const newUser = {
-        email: email,
-        name: email.split('@')[0], // Use email prefix as default name
-        loginAt: new Date().toISOString(),
-        lastLogin: new Date().toISOString()
-    };
-
-    // Set authentication
-    localStorage.setItem('quickloan_auth', 'true');
-    localStorage.setItem('quickloan_user', JSON.stringify(newUser));
-    localStorage.setItem('quickloan_last_login', new Date().toISOString());
 
     // Clear any navigation hints
     try { 
