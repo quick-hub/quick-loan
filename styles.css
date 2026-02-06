@@ -83,6 +83,10 @@ a:hover {
     align-items: center;
 }
 
+.logo span {
+    color: var(--accent-primary);
+}
+
 .logo-img {
     height: 40px;
     vertical-align: middle;
@@ -242,6 +246,8 @@ a:hover {
     flex-direction: column;
     cursor: pointer;
     gap: 4px;
+    background: none;
+    border: none;
 }
 
 .hamburger span {
@@ -250,6 +256,285 @@ a:hover {
     background: var(--text-color);
     transition: all 0.3s ease;
     border-radius: 2px;
+}
+
+/* ============================================
+   SIGNUP PAGE STYLES
+   ============================================ */
+.signup-container {
+    min-height: calc(100vh - 70px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+}
+
+.signup-box {
+    width: 100%;
+    max-width: 500px;
+    background: var(--card-bg);
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.signup-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.signup-header h1 {
+    font-size: 2rem;
+    color: #00d4ff;
+    margin-bottom: 0.5rem;
+}
+
+.signup-header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #d0e8f2;
+    font-size: 0.95rem;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: rgba(15, 58, 82, 0.4);
+    border: 1.5px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    background: rgba(15, 58, 82, 0.6);
+    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.15);
+}
+
+.form-group input::placeholder {
+    color: rgba(176, 212, 227, 0.5);
+}
+
+/* Password Strength Indicator */
+.password-strength {
+    width: 100%;
+    height: 4px;
+    background: rgba(15, 58, 82, 0.4);
+    border-radius: 2px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.password-strength-bar {
+    height: 100%;
+    width: 0;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.password-strength-bar.strength-weak {
+    width: 33.33%;
+    background: #ff6b6b;
+}
+
+.password-strength-bar.strength-medium {
+    width: 66.66%;
+    background: #ffc107;
+}
+
+.password-strength-bar.strength-strong {
+    width: 100%;
+    background: #51cf66;
+}
+
+/* Terms and Conditions */
+.terms-group {
+    margin-bottom: 1.5rem;
+}
+
+.terms-group label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.terms-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--accent-primary);
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+}
+
+.terms-group a {
+    color: var(--accent-primary);
+    text-decoration: underline;
+}
+
+.terms-group a:hover {
+    color: var(--accent-hover);
+}
+
+/* Submit Button */
+.btn-signup {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-signup::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-signup:hover::before {
+    left: 100%;
+}
+
+.btn-signup:hover {
+    background: linear-gradient(135deg, var(--accent-hover) 0%, #007a95 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 180, 216, 0.5);
+}
+
+.btn-signup:active {
+    transform: translateY(0);
+}
+
+.btn-signup:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Spinner */
+.spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Signup Footer */
+.signup-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.signup-footer a {
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+.signup-footer a:hover {
+    color: var(--accent-hover);
+}
+
+/* Success Message */
+.success-message {
+    display: none;
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--success-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin: 0 auto 1.5rem;
+    animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.success-message h2 {
+    color: var(--success-color);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.success-message p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* Error Messages */
+.error-message {
+    color: var(--error-color);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: none;
+}
+
+.error-message:not(:empty) {
+    display: block;
 }
 
 /* ============================================
@@ -719,7 +1004,7 @@ a:hover {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmin(200px, 1fr));
     gap: 3rem;
     text-align: center;
 }
@@ -1014,34 +1299,6 @@ a:hover {
     color: var(--text-secondary);
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #d0e8f2;
-}
-
-.form-group input[type="email"],
-.form-group input[type="password"],
-.form-group input[type="text"],
-.form-group input[type="tel"],
-.form-group input[type="number"],
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 0.875rem 1rem;
-    background: rgba(15, 58, 82, 0.4);
-    border: 1.5px solid var(--border-color);
-    border-radius: 6px;
-    color: var(--text-color);
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
 .form-group select {
     cursor: pointer;
     appearance: none;
@@ -1060,15 +1317,6 @@ a:hover {
     resize: vertical;
     min-height: 100px;
     font-family: var(--font);
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--accent-primary);
-    background: rgba(15, 58, 82, 0.6);
-    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.15);
 }
 
 .checkbox-group {
@@ -1119,17 +1367,6 @@ a:hover {
     border-top-color: white;
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.error-message {
-    color: var(--error-color);
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
-    display: none;
 }
 
 .hidden-iframe {
@@ -1599,6 +1836,19 @@ a:hover {
         width: 100%;
     }
 
+    /* Signup Page Mobile */
+    .signup-container {
+        padding: 2rem 1rem;
+    }
+
+    .signup-box {
+        padding: 2rem 1.5rem;
+    }
+
+    .signup-header h1 {
+        font-size: 1.75rem;
+    }
+
     .whatsapp-link {
         display: flex;
         justify-content: center;
@@ -1634,6 +1884,33 @@ a:hover {
 
     .login-box {
         padding: 2rem 1.5rem;
+    }
+
+    /* Signup Page Extra Small Mobile */
+    .signup-box {
+        padding: 1.5rem 1rem;
+    }
+
+    .signup-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .signup-header p {
+        font-size: 0.875rem;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+    }
+
+    .form-group input {
+        padding: 0.75rem 0.875rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-signup {
+        padding: 0.875rem;
+        font-size: 1rem;
     }
 
     .footer-content {
