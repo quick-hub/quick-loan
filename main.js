@@ -7,6 +7,9 @@
  * - Active link highlighting
  * - Utility functions for formatting
  * - Form validation helpers
+ * 
+ * IMPORTANT: This script works alongside auth-check.js
+ * Make sure auth-check.js is loaded BEFORE this script
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -153,8 +156,10 @@ function highlightActiveLink() {
     navLinks.forEach(function(link) {
         var linkPage = link.getAttribute('href');
         
-        // Skip logout button
-        if (link.classList.contains('logout-btn') || link.classList.contains('btn-login')) {
+        // Skip logout button and user greeting
+        if (link.classList.contains('logout-btn') || 
+            link.classList.contains('btn-login') ||
+            link.id === 'navLoginBtn') {
             return;
         }
         
@@ -178,6 +183,11 @@ function highlightActiveLink() {
 // SCROLL ANIMATIONS
 // ════════════════════════════════════════
 function initScrollAnimations() {
+    // Check if IntersectionObserver is supported
+    if (!('IntersectionObserver' in window)) {
+        return;
+    }
+
     var observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -192,7 +202,7 @@ function initScrollAnimations() {
         });
     }, observerOptions);
 
-    // Observe elements with fade-in class
+    // Observe elements with animation classes
     var animatedElements = document.querySelectorAll('.service-card, .feature-item, .step-item');
     animatedElements.forEach(function(el, index) {
         el.style.opacity = '0';
