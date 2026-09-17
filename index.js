@@ -77,7 +77,11 @@ function personalizeHero(user) {
             '<a href="#quick-actions" class="btn btn-secondary btn-large">View Services</a>';
     }
 
-    // Hide the marketing illustration
+    // Hide the public-only trust indicators (not relevant when logged in)
+    var trust = document.querySelector('.hero-trust');
+    if (trust) trust.style.display = 'none';
+
+    // Hide the marketing illustration (kept for backward compatibility)
     var img = document.getElementById('heroImageWrap');
     if (img) img.style.display = 'none';
 }
@@ -173,7 +177,6 @@ function fillStats() {
         stats = {};
     }
 
-    // Set stat values with defaults
     setStatValue('dashActive',   stats.activeLoans   || '0');
     setStatValue('dashApproved', stats.approvedLoans || '0');
     setStatValue('dashBorrowed', stats.totalBorrowed || '$0');
@@ -182,13 +185,10 @@ function fillStats() {
 
 /**
  * Helper function to set stat value with animation
- * @param {string} id - Element ID
- * @param {string} value - Value to set
  */
 function setStatValue(id, value) {
     var element = document.getElementById(id);
     if (element) {
-        // Add fade-in animation
         element.style.opacity = '0';
         element.textContent = value;
         
@@ -202,7 +202,7 @@ function setStatValue(id, value) {
 /* ═══════════════════════════════════════════
    ACTIVITY FEED WITH LOAD MORE
    ═══════════════════════════════════════════ */
-var currentActivityCount = 4; // Start by showing 4 activities
+var currentActivityCount = 4;
 
 function fillActivity() {
     var feed = document.getElementById('activityFeed');
@@ -210,13 +210,9 @@ function fillActivity() {
     
     if (!feed) return;
 
-    // Fetch activity data from localStorage or use demo data
     var storedActivity = getActivityData();
     var allActivities = storedActivity || getDefaultActivityData();
 
-    /**
-     * Render activities to the feed
-     */
     function renderActivities() {
         var activitiesToShow = allActivities.slice(0, currentActivityCount);
         
@@ -224,7 +220,6 @@ function fillActivity() {
             return createActivityItem(activity);
         }).join('');
 
-        // Update Load More button visibility
         if (loadMoreBtn) {
             if (currentActivityCount >= allActivities.length) {
                 loadMoreBtn.style.display = 'none';
@@ -234,11 +229,6 @@ function fillActivity() {
         }
     }
 
-    /**
-     * Create HTML for a single activity item
-     * @param {Object} activity - Activity data
-     * @returns {string} HTML string
-     */
     function createActivityItem(activity) {
         return '<div class="activity-item">' +
                  '<div class="activity-info">' +
@@ -253,32 +243,23 @@ function fillActivity() {
                '</div>';
     }
 
-    /**
-     * Sanitize string to prevent XSS
-     * @param {string} str - String to sanitize
-     * @returns {string} Sanitized string
-     */
     function sanitize(str) {
         var div = document.createElement('div');
         div.textContent = str;
         return div.innerHTML;
     }
 
-    // Initial render
     renderActivities();
 
-    // Wire up "Load More" button
     if (loadMoreBtn) {
-        // Remove existing listeners by cloning
         var newBtn = loadMoreBtn.cloneNode(true);
         loadMoreBtn.parentNode.replaceChild(newBtn, loadMoreBtn);
         loadMoreBtn = newBtn;
 
         loadMoreBtn.addEventListener('click', function() {
-            currentActivityCount += 5; // Load 5 more activities
+            currentActivityCount += 5;
             renderActivities();
             
-            // Smooth scroll to show new activities
             setTimeout(function() {
                 var lastItem = feed.lastElementChild;
                 if (lastItem) {
@@ -289,10 +270,6 @@ function fillActivity() {
     }
 }
 
-/**
- * Get activity data from localStorage
- * @returns {Array|null} Activity data or null
- */
 function getActivityData() {
     try {
         var storedData = localStorage.getItem('quickloan_activity');
@@ -303,10 +280,6 @@ function getActivityData() {
     }
 }
 
-/**
- * Get default demo activity data
- * @returns {Array} Default activity data
- */
 function getDefaultActivityData() {
     return [
         { date: 'Feb 03, 2025', type: 'Personal Loan',  amount: '$12,000', status: 'Processing', color: '#ffc107' },
