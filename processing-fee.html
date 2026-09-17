@@ -9,18 +9,23 @@
     <link rel="stylesheet" href="apply.css">
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/logo.svg" alt="Quick Loan Logo" class="logo-img">
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">← Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
     <main class="container">
-        <header>
+        <header class="page-header">
             <h1>Processing Fee Payment</h1>
             <p class="subtitle">Complete payment to finalize your loan application</p>
         </header>
-
-        <!-- Success Message -->
-        <div class="success-message" id="paymentSuccess">
-            <h3>✓ Payment Request Sent Successfully!</h3>
-            <p>Thank you for submitting your payment request. We will reply with payment account details shortly. You will be redirected to the homepage in a few seconds.</p>
-            <a href="index.html" class="btn btn-primary btn-return-home">Return to Home Now</a>
-        </div>
 
         <!-- Application Summary -->
         <div class="step active" id="summaryStep">
@@ -66,8 +71,9 @@
             </div>
 
             <div class="button-container">
-                <button type="button" class="btn-submit" id="proceedToPaymentBtn" onclick="generatePaymentCode()">
+                <button type="button" class="btn btn-primary btn-full" id="proceedToPaymentBtn" onclick="generatePaymentCode()">
                     <span>Proceed to Payment</span>
+                    <span class="btn-arrow">→</span>
                 </button>
             </div>
         </div>
@@ -108,16 +114,8 @@
                 </div>
             </div>
 
-            <div class="info-box">
-                <div class="info-icon">📧</div>
-                <div class="info-content">
-                    <strong>Next Step</strong>
-                    <p>Click the button below to send us your payment code via email. We will respond with payment account details within a few minutes.</p>
-                </div>
-            </div>
-
             <div class="button-container">
-                <a href="mailto:quickloanz@zohomail.com?subject=Payment Request - Code: PAYMENT_CODE&body=Hello,%0D%0A%0D%0AI would like to complete my loan application payment.%0D%0A%0D%0APayment Code: PAYMENT_CODE%0D%0AName: APPLICANT_NAME%0D%0A%0D%0APlease send me the payment account details.%0D%0A%0D%0AThank you" 
+                <a href="#" 
                    class="btn btn-primary btn-full" 
                    id="sendEmailBtn">
                     📧 Send Payment Request
@@ -125,15 +123,57 @@
             </div>
         </div>
 
+        <!-- Success Message -->
+        <div class="success-message" id="paymentSuccess">
+            <div class="success-icon">✓</div>
+            <h3>Payment Request Sent Successfully!</h3>
+            <p>Your payment request has been submitted. We'll send you the payment account details shortly via email.</p>
+            <div class="success-details success-details-extended">
+                <div class="detail-item">
+                    <strong>What's Next?</strong>
+                    <p>Check your email for payment account details and instructions.</p>
+                </div>
+                <div class="detail-item">
+                    <strong>Payment Code</strong>
+                    <p id="successPaymentCode">-</p>
+                </div>
+            </div>
+            <a href="index.html" class="btn btn-return-home btn-large btn-return-home-extended">Return to Home</a>
+        </div>
+
         <!-- Hidden iframe for form submission -->
         <iframe name="paymentFrame" id="paymentFrame" class="hidden-iframe" title="Payment Form"></iframe>
     </main>
 
-    <footer>
-        <p class="footer-note">&copy; 2025 Quick Loan. All rights reserved.</p>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Need Help?</h4>
+                    <p>Our support team is available 24/7</p>
+                    <div class="contact-links">
+                        <a href="mailto:quickloanz@zohomail.com">
+                            <span class="icon">✉</span>
+                            quickloanz@zohomail.com
+                        </a>
+                        Whatsapp: <a href="https://whatsapp.com/dl/">https://whatsapp.com/dl/</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Secure Payment</h4>
+                    <p>Your data is protected with 256-bit SSL encryption</p>
+                    <div class="security-badges">
+                        <span class="badge">🔒 SSL Secure</span>
+                        <span class="badge">✓ Verified</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Quick Loan. All rights reserved. Licensed and insured.</p>
+            </div>
+        </div>
     </footer>
 
-     <!-- Auth checker must load first -->
     <script src="auth-check.js"></script>
     <script src="main.js"></script>
     <script src="processing-fee.js"></script>
