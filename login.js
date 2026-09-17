@@ -1,11 +1,12 @@
 /**
  * Login Form Handler with Persistent Authentication
  *
- * Fixes:
  * - Only logs in users with a REGISTERED account
  * - Verifies the entered password against the stored one
- * - Spinner is shown only during the actual submit attempt
- *   and is always reset on success OR failure
+ * - Spinner is shown only during the actual submit attempt (after
+ *   validation passes) and is always reset on success OR failure.
+ *   styles.css hides .btn-spinner by default, so it can never appear
+ *   before the form is actually submitted.
  */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -82,19 +83,16 @@ function submitToBackend(form) {
     }
 }
 
-// Loading state
+// Loading state — reveals the spinner (hidden by default in styles.css)
 function showLoadingState() {
     var loginBtn = document.getElementById('loginBtn');
     var loginBtnText = document.getElementById('loginBtnText');
     var loginSpinner = document.getElementById('loginSpinner');
 
     if (loginBtnText) {
-        loginBtnText.classList.add('hidden');
         loginBtnText.style.display = 'none';
     }
     if (loginSpinner) {
-        loginSpinner.classList.add('visible');
-        loginSpinner.classList.remove('hidden');
         loginSpinner.style.display = 'inline-block';
     }
     if (loginBtn) {
@@ -110,12 +108,9 @@ function hideLoadingState() {
     var loginSpinner = document.getElementById('loginSpinner');
 
     if (loginBtnText) {
-        loginBtnText.classList.remove('hidden');
         loginBtnText.style.display = 'inline';
     }
     if (loginSpinner) {
-        loginSpinner.classList.remove('visible');
-        loginSpinner.classList.add('hidden');
         loginSpinner.style.display = 'none';
     }
     if (loginBtn) {
@@ -132,7 +127,7 @@ function hideLoadingState() {
 function authenticateUser(email, password) {
     var storedUserRaw = localStorage.getItem('quickloan_user');
 
-    // ❌ No account registered at all
+    // No account registered at all
     if (!storedUserRaw) {
         failLogin('No account found with this email. Please sign up first.');
         return;
@@ -146,21 +141,21 @@ function authenticateUser(email, password) {
         return;
     }
 
-    // ❌ Email does not match any registered account
+    // Email does not match any registered account
     if (!storedUser || !storedUser.email ||
         storedUser.email.toLowerCase() !== email) {
         failLogin('No account found with this email. Please sign up first.');
         return;
     }
 
-    // ❌ Account exists but has no stored password (legacy)
+    // Account exists but has no stored password (legacy)
     var storedPasswordEncoded = localStorage.getItem('quickloan_password');
     if (!storedPasswordEncoded) {
         failLogin('This account has no password set. Please sign up again.');
         return;
     }
 
-    // ✅ Verify the password
+    // Verify the password
     var storedPassword;
     try {
         storedPassword = atob(storedPasswordEncoded);
@@ -174,7 +169,7 @@ function authenticateUser(email, password) {
         return;
     }
 
-    // ✅ Success — persist auth state
+    // Success — persist auth state
     performLogin(storedUser);
 }
 
@@ -208,9 +203,8 @@ function performLogin(userData) {
     var loginForm = document.getElementById('loginForm');
     var loginSuccess = document.getElementById('loginSuccess');
 
-    if (loginForm) loginForm.classList.add('hidden');
+    if (loginForm) loginForm.style.display = 'none';
     if (loginSuccess) {
-        loginSuccess.classList.add('visible');
         loginSuccess.style.display = 'block';
 
         var firstName = userData.firstName || userData.name || 'User';
@@ -232,7 +226,6 @@ function showLoginError(message) {
     var passwordError = document.getElementById('password-error');
     if (passwordError) {
         passwordError.textContent = message;
-        passwordError.classList.add('visible');
         passwordError.style.display = 'block';
     }
 }
@@ -266,14 +259,12 @@ function validateLoginForm() {
 function showError(element, message) {
     if (!element) return;
     element.textContent = message;
-    element.classList.add('visible');
     element.style.display = 'block';
 }
 
 function clearErrors() {
     document.querySelectorAll('.error-message').forEach(function (error) {
         error.textContent = '';
-        error.classList.remove('visible');
         error.style.display = 'none';
     });
 }
@@ -294,6 +285,13 @@ function initMobileMenu() {
                 hamburger.classList.remove('active');
                 navMenu.classList.remove('active');
             });
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
         });
     }
 }
