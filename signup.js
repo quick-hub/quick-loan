@@ -148,7 +148,10 @@ function clearFieldError(errorId) {
     }
 }
 
-// Handle signup submit
+// Handle signup submit.
+// The spinner is only ever shown from here, inside showLoadingState(),
+// which now only runs after validation passes — styles.css hides
+// .btn-spinner by default so it can never appear before this point.
 function handleSignupSubmit(e) {
     e.preventDefault();
 
@@ -201,19 +204,16 @@ function handleSignupSubmit(e) {
     }, 900);
 }
 
-// Loading state
+// Loading state — reveals the spinner (hidden by default in styles.css)
 function showLoadingState() {
     var signupBtn = document.getElementById('signupBtn');
     var signupBtnText = document.getElementById('signupBtnText');
     var signupSpinner = document.getElementById('signupSpinner');
 
     if (signupBtnText) {
-        signupBtnText.classList.add('hidden');
         signupBtnText.style.display = 'none';
     }
     if (signupSpinner) {
-        signupSpinner.classList.add('visible');
-        signupSpinner.classList.remove('hidden');
         signupSpinner.style.display = 'inline-block';
     }
     if (signupBtn) {
@@ -229,12 +229,9 @@ function hideLoadingState() {
     var signupSpinner = document.getElementById('signupSpinner');
 
     if (signupBtnText) {
-        signupBtnText.classList.remove('hidden');
         signupBtnText.style.display = 'inline';
     }
     if (signupSpinner) {
-        signupSpinner.classList.remove('visible');
-        signupSpinner.classList.add('hidden');
         signupSpinner.style.display = 'none';
     }
     if (signupBtn) {
@@ -276,31 +273,26 @@ function processRegistration(formData) {
             localStorage.setItem('quickloan_password', btoa(formData.password));
         }
 
-        // Seed default dashboard data
-        var defaultStats = {
-            activeLoans: '0',
-            approvedLoans: '0',
-            totalBorrowed: '0',
-            creditScore: 'Excellent'
-        };
-        localStorage.setItem('quickloan_stats', JSON.stringify(defaultStats));
-
+        // Seed a starter activity feed for the new account.
+        // (No fabricated "Active Applications / Approved Loans / Total
+        // Borrowed / Credit Rating" stats are created anymore — that
+        // Account Overview block was removed from the dashboard.)
         var defaultActivity = [
-            { date: 'Feb 04, 2026', type: 'Personal Loan',  amount: '$12,000', status: 'Processing', color: '#ffc107' },
-            { date: 'Jan 28, 2026', type: 'Personal Loan',  amount: '$15,000', status: 'Approved',   color: '#51cf66' },
-            { date: 'Jan 22, 2026', type: 'Business Loan',  amount: '$50,000', status: 'Pending',    color: '#ffc107' },
-            { date: 'Jan 15, 2026', type: 'Emergency Loan', amount: '$5,000',  status: 'Funded',     color: '#00d4ff' },
-            { date: 'Dec 30, 2025', type: 'Personal Loan',  amount: '$8,000',  status: 'Completed',  color: '#b0d4e3' },
-            { date: 'Dec 18, 2025', type: 'Business Loan',  amount: '$35,000', status: 'Completed',  color: '#b0d4e3' },
-            { date: 'Nov 25, 2025', type: 'Emergency Loan', amount: '$3,500',  status: 'Funded',     color: '#00d4ff' },
-            { date: 'Nov 10, 2025', type: 'Personal Loan',  amount: '$20,000', status: 'Completed',  color: '#b0d4e3' },
-            { date: 'Oct 28, 2025', type: 'Business Loan',  amount: '$45,000', status: 'Approved',   color: '#51cf66' },
-            { date: 'Oct 15, 2025', type: 'Personal Loan',  amount: '$10,000', status: 'Completed',  color: '#b0d4e3' },
-            { date: 'Sep 30, 2025', type: 'Emergency Loan', amount: '$4,000',  status: 'Funded',     color: '#00d4ff' },
-            { date: 'Sep 12, 2025', type: 'Personal Loan',  amount: '$18,000', status: 'Completed',  color: '#b0d4e3' },
-            { date: 'Aug 25, 2025', type: 'Business Loan',  amount: '$60,000', status: 'Approved',   color: '#51cf66' },
-            { date: 'Aug 08, 2025', type: 'Personal Loan',  amount: '$9,500',  status: 'Completed',  color: '#b0d4e3' },
-            { date: 'Jul 20, 2025', type: 'Emergency Loan', amount: '$2,800',  status: 'Funded',     color: '#00d4ff' }
+            { date: 'Feb 04, 2026', type: 'Personal Loan',  amount: '$12,000', status: 'Processing', color: '#a9670a' },
+            { date: 'Jan 28, 2026', type: 'Personal Loan',  amount: '$15,000', status: 'Approved',   color: '#257a4d' },
+            { date: 'Jan 22, 2026', type: 'Business Loan',  amount: '$50,000', status: 'Pending',    color: '#a9670a' },
+            { date: 'Jan 15, 2026', type: 'Emergency Loan', amount: '$5,000',  status: 'Funded',     color: '#0d7873' },
+            { date: 'Dec 30, 2025', type: 'Personal Loan',  amount: '$8,000',  status: 'Completed',  color: '#6c8294' },
+            { date: 'Dec 18, 2025', type: 'Business Loan',  amount: '$35,000', status: 'Completed',  color: '#6c8294' },
+            { date: 'Nov 25, 2025', type: 'Emergency Loan', amount: '$3,500',  status: 'Funded',     color: '#0d7873' },
+            { date: 'Nov 10, 2025', type: 'Personal Loan',  amount: '$20,000', status: 'Completed',  color: '#6c8294' },
+            { date: 'Oct 28, 2025', type: 'Business Loan',  amount: '$45,000', status: 'Approved',   color: '#257a4d' },
+            { date: 'Oct 15, 2025', type: 'Personal Loan',  amount: '$10,000', status: 'Completed',  color: '#6c8294' },
+            { date: 'Sep 30, 2025', type: 'Emergency Loan', amount: '$4,000',  status: 'Funded',     color: '#0d7873' },
+            { date: 'Sep 12, 2025', type: 'Personal Loan',  amount: '$18,000', status: 'Completed',  color: '#6c8294' },
+            { date: 'Aug 25, 2025', type: 'Business Loan',  amount: '$60,000', status: 'Approved',   color: '#257a4d' },
+            { date: 'Aug 08, 2025', type: 'Personal Loan',  amount: '$9,500',  status: 'Completed',  color: '#6c8294' },
+            { date: 'Jul 20, 2025', type: 'Emergency Loan', amount: '$2,800',  status: 'Funded',     color: '#0d7873' }
         ];
         localStorage.setItem('quickloan_activity', JSON.stringify(defaultActivity));
 
@@ -313,11 +305,8 @@ function processRegistration(formData) {
 
         if (signupFormElement) {
             signupFormElement.style.display = 'none';
-            signupFormElement.classList.add('hidden');
         }
         if (signupSuccess) {
-            signupSuccess.classList.add('visible');
-            signupSuccess.classList.remove('hidden');
             signupSuccess.style.display = 'block';
         }
 
@@ -400,19 +389,12 @@ function validateSignupForm() {
 function showError(element, message) {
     if (!element) return;
     element.textContent = message;
-    element.classList.add('visible');
-    element.classList.remove('hidden');
     element.style.display = 'block';
-    element.style.color = '#ef4444';
-    element.style.fontSize = '0.875rem';
-    element.style.marginTop = '0.25rem';
 }
 
 function clearErrors() {
     document.querySelectorAll('.error-message').forEach(function (error) {
         error.textContent = '';
-        error.classList.remove('visible');
-        error.classList.add('hidden');
         error.style.display = 'none';
     });
 }
