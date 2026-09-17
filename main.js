@@ -28,20 +28,17 @@ function initHamburgerMenu() {
 
     if (!hamburger || !navMenu) return;
 
-    // Toggle menu on hamburger click
     hamburger.addEventListener('click', function(e) {
         e.stopPropagation();
         toggleMenu();
     });
 
-    // Close menu when clicking outside
     document.addEventListener('click', function(e) {
         if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
             closeMenu();
         }
     });
 
-    // Close menu when clicking a link
     var navLinks = navMenu.querySelectorAll('a');
     navLinks.forEach(function(link) {
         link.addEventListener('click', function() {
@@ -49,14 +46,12 @@ function initHamburgerMenu() {
         });
     });
 
-    // Close menu on escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && navMenu.classList.contains('active')) {
             closeMenu();
         }
     });
 
-    // Handle window resize
     var resizeTimer;
     window.addEventListener('resize', function() {
         clearTimeout(resizeTimer);
@@ -71,7 +66,6 @@ function initHamburgerMenu() {
         var isActive = navMenu.classList.toggle('active');
         animateHamburger(isActive);
         
-        // Toggle body scroll
         if (isActive) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -88,12 +82,10 @@ function initHamburgerMenu() {
     function animateHamburger(isActive) {
         var spans = hamburger.querySelectorAll('span');
         if (isActive) {
-            // Transform to X
             spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
             spans[1].style.opacity = '0';
             spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
         } else {
-            // Back to hamburger
             spans[0].style.transform = 'none';
             spans[1].style.opacity = '1';
             spans[2].style.transform = 'none';
@@ -111,7 +103,6 @@ function initSmoothScrolling() {
         link.addEventListener('click', function(e) {
             var href = this.getAttribute('href');
             
-            // Only smooth scroll if it's an actual anchor (not just "#")
             if (!href || href === '#' || href.length <= 1) {
                 return;
             }
@@ -122,7 +113,6 @@ function initSmoothScrolling() {
             if (targetElement) {
                 e.preventDefault();
                 
-                // Calculate offset accounting for fixed navbar
                 var navbarHeight = 80;
                 var targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
                 
@@ -131,7 +121,6 @@ function initSmoothScrolling() {
                     behavior: 'smooth'
                 });
                 
-                // Update URL without jumping
                 if (history.pushState) {
                     history.pushState(null, null, href);
                 }
@@ -146,7 +135,6 @@ function initSmoothScrolling() {
 function highlightActiveLink() {
     var currentPage = window.location.pathname.split('/').pop();
     
-    // Default to index.html if no page specified
     if (!currentPage || currentPage === '') {
         currentPage = 'index.html';
     }
@@ -156,22 +144,18 @@ function highlightActiveLink() {
     navLinks.forEach(function(link) {
         var linkPage = link.getAttribute('href');
         
-        // Skip logout button and user greeting
         if (link.classList.contains('logout-btn') || 
             link.classList.contains('btn-login') ||
             link.id === 'navLoginBtn') {
             return;
         }
         
-        // Remove active class from all links first
         link.classList.remove('active');
         
-        // Add active class to matching link
         if (linkPage === currentPage) {
             link.classList.add('active');
         }
         
-        // Special case for home page
         if ((currentPage === 'index.html' || currentPage === '') && 
             (linkPage === 'index.html' || linkPage === '/' || linkPage === '')) {
             link.classList.add('active');
@@ -183,7 +167,6 @@ function highlightActiveLink() {
 // SCROLL ANIMATIONS
 // ════════════════════════════════════════
 function initScrollAnimations() {
-    // Check if IntersectionObserver is supported
     if (!('IntersectionObserver' in window)) {
         return;
     }
@@ -202,7 +185,6 @@ function initScrollAnimations() {
         });
     }, observerOptions);
 
-    // Observe elements with animation classes
     var animatedElements = document.querySelectorAll('.service-card, .feature-item, .step-item');
     animatedElements.forEach(function(el, index) {
         el.style.opacity = '0';
@@ -217,11 +199,6 @@ function initScrollAnimations() {
 // UTILITY FUNCTIONS
 // ════════════════════════════════════════
 
-/**
- * Format number as currency
- * @param {number} amount - Amount to format
- * @returns {string} Formatted currency string
- */
 function formatCurrency(amount) {
     if (isNaN(amount)) return '$0.00';
     return '$' + parseFloat(amount).toLocaleString('en-US', {
@@ -230,11 +207,6 @@ function formatCurrency(amount) {
     });
 }
 
-/**
- * Format date string
- * @param {string|Date} dateString - Date to format
- * @returns {string} Formatted date string
- */
 function formatDate(dateString) {
     var date = new Date(dateString);
     if (isNaN(date.getTime())) return 'Invalid Date';
@@ -243,11 +215,6 @@ function formatDate(dateString) {
     return date.toLocaleDateString('en-US', options);
 }
 
-/**
- * Format date with time
- * @param {string|Date} dateString - Date to format
- * @returns {string} Formatted date and time string
- */
 function formatDateTime(dateString) {
     var date = new Date(dateString);
     if (isNaN(date.getTime())) return 'Invalid Date';
@@ -262,12 +229,6 @@ function formatDateTime(dateString) {
     return date.toLocaleDateString('en-US', options);
 }
 
-/**
- * Debounce function for performance optimization
- * @param {Function} func - Function to debounce
- * @param {number} wait - Wait time in milliseconds
- * @returns {Function} Debounced function
- */
 function debounce(func, wait) {
     var timeout;
     return function executedFunction() {
@@ -282,12 +243,6 @@ function debounce(func, wait) {
     };
 }
 
-/**
- * Throttle function for performance optimization
- * @param {Function} func - Function to throttle
- * @param {number} limit - Time limit in milliseconds
- * @returns {Function} Throttled function
- */
 function throttle(func, limit) {
     var inThrottle;
     return function() {
@@ -301,11 +256,6 @@ function throttle(func, limit) {
     };
 }
 
-/**
- * Show validation error message
- * @param {string} elementId - ID of error element
- * @param {string} message - Error message to display
- */
 function showValidationError(elementId, message) {
     var element = document.getElementById(elementId);
     if (element) {
@@ -315,10 +265,6 @@ function showValidationError(elementId, message) {
     }
 }
 
-/**
- * Clear validation error message
- * @param {string} elementId - ID of error element
- */
 function clearValidationError(elementId) {
     var element = document.getElementById(elementId);
     if (element) {
@@ -328,9 +274,6 @@ function clearValidationError(elementId) {
     }
 }
 
-/**
- * Clear all error messages on the page
- */
 function clearAllErrors() {
     var errors = document.querySelectorAll('.error-message');
     errors.forEach(function(error) {
@@ -340,47 +283,24 @@ function clearAllErrors() {
     });
 }
 
-/**
- * Validate email format
- * @param {string} email - Email to validate
- * @returns {boolean} True if valid
- */
 function isValidEmail(email) {
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
-/**
- * Validate phone number format
- * @param {string} phone - Phone number to validate
- * @returns {boolean} True if valid
- */
 function isValidPhone(phone) {
     var phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
     return phoneRegex.test(phone);
 }
 
-/**
- * Show success message toast
- * @param {string} message - Message to display
- */
 function showSuccessMessage(message) {
     showToast(message, 'success');
 }
 
-/**
- * Show error message toast
- * @param {string} message - Message to display
- */
 function showErrorMessage(message) {
     showToast(message, 'error');
 }
 
-/**
- * Show toast notification
- * @param {string} message - Message to display
- * @param {string} type - Type of toast ('success' or 'error')
- */
 function showToast(message, type) {
     var toast = document.createElement('div');
     var bgColor = type === 'success' 
@@ -408,10 +328,6 @@ function showToast(message, type) {
     }, 3000);
 }
 
-/**
- * Copy text to clipboard
- * @param {string} text - Text to copy
- */
 function copyToClipboard(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(function() {
@@ -420,7 +336,6 @@ function copyToClipboard(text) {
             console.error('Failed to copy:', err);
         });
     } else {
-        // Fallback for older browsers
         var textArea = document.createElement('textarea');
         textArea.value = text;
         textArea.style.position = 'fixed';
@@ -437,11 +352,6 @@ function copyToClipboard(text) {
     }
 }
 
-/**
- * Sanitize HTML to prevent XSS
- * @param {string} html - HTML string to sanitize
- * @returns {string} Sanitized HTML
- */
 function sanitizeHTML(html) {
     var temp = document.createElement('div');
     temp.textContent = html;
