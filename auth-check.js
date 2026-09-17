@@ -213,19 +213,33 @@
 
         /**
          * Logout user with confirmation and cleanup
+         *
+         * IMPORTANT: Logout must only end the CURRENT SESSION.
+         * It must NOT delete the registered account itself
+         * (quickloan_user / quickloan_password) or the account's
+         * saved data (quickloan_stats / quickloan_activity) —
+         * otherwise the user would be permanently unable to log
+         * back in, since login.js authenticates against exactly
+         * those stored values. Only session/auth state is cleared
+         * here, so the same registered account can be used to log
+         * back in at any time.
          */
         logout: function () {
             var firstName = this.getFirstName();
             var confirmMessage = 'Are you sure you want to logout, ' + firstName + '?';
 
             if (confirm(confirmMessage)) {
+                // Clear only the active session — NOT the account record.
                 localStorage.removeItem('quickloan_auth');
-                localStorage.removeItem('quickloan_user');
                 localStorage.removeItem('quickloan_token');
-                localStorage.removeItem('quickloan_stats');
-                localStorage.removeItem('quickloan_activity');
                 localStorage.removeItem('quickloan_last_login');
-                localStorage.removeItem('quickloan_password');
+
+                // Intentionally KEEP these so the user can log back in
+                // with their registered credentials and see their data:
+                //   - quickloan_user      (registered account info)
+                //   - quickloan_password  (stored credential, base64)
+                //   - quickloan_stats     (account stats)
+                //   - quickloan_activity  (account activity feed)
 
                 try {
                     sessionStorage.clear();
