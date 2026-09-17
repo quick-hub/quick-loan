@@ -15,18 +15,17 @@
          ════════════════════════════════════════ -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <img src="images/logo.svg" alt="Quick Loan Logo" class="logo-img">
+                <span class="logo-text">Quick Loan</span>
+            </a>
+
+            <div class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
 
-            <!-- hamburger — visible on ≤ 968 px -->
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-
-            <!-- main nav links + login/logout button -->
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="personal-loan.html">Personal Loan</a></li>
@@ -39,31 +38,37 @@
     </nav>
 
     <!-- ════════════════════════════════════════
-         HERO  —  text changes per auth state;
-                  image is hidden by index.js when logged in
+         HERO  —  Full-bleed background image
          ════════════════════════════════════════ -->
-    <section class="hero">
-        <div class="container">
+    <section class="hero hero--background" id="heroSection">
+        <div class="hero-overlay"></div>
+        <div class="container hero-container">
             <div class="hero-content">
-                <h1 id="heroTitle">Get Your Loan in Minutes</h1>
-                <p id="heroDesc">Fast, secure, and transparent lending solutions tailored for your financial needs.</p>
+                <span class="hero-eyebrow">Fast • Simple • Reliable</span>
+                <h1 id="heroTitle">Your Goals. Our Support.</h1>
+                <p id="heroDesc">
+                    Fast, secure, and transparent lending solutions tailored for your financial needs.
+                    Get approved in minutes — not days.
+                </p>
                 <div class="hero-buttons" id="heroButtons">
                     <a href="login.html" class="btn btn-primary btn-large">Apply Now</a>
-                    <a href="about.html" class="btn btn-secondary btn-large">Learn More</a>
+                    <a href="about.html" class="btn btn-outline btn-large">Learn More</a>
                 </div>
-            </div>
-            <!-- hidden when logged in via index.js -->
-            <div class="hero-image-container" id="heroImageWrap">
-                <img src="images/hero_with.svg" alt="Quick Loan professional service" class="hero-image">
+
+                <ul class="hero-trust">
+                    <li><strong>$500M+</strong><span>Loans Funded</span></li>
+                    <li><strong>50,000+</strong><span>Happy Customers</span></li>
+                    <li><strong>4.9/5</strong><span>Customer Rating</span></li>
+                </ul>
             </div>
         </div>
+
+        <!-- Decorative bottom curve -->
+        <div class="hero-curve" aria-hidden="true"></div>
     </section>
 
     <!-- ════════════════════════════════════════
          PUBLIC PAGE BODY
-         Everything inside #publicSections is removed
-         when the user is authenticated; index.js then
-         injects the dashboard sections in its place.
          ════════════════════════════════════════ -->
     <div id="publicSections">
 
@@ -71,8 +76,9 @@
         <section class="services">
             <div class="container">
                 <h2 class="section-title">Our Loan Services</h2>
-                <div class="services-grid">
+                <p class="section-subtitle">Flexible financing options designed around your life.</p>
 
+                <div class="services-grid">
                     <div class="service-card">
                         <div class="service-icon">💼</div>
                         <h3>Personal Loans</h3>
@@ -93,7 +99,6 @@
                         <p>Quick access to funds when you need them most. Get approved and funded within 24 hours for urgent situations.</p>
                         <a href="emergency-loan.html" class="btn-link">Learn More →</a>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -102,11 +107,12 @@
         <section class="features">
             <div class="container">
                 <h2 class="section-title">Why Choose Quick Loan?</h2>
-                <div class="features-grid">
+                <p class="section-subtitle">Built on trust, speed, and transparency.</p>
 
+                <div class="features-grid">
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <img src="images/fast.svg" alt="Lightning Fast" class="feature-icon-img">
+                            <img src="images/fast.svg" alt="" class="feature-icon-img" onerror="this.style.display='none'; this.parentNode.textContent='⚡';">
                         </div>
                         <h4>Lightning Fast</h4>
                         <p>Get approved in minutes, not days. Our streamlined process gets you funded quickly.</p>
@@ -114,7 +120,7 @@
 
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <img src="images/security.svg" alt="Secure & Safe" class="feature-icon-img">
+                            <img src="images/security.svg" alt="" class="feature-icon-img" onerror="this.style.display='none'; this.parentNode.textContent='🔒';">
                         </div>
                         <h4>Secure & Safe</h4>
                         <p>Your data is protected with enterprise-grade encryption and security protocols.</p>
@@ -134,7 +140,7 @@
 
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <img src="images/features.svg" alt="Flexible Terms" class="feature-icon-img">
+                            <img src="images/features.svg" alt="" class="feature-icon-img" onerror="this.style.display='none'; this.parentNode.textContent='📊';">
                         </div>
                         <h4>Flexible Terms</h4>
                         <p>Choose repayment periods from 6 months to 7 years based on your budget.</p>
@@ -142,21 +148,19 @@
 
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <img src="images/support.svg" alt="Expert Support" class="feature-icon-img">
+                            <img src="images/support.svg" alt="" class="feature-icon-img" onerror="this.style.display='none'; this.parentNode.textContent='🎧';">
                         </div>
                         <h4>Expert Support</h4>
                         <p>Dedicated customer support team ready to help every step of the way.</p>
                     </div>
-
                 </div>
             </div>
         </section>
 
-        <!-- Loan Types + Apply CTA (two-column) -->
-        <section class="services">
+        <!-- Loan Types + Apply CTA -->
+        <section class="services services-alt">
             <div class="container">
                 <div class="services-grid services-grid-two-col">
-
                     <div class="service-card">
                         <div class="service-icon">📋</div>
                         <h3>Loan Types</h3>
@@ -167,13 +171,12 @@
                         </div>
                     </div>
 
-                    <div class="service-card">
+                    <div class="service-card service-card-cta">
                         <div class="service-icon">🚀</div>
                         <h3>Ready to Apply?</h3>
                         <p>Complete a simple application form and get pre-approved in minutes.</p>
                         <a href="login.html" class="btn btn-primary btn-full">Start Your Application</a>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -182,8 +185,9 @@
         <section class="how-it-works">
             <div class="container">
                 <h2 class="section-title">How It Works</h2>
-                <div class="steps-grid">
+                <p class="section-subtitle">Three simple steps from application to funding.</p>
 
+                <div class="steps-grid">
                     <div class="step-item">
                         <div class="step-number">1</div>
                         <h3>Apply Online</h3>
@@ -201,7 +205,6 @@
                         <h3>Receive Funds</h3>
                         <p>Once approved, funds are deposited directly into your bank account as soon as the next business day.</p>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -241,20 +244,13 @@
 
     </div><!-- end #publicSections -->
 
-    <!-- ════════════════════════════════════════
-         DASHBOARD SECTIONS  —  injected here by
-         index.js when the user is logged in.
-         This empty target keeps the DOM order
-         stable and gives JS a reliable anchor.
-         ════════════════════════════════════════ -->
+    <!-- DASHBOARD SECTIONS (injected by index.js) -->
     <div id="dashboardSections"></div>
 
-    <!-- ════════════════════════════════════════
-         FLOATING WHATSAPP BUTTON
-         ════════════════════════════════════════ -->
-    <a href="https://wa.me/447538126796" 
-       class="whatsapp-float" 
-       target="_blank" 
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <a href="https://whatsapp.com/dl/"
+       class="whatsapp-float"
+       target="_blank"
        rel="noopener noreferrer"
        aria-label="Chat on WhatsApp">
         <svg viewBox="0 0 32 32" class="whatsapp-icon">
@@ -263,13 +259,10 @@
         </svg>
     </a>
 
-    <!-- ════════════════════════════════════════
-         FOOTER
-         ════════════════════════════════════════ -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-
                 <div class="footer-section">
                     <h3>Quick Loan</h3>
                     <p>Your trusted financial partner for fast, secure, and transparent lending solutions.</p>
@@ -289,7 +282,6 @@
                         <li>
                             <span class="contact-icon">📧</span>
                             Email: <a href="mailto:quickloanz@zohomail.com">quickloanz@zohomail.com</a>
-
                         </li>
                         <li>
                             <span class="contact-icon">🕒</span>
@@ -306,7 +298,6 @@
                         <li><a href="#">Licensing</a></li>
                     </ul>
                 </div>
-
             </div>
 
             <div class="footer-bottom">
@@ -315,12 +306,8 @@
         </div>
     </footer>
 
-    <!-- Auth checker must load first -->
     <script src="auth-check.js"></script>
-    <!-- scripts: main.js handles mobile-menu + smooth-scroll;
-         index.js handles the public ↔ dashboard swap -->
     <script src="main.js"></script>
     <script src="index.js"></script>
-
 </body>
 </html>
