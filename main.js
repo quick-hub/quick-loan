@@ -64,8 +64,9 @@ function initHamburgerMenu() {
 
     function toggleMenu() {
         var isActive = navMenu.classList.toggle('active');
+        hamburger.setAttribute('aria-expanded', isActive ? 'true' : 'false');
         animateHamburger(isActive);
-        
+
         if (isActive) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -75,6 +76,7 @@ function initHamburgerMenu() {
 
     function closeMenu() {
         navMenu.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
         animateHamburger(false);
         document.body.style.overflow = '';
     }
@@ -98,29 +100,29 @@ function initHamburgerMenu() {
 // ════════════════════════════════════════
 function initSmoothScrolling() {
     var smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
-    
+
     smoothScrollLinks.forEach(function(link) {
         link.addEventListener('click', function(e) {
             var href = this.getAttribute('href');
-            
+
             if (!href || href === '#' || href.length <= 1) {
                 return;
             }
 
             var targetId = href.substring(1);
             var targetElement = document.getElementById(targetId);
-            
+
             if (targetElement) {
                 e.preventDefault();
-                
+
                 var navbarHeight = 80;
                 var targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-                
+
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
                 });
-                
+
                 if (history.pushState) {
                     history.pushState(null, null, href);
                 }
@@ -134,29 +136,29 @@ function initSmoothScrolling() {
 // ════════════════════════════════════════
 function highlightActiveLink() {
     var currentPage = window.location.pathname.split('/').pop();
-    
+
     if (!currentPage || currentPage === '') {
         currentPage = 'index.html';
     }
-    
+
     var navLinks = document.querySelectorAll('.nav-menu a');
-    
+
     navLinks.forEach(function(link) {
         var linkPage = link.getAttribute('href');
-        
-        if (link.classList.contains('logout-btn') || 
+
+        if (link.classList.contains('logout-btn') ||
             link.classList.contains('btn-login') ||
             link.id === 'navLoginBtn') {
             return;
         }
-        
+
         link.classList.remove('active');
-        
+
         if (linkPage === currentPage) {
             link.classList.add('active');
         }
-        
-        if ((currentPage === 'index.html' || currentPage === '') && 
+
+        if ((currentPage === 'index.html' || currentPage === '') &&
             (linkPage === 'index.html' || linkPage === '/' || linkPage === '')) {
             link.classList.add('active');
         }
@@ -181,6 +183,7 @@ function initScrollAnimations() {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
@@ -190,7 +193,7 @@ function initScrollAnimations() {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        el.style.transitionDelay = (index * 0.1) + 's';
+        el.style.transitionDelay = (index % 6 * 0.08) + 's';
         observer.observe(el);
     });
 }
@@ -210,7 +213,7 @@ function formatCurrency(amount) {
 function formatDate(dateString) {
     var date = new Date(dateString);
     if (isNaN(date.getTime())) return 'Invalid Date';
-    
+
     var options = { year: 'numeric', month: 'short', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
 }
@@ -218,10 +221,10 @@ function formatDate(dateString) {
 function formatDateTime(dateString) {
     var date = new Date(dateString);
     if (isNaN(date.getTime())) return 'Invalid Date';
-    
-    var options = { 
-        year: 'numeric', 
-        month: 'short', 
+
+    var options = {
+        year: 'numeric',
+        month: 'short',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
@@ -301,23 +304,27 @@ function showErrorMessage(message) {
     showToast(message, 'error');
 }
 
+// Toast colors now match the site's navy/teal design tokens instead of
+// the old stock green/red gradients.
 function showToast(message, type) {
     var toast = document.createElement('div');
-    var bgColor = type === 'success' 
-        ? 'linear-gradient(135deg, #51cf66, #40c057)' 
-        : 'linear-gradient(135deg, #ff6b6b, #ff5252)';
-    
-    toast.style.cssText = 
+    var bgColor = type === 'success'
+        ? 'linear-gradient(135deg, #257a4d, #1f6b41)'
+        : 'linear-gradient(135deg, #b03a2e, #942f25)';
+
+    toast.setAttribute('role', 'status');
+    toast.style.cssText =
         'position: fixed; top: 20px; right: 20px; ' +
         'background: ' + bgColor + '; ' +
-        'color: white; padding: 1rem 1.5rem; border-radius: 8px; ' +
-        'box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); ' +
+        'color: #ffffff; padding: 1rem 1.5rem; border-radius: 8px; ' +
+        'box-shadow: 0 8px 24px rgba(11, 32, 54, 0.22); ' +
         'z-index: 10000; font-weight: 600; max-width: 300px; ' +
+        'font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif; ' +
         'animation: slideInRight 0.3s ease;';
-    
+
     toast.textContent = message;
     document.body.appendChild(toast);
-    
+
     setTimeout(function() {
         toast.style.animation = 'slideOutRight 0.3s ease';
         setTimeout(function() {
@@ -358,18 +365,9 @@ function sanitizeHTML(html) {
     return temp.innerHTML;
 }
 
-// Add CSS animations
-var style = document.createElement('style');
-style.textContent = 
-    '@keyframes slideInRight { ' +
-    '  from { transform: translateX(100%); opacity: 0; } ' +
-    '  to { transform: translateX(0); opacity: 1; } ' +
-    '} ' +
-    '@keyframes slideOutRight { ' +
-    '  from { transform: translateX(0); opacity: 1; } ' +
-    '  to { transform: translateX(100%); opacity: 0; } ' +
-    '}';
-document.head.appendChild(style);
+// NOTE: the slideInRight / slideOutRight keyframes used by showToast()
+// are already defined once in styles.css (section 21 — Animations), so
+// this script no longer injects a duplicate <style> tag for them.
 
 // Export utility functions globally
 if (typeof window !== 'undefined') {
